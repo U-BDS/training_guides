@@ -1,4 +1,4 @@
-# Using Docker with R - Introduction Part 1
+# Using Docker with R - Introduction Part 2
 
 ## Requirements:
 
