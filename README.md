@@ -67,3 +67,25 @@ docker run -d --rm -p 8787:8787 -e PASSWORD=NBI -v `pwd`/dir_for_mounting:/home/
 The RStudio session is now available at `localhost:8787`
 
 <img src="bioconductor_rstudio_deseq2.png" align="center" width="850px" />
+
+## Pushing images to Docker Hub
+
+To easily share your images with others, use [Docker Hub](https://hub.docker.com/) as the registry to distribute publish images. I recommend to read [Part 3 of the Docker Getting Started documentation](https://docs.docker.com/get-started/part3/) if you have not done so, but we will briefly cover the steps to publish the Bioconductor image which was just created:
+
+1. Create a repository in Docker Hub by navigating to  "Repositories > Create". Provide a name and click "Create".
+
+Note that images must be namespaced correctly to be shared in Docker Hub following: `<Your Docker ID>/<Repository Name>:<tag>`
+
+2. Tag and push the image:
+
+```bash
+docker tag rstudio_deseq2:3.10 <Your Docker ID>/rstudio_deseq2:3.10
+```
+
+```bash
+docker push <Your Docker ID>/rstudio_deseq2:3.10
+```
+
+3. Add any documentation necessary in the README section under "Manage Repository".
+
+The same container we created in this session is available at: https://hub.docker.com/r/lianov/rstudio_deseq2
