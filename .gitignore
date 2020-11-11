@@ -1,0 +1,7 @@
+# OS generated file and R-related files.
+
+.DS_Store
+.Rhistory
+.RData
+.rstudio
+*/.rstudio
