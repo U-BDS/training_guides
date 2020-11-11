@@ -2,7 +2,7 @@
 
 ## Requirements:
 
-[Review part 1](https://gitlab.rc.uab.edu/CIRC_NBI/docker_with_r_user_session/intro_docker_rstudio_part1)
+[Review part 1](https://gitlab.rc.uab.edu/circ_nbi_share/docker_with_r_user_session/intro_docker_rstudio_part1)
 
 ## Build an image with dependencies from Bioconductor
 
