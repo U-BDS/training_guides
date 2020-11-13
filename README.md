@@ -1,4 +1,4 @@
-# Using Docker with R - Introduction Part 2
+# Using Docker with RStudio - Introduction Part 2
 
 ## Requirements:
 
@@ -89,3 +89,5 @@ docker push <Your Docker ID>/rstudio_deseq2:3.10
 3. Add any documentation necessary in the README section under "Manage Repository".
 
 The same container we created in this session is available at: https://hub.docker.com/r/lianov/rstudio_deseq2
+
+## [Continue tutorial to Part 3 - running RStudio containers in HPC with Singularity](https://gitlab.rc.uab.edu/circ_nbi_share/docker_with_r_user_session/intro_docker_rstudio_part3)
