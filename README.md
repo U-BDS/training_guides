@@ -1,4 +1,4 @@
-# Using Docker with R - Introduction Part 3
+# Using Docker with RStudio - Introduction Part 3
 
 ## Requirements:
 
@@ -79,13 +79,13 @@ __Mounting a directory to the container__
 
 As briefly mentioned, Singularity already mounts specific paths ([see docs](https://sylabs.io/guides/3.5/user-guide/bind_paths_and_mounts.html?%20bind#bind-paths-and-mounts)), but if you would like to mount a specific path to the container, you may do so in the similar method to Docker where we mount a path from host to a target path on the container with `--bind $USER_SCRATCH/HPC_path_mount:/home/rstudio/data_mount` (you can choose another target path) :
 
-```
+```bash
 PASSWORD='NBI' singularity exec --bind $USER_SCRATCH/HPC_path_mount:/home/rstudio/data_mount rstudio_ggplot2_3.6.3.sif rserver --auth-none=0  --auth-pam-helper-path=pam-helper --www-address=127.0.0.1
 ```
 
 Or you may also mount the host path directly without a target path in the container with just `--bind $USER_SCRATCH/HPC_path_mount`
 
-```
+```bash
 PASSWORD='NBI' singularity exec --bind $USER_SCRATCH/HPC_path_mount rstudio_ggplot2_3.6.3.sif rserver --auth-none=0  --auth-pam-helper-path=pam-helper --www-address=127.0.0.1
 ```
 __Singularity cache__
