@@ -1,4 +1,4 @@
-# Using Docker with R - Introduction Part 1
+# Using Docker with RStudio - Introduction Part 1
 
 ## Requirements:
 
@@ -167,3 +167,6 @@ While adding data files and scripts to the image is a good solution to ship a co
 ```bash
 docker run -d --rm -p 8787:8787 -e PASSWORD=NBI -v `pwd`/dir_for_mounting:/home/rstudio/data_mount rstudio_ggplot2:3.6.3
 ```
+
+
+## [Continue tutorial to Part 2 - containers with Bioconductor dependencies](https://gitlab.rc.uab.edu/circ_nbi_share/docker_with_r_user_session/intro_docker_rstudio_part2)
