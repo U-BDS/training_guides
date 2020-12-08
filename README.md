@@ -25,7 +25,7 @@ Reproducibility is a key component to scientific advancement, and in computation
 * Run a container in HPC with the conversion of Docker image to Singularity.
 
 
-## Run a basic RStudio image from Rocker
+## Run a basic RStudio container from Rocker
 
 To `run` a container image from Rocker present in Docker Hub, the first concept you should pay attention to is "Tags". For example, for the rstudio docker hub repository (https://hub.docker.com/r/rocker/rstudio), you will should note the "Tags" tab which determines version of the Docker image present in the repository. In the case of `rocker/rstudio` repository, the tag is linked to the R version the container will ultimately run. Thus, for instance, `rocker/rstudio:3.6.3` will run a container with R version 3.6.3. For more information on Rocker version tags see: https://github.com/rocker-org/rocker-versioned and https://github.com/rocker-org/rocker-versioned/blob/master/VERSIONS.md
 
