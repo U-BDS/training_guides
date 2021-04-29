@@ -31,7 +31,7 @@ Thus, if you have package dependencies from Bioconductor, it's highly recommende
 
 __NOTE__: As mentioned above, Biconductor containers are released based on Bioconducor releases (`bioconductor/bioconductor_docker:RELEASE_X_Y`), keeping in mind that each bioconductor release is linked to specific R versions. Thus, when choosing a container repository, use the following release history to track down R versions compatible with the Bioconductor releases: https://www.bioconductor.org/about/release-announcements/
 
-The following defines the Dockerfile with Bioconductor release 3.10 (linked to R version 3.6), along with installations (with `BiocManager::install`) for Bioconductor packages `DESeq2` and `pasilla`. I am also adding a few CRAN packages via the standard R install function `install.packages` to simply demonstrate that you can still install any non-bioconductor dependencies in the same form you would normally do without using the Bioconductor base image.
+The following defines the Dockerfile with Bioconductor release 3.10 (linked to R version 3.6), along with installations (with `BiocManager::install`) for Bioconductor packages `DESeq2` and `pasilla`. I am also adding a few CRAN packages via the standard R install function `install.packages` to simply demonstrate that you can still install any non-bioconductor dependencies in the same form you would normally do without using the Bioconductor parent image.
 
 ```docker
 FROM bioconductor/bioconductor_docker:RELEASE_3_10
