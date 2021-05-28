@@ -115,6 +115,40 @@ docker run -it --rm bioconductor/bioconductor_docker:RELEASE_3_10 R -e '(5 + 8) 
 
 Similarly, this can also be accomplished with Singularity in Cheaha. For an overview of using Singularity containers for this purpose, please see the following: https://docs.uabgrid.uab.edu/wiki/Singularity_containers
 
+## Troubleshooting tips:
+
+1. If you come across the following error:
+
+```
+[rserver] ERROR system error 11 (Resource temporarily unavailable) [description: Could not acquire revocation list file lock]; OCCURRED AT rstudio::core::Error rstudio::server::auth::handler::initialize() src/cpp/server/auth/ServerAuthHandler.cpp:569; LOGGED FROM: int main(int, char* const*) src/cpp/server/ServerMain.cpp:674
+```
+
+It's due to another instance of rstudio creating a lock in the default tmp directory. The solution is to create your own temporary directory and pass it to `rserver` command with the flag `--server-data-dir` (and to  `--bind` in `singularity exec`).
+
+Example:
+
+```bash
+mkdir -p $USER_SCRATCH/singularity_rstudio_tmp
+
+PASSWORD='NBI' singularity exec --bind $USER_SCRATCH/HPC_path_mount --bind $USER_SCRATCH/singularity_rstudio_tmp rstudio_ggplot2_3.6.3.sif rserver --auth-none=0  --auth-pam-helper-path=pam-helper --www-address=127.0.0.1 --server-data-dir $USER_SCRATCH/singularity_rstudio_tmp
+```
+
+2. When running more than one RStudio Singularity container:
+    * Although not a requirement, I recommend to launch the container from a separate VNC/HPC Desktop job with its own dedicated computational resources.
+    * Create separate tmp directories per container.
+    * In HPC VNC, when running containers that need Firefox such as RStudio, they are linked to a default Firefox user. Thus, if more than one session is running the following may occur:
+
+    ```
+    Firefox is already running, but is not responding. To open a new window, you must first close the existing Firefox process, or restart your system
+    ```
+
+One solution is outlined in the Firefox user questions: https://support.mozilla.org/en-US/questions/971866 and summarized below:
+* Create a separate firefox profile with `firefox -p profilename`. All profiles can be view at `/home/<HPC_id>/.mozilla/firefox`
+* That should resolve the issue, but importantly this makes your latest profile set as default. Thus, if you encounter the same error switch to the older existing profile. You can read more about setting default profile for Firefox at: https://support.mozilla.org/en-US/kb/profile-manager-create-remove-switch-firefox-profiles
+
+3. If you encounter `ERROR system error 98 (Address already in use)`, it means the default port number (8787) is busy, and you can resolve it by adding `--www-port <port #>` after `rserver`.
+
+
 ## Additional learning resources:
 
 * By default, Docker uses only a subset of your computational resources available. See the following for more information on how to change the settings such as assigning more memory: https://stackoverflow.com/questions/44533319/how-to-assign-more-memory-to-docker-container
