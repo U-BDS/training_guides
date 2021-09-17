@@ -117,6 +117,28 @@ Similarly, this can also be accomplished with Singularity in Cheaha. For an over
 
 ## Troubleshooting tips:
 
+### Using images linked to R > 4.0.0 with RStudio
+
+If you are using an image such as `rocker/rstudio:4.0.4`, it's necessary to `--bind` the following (a process documented in rocker's website: https://www.rocker-project.org/use/singularity/)
+
+```
+singularity pull docker://rocker/rstudio:4.0.4
+
+mkdir -p run var-lib-rstudio-server
+
+printf 'provider=sqlite\ndirectory=/var/lib/rstudio-server\n' > database.conf
+
+singularity exec --bind run:/run,var-lib-rstudio-server:/var/lib/rstudio-server,database.conf:/etc/rstudio/database.conf rstudio_4.0.4.sif rserver --www-address=127.0.0.1
+```
+
+Not doing so, will cause the following error:
+
+```
+ERROR database error 7 (sqlite3_statement_backend::loadOne: attempt to write a readonly database) [description: Could not delete expired revoked cookies from the database, description: Could not read revoked cookies from the database]; OCCURRED AT virtual rstudio::core::Error rstudio::core::database::Connection::execute(rstudio::core::database::Query&, bool*) src/cpp/core/Database.cpp:510; LOGGED FROM: int main(int, char* const*) src/cpp/server/ServerMain.cpp:763
+```
+
+### Additional tips:
+
 1. If you come across the following error:
 
 ```
