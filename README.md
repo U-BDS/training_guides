@@ -119,7 +119,7 @@ Similarly, this can also be accomplished with Singularity in Cheaha. For an over
 
 ### Using images linked to R > 4.0.0 with RStudio
 
-If you are using an image such as `rocker/rstudio:4.0.4`, it's necessary to `--bind` the following (a process documented in rocker's website: https://www.rocker-project.org/use/singularity/)
+1. If you are using an image such as `rocker/rstudio:4.0.4`, it's necessary to `--bind` the following (a process documented in rocker's website: https://www.rocker-project.org/use/singularity/)
 
 ```
 singularity pull docker://rocker/rstudio:4.0.4
@@ -135,6 +135,18 @@ Not doing so, will cause the following error:
 
 ```
 ERROR database error 7 (sqlite3_statement_backend::loadOne: attempt to write a readonly database) [description: Could not delete expired revoked cookies from the database, description: Could not read revoked cookies from the database]; OCCURRED AT virtual rstudio::core::Error rstudio::core::database::Connection::execute(rstudio::core::database::Query&, bool*) src/cpp/core/Database.cpp:510; LOGGED FROM: int main(int, char* const*) src/cpp/server/ServerMain.cpp:763
+```
+
+2. Additionally, newer RStudio images may enforce the `--server-user arg (=rstudio-server)` argument, and users may encounter the following error:
+
+```
+ERROR Attempt to run server as user 'rstudio-server' (uid 999) from account 'lianov' (uid 10993) without privilege, which is required to run as a different uid; LOGGED FROM: virtual rstudio::core::ProgramStatus rstudio::server::Options::read(int, char* const*, std::ostream&) src/cpp/server/ServerOptions.cpp:322
+```
+
+In the error above, the issue is that it's attempting to run the container with my user id when it's expecting `rstudio-server`. To solve this, add in your user id to the `--server-user` (e.g.: `rserver --server-user=lianov`) such as:
+
+```
+singularity exec --bind run:/run,var-lib-rstudio-server:/var/lib/rstudio-server,database.conf:/etc/rstudio/database.conf rstudio_4.0.4.sif rserver --server-user=lianov --www-address=127.0.0.1
 ```
 
 ### Additional tips:
