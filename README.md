@@ -2,9 +2,9 @@
 
 ## Requirements:
 
-[Review part 1](https://gitlab.rc.uab.edu/circ_nbi_share/docker_with_r_user_session/intro_docker_rstudio_part1)
+[Review part 1](https://github.com/U-BDS/Intro_Docker_RStudio_Part1)
 
-[Review part 2](https://gitlab.rc.uab.edu/circ_nbi_share/docker_with_r_user_session/intro_docker_rstudio_part2)
+[Review part 2](https://github.com/U-BDS/Intro_Docker_RStudio_Part2)
 
 ## Brief background:
 
