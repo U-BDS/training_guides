@@ -14,7 +14,7 @@
 Reproducibility is a key component to scientific advancement, and in computational biology this should include the following components:
 
 * __Good documentation__ - no matter how good of a software/app/pipeline you develop, the lack of proper document hinders your science. Thus, document and update as necessary.
-* __Version control of code__ - familiarity with the concept of version control using `git` and web-bases git services (e.g.: GitLab, GitHub, Bitbucket) is a crucial component to long term reproducibility. There are other types of distributed versions control systems, however, `git` is mostly used in data science and computational biology, thus it's a good starting point. For more information on this topic please see [this Git introduction](https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control#:~:text=Version%20control%20is%20a%20system,of%20file%20on%20a%20computer.) and my overview of [GitLab in the pdf slides](https://gitlab.rc.uab.edu/lianov/gitlab_demo/-/tree/master)
+* __Version control of code__ - familiarity with the concept of version control using `git` and web-bases git services (e.g.: GitLab, GitHub, Bitbucket) is a crucial component to long term reproducibility. There are other types of distributed versions control systems, however, `git` is mostly used in data science and computational biology, thus it's a good starting point. For more information on this topic please see [this Git introduction](https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control#:~:text=Version%20control%20is%20a%20system,of%20file%20on%20a%20computer.) and the [Software Carpentry Git material](https://swcarpentry.github.io/git-novice/)
 * __Environment reproducibility__ - this is a key step which is often times missed. Keep in mind that in many instances an analysis has dependencies on specific versions of softwares and programming languages, and unless that is well documented, your research is not fully reproducible. But beyond good documentation of what softwares (and versions) were used, the better solution is to deliver the environment to researchers. This is where Docker comes in - Docker provides researchers with a tool to deliver the environment in a scalable, enclosed and portable manner. In other words, you can run an R environment built in Linux that is a year old in your own OS (e.g. Mac or Windows) without having to change your main R version present in your OS. This concept is applicable to any environment types (e.g.: Python) but for our session, we will focus on R and __RStudio__ as many analysis are performed interactively in RStudio.
 
 ### Session Goals
@@ -168,5 +168,7 @@ While adding data files and scripts to the image is a good solution to ship a co
 docker run -d --rm -p 8787:8787 -e PASSWORD=NBI -v `pwd`/dir_for_mounting:/home/rstudio/data_mount rstudio_ggplot2:3.6.3
 ```
 
+__NOTE__: creating a subdirectory to `/home/rstudio` for mounting is not needed and added here just as an example. The `/home/rstudio` can be used directly for mounting purposes (```-v `pwd`:/home/rstudio/```) 
 
-## [Continue tutorial to Part 2 - containers with Bioconductor dependencies](https://gitlab.rc.uab.edu/circ_nbi_share/docker_with_r_user_session/intro_docker_rstudio_part2)
+
+## [Continue tutorial to Part 2 - containers with Bioconductor dependencies](https://github.com/U-BDS/Intro_Docker_RStudio_Part2)
