@@ -2,7 +2,7 @@
 
 ## Requirements:
 
-[Review part 1](https://gitlab.rc.uab.edu/circ_nbi_share/docker_with_r_user_session/intro_docker_rstudio_part1)
+[Review part 1](https://github.com/U-BDS/Intro_Docker_RStudio_Part1)
 
 ## Build an image with dependencies from Bioconductor
 
@@ -90,4 +90,8 @@ docker push <Your Docker ID>/rstudio_deseq2:3.10
 
 The same container we created in this session is available at: https://hub.docker.com/r/lianov/rstudio_deseq2
 
-## [Continue tutorial to Part 3 - running RStudio containers in HPC with Singularity](https://gitlab.rc.uab.edu/circ_nbi_share/docker_with_r_user_session/intro_docker_rstudio_part3)
+## Inspecting an image history
+
+A very useful command to your own images and others publicly available is `docker history` (https://docs.docker.com/engine/reference/commandline/history/). It allows you to inspect the history of the image, including the specific commands called from the Dockerfile. `docker history --no-trunc <image:tag>` expands the outputs for further details.
+
+## [Continue tutorial to Part 3 - running RStudio containers in HPC with Singularity](https://github.com/U-BDS/Intro_Docker_RStudio_Part3)
