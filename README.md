@@ -1,5 +1,6 @@
 # General Notes:
 * Use at minimum 3 samples when running a pipeline (even for minimal testing purposes). Some pipelines will not be able to complete successfully when running only a single sample.
+* Although not a requirement, we advise to not use the iGenomes option suggested in a number of pipelines due to the lack of information on versioning linked to each assembly which may compromise reproducibility to a small degree. Instead pass on a reference (genome, and annotation file(s)) from a source and version that is suitable to your needs.
 
 # Pipeline-specific Notes:
 ## nf-core/rnaseq:
