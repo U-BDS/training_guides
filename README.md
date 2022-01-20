@@ -20,3 +20,17 @@ From the example above, the newly generated transcriptome `Mus_musculus.GRCm38_G
 We recommend to creata a conda environment with both dependencies and record the versions.
 
 `gffread` documentation can be found from: http://ccb.jhu.edu/software/stringtie/gff.shtml#gffread
+
+## nf-core/nanoseq:
+* The version of nanoplot that is used by this pipeline (1.38) causes the pipeline to crash. Per the author, the issue is with a package that is used to convert html files into png files. However, nanoseq expects there to be png files which causes crash. In order to get around this issue, you can create a custom config and override the container that nanoseq would pull down for Nanoplot. Values specified in configs passed via the commandline take priority over the defaults that are specified in the pipeline proper.
+    * This problem is currently being tracked here: https://github.com/nf-core/nanoseq/issues/141
+
+container override example:
+```
+process {
+    withName: NANOPLOT {
+        container = 'https://depot.galaxyproject.org/singularity/nanoplot:1.32.1--py_0'
+    }
+}
+```
+Place the above lines in a file called `custom.config`. When the pipleine is run, specify a new command-line parameter `-c path/to/custom.config` to the nextflow command, where `path/to/custom.config` would be the path to the custom config file.
