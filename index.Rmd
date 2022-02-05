@@ -1,0 +1,11 @@
+---
+title: "U-BDS training guides"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Training guides
+
+Page under construction

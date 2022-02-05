@@ -1,0 +1,23 @@
+name: "U-BDS training guides"
+output_dir: "docs"
+navbar:
+  title: "U-BDS"
+  left:
+  - text: "Home"
+    icon: fa-home
+    href: index.html
+  - text: "nf-core tips"
+    href: nf_core_tips.html  
+  - text: "Intro to Docker with RStudio"
+    icon: fa-cube
+    menu:
+      - text: "Part 1"
+        #href: Part1.html
+output:
+  html_document:
+    css: "style.css"
+    toc: true
+    toc_float: true
+    theme: cosmo
+    include:
+      after_body: footer.html
