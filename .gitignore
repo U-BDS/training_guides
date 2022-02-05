@@ -2,6 +2,8 @@
 .Rhistory
 .RData
 .Ruserdata
+.rstudio
+*/.rstudio
 .DS_Store
 .bash_history
 .local
