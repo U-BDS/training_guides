@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Lara Ianov, Ph.D." />
+
+
+<title>Intro to Docker for RStudio - Part 1</title>
+
+<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-sm-12 col-md-4 col-lg-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-sm-12 col-md-8 col-lg-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">U-BDS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fas fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="nf_core_tips.html">nf-core tips</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fas fa-cube"></span>
+     
+    Intro to Docker with RStudio
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="intro_to_docker_rstudio_part1.html">Part 1</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Intro to Docker for RStudio - Part 1</h1>
+<h4 class="author">Lara Ianov, Ph.D.</h4>
+
+</div>
+
+
+<div id="requirements" class="section level1">
+<h1>Requirements</h1>
+<ul>
+<li>Have Docker installed in your computer - see <a href="https://docs.docker.com/get-docker/" class="uri">https://docs.docker.com/get-docker/</a></li>
+<li>Recommended, but not required: “Get Started” material by Docker: <a href="https://docs.docker.com/get-started/" class="uri">https://docs.docker.com/get-started/</a></li>
+</ul>
+</div>
+<div id="overview" class="section level1">
+<h1>Overview</h1>
+<p>Reproducibility is a key component to scientific advancement, and in computational biology this should include the following components:</p>
+<ul>
+<li><strong>Good documentation</strong> - no matter how good of a software/app/pipeline you develop, the lack of proper document hinders your science. Thus, document and update as necessary.</li>
+<li><strong>Version control of code</strong> - familiarity with the concept of version control using <code>git</code> and web-bases git services (e.g.: GitLab, GitHub, Bitbucket) is a crucial component to long term reproducibility. There are other types of distributed versions control systems, however, <code>git</code> is mostly used in data science and computational biology, thus it’s a good starting point. For more information on this topic please see <a href="https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control#:~:text=Version%20control%20is%20a%20system,of%20file%20on%20a%20computer.">this Git introduction</a> and the <a href="https://swcarpentry.github.io/git-novice/">Software Carpentry Git material</a></li>
+<li><strong>Environment reproducibility</strong> - this is a key step which is often times missed. Keep in mind that in many instances an analysis has dependencies on specific versions of software and programming languages, and unless that is well documented, your research is not fully reproducible. But beyond good documentation of what software (and versions) were used, the better solution is to deliver the environment to researchers. This is where Docker comes in - Docker provides researchers with a tool to deliver the environment in a scalable, enclosed and portable manner. In other words, you can run an R environment built in Linux that is a year old in your own OS (e.g. Mac or Windows) without having to change your main R version present in your OS. This concept is applicable to any environment types (e.g.: Python) but for our session, we will focus on R and <strong>RStudio</strong> as many analysis are performed interactively in RStudio.</li>
+</ul>
+<div id="session-goals" class="section level2">
+<h2>Session Goals</h2>
+<ul>
+<li>Become familiar with <a href="https://www.rocker-project.org/">Rocker</a> resources for running RStudio: <a href="https://hub.docker.com/u/rocker" class="uri">https://hub.docker.com/u/rocker</a></li>
+<li>Build a custom Dockerfile with a commonly used CRAN package.</li>
+<li>Build a custom Dockerfile with a Bioconductor package. For this we will use the Bioconductor Docker container which is build upon rocker resources: <a href="http://bioconductor.org/help/docker/" class="uri">http://bioconductor.org/help/docker/</a></li>
+<li>Run a container in HPC with the conversion of Docker image to Singularity.</li>
+</ul>
+</div>
+</div>
+<div id="run-a-basic-rstudio-container-from-rocker" class="section level1">
+<h1>Run a basic RStudio container from Rocker</h1>
+<p>To <code>run</code> a container image from Rocker present in Docker Hub, the first concept you should pay attention to is “Tags”. For example, for the rstudio docker hub repository (<a href="https://hub.docker.com/r/rocker/rstudio" class="uri">https://hub.docker.com/r/rocker/rstudio</a>), you will should note the “Tags” tab which determines version of the Docker image present in the repository. In the case of <code>rocker/rstudio</code> repository, the tag is linked to the R version the container will ultimately run. Thus, for instance, <code>rocker/rstudio:3.6.3</code> will run a container with R version 3.6.3. For more information on Rocker version tags see: <a href="https://github.com/rocker-org/rocker-versioned" class="uri">https://github.com/rocker-org/rocker-versioned</a> and <a href="https://github.com/rocker-org/rocker-versioned/blob/master/VERSIONS.md" class="uri">https://github.com/rocker-org/rocker-versioned/blob/master/VERSIONS.md</a></p>
+<p>Thus as a first step, let’s run the latest version to the RStudio container from rocker:</p>
+<p>To run the latest version, run:</p>
+<pre class="bash"><code>docker run -d --rm -p 8787:8787 -e PASSWORD=NBI rocker/rstudio:latest</code></pre>
+<p>If it’s the first time you are pulling the image, you should see the outputs similar to the following:</p>
+<pre><code>Unable to find image &#39;rocker/rstudio:latest&#39; locally
+latest: Pulling from rocker/rstudio
+a4a2a29f9ba4: Pull complete
+127c9761dcba: Pull complete
+d13bf203e905: Pull complete
+4039240d2e0b: Pull complete
+3b4941e90a2c: Pull complete
+ef7ee4dd95c3: Pull complete
+3d3d7ae7c8a0: Pull complete
+f0c6e28dde7d: Pull complete
+Digest: sha256:40b28d6518298e48d4d585874c689158462db76ce45e8eb6b1440ae8901c31e1
+Status: Downloaded newer image for rocker/rstudio:latest
+217e3dff2f26c5f3d96ce0816b0a761644a8d5718a1645e1f758ff67f0aad995</code></pre>
+<p>We can now list the images and the containers currently running:</p>
+<pre class="bash"><code>docker image ls</code></pre>
+<pre><code>REPOSITORY                         TAG                 IMAGE ID            CREATED             SIZE
+rocker/rstudio                     latest              f6cf30c3483b        8 days ago          1.9GB</code></pre>
+<pre class="bash"><code>docker container ls # or `docker ps`</code></pre>
+<pre><code>CONTAINER ID        IMAGE                   COMMAND             CREATED             STATUS              PORTS                    NAMES
+217e3dff2f26        rocker/rstudio:latest   &quot;/init&quot;             6 minutes ago       Up 6 minutes        0.0.0.0:8787-&gt;8787/tcp   optimistic_colden</code></pre>
+<p>Note the container ID <code>217e3dff2f26</code> matches the last line of the output from when we first ran the <code>run</code> command. This ID will change each time you run a new container.</p>
+<p>Further, here is brief explanation of the flags used with <code>run</code>:</p>
+<ul>
+<li><code>-d</code>: runs the container in the background / detach</li>
+<li><code>--rm</code>: Automatically removes the container when it exits. I recommend doing this to keep the server/computer clean to save computational resources.</li>
+<li><code>-p</code>: exposes and binds local port to port in the container. In this case we chose 8787 since the RStudio server runs on port 8787 (if you were to run an application which runs on another port, such as R Shiny, choose the appropriate port number, which would be 3838 for R Shiny).</li>
+<li><code>-e PASSWORD=&lt;...&gt;</code>: password is required for RStudio. The username is <code>rstudio</code>.</li>
+</ul>
+<p>We can now access the Docker container by visiting <code>localhost:8787</code> in your browser and providing the username <code>rstudio</code> and password you set:</p>
+<p><img src="figs/intro_to_docker_part1/rocker_rstudio_latest.png" align="center" width="850px" /></p>
+<p>Note under <code>sessionInfo()</code>, that we are running this RStudio session with R version 4.0.3 under Ubuntu 20.04 LTS as opposed to my local R version (3.6) in my MacBook Pro. Also note that the current working directory (<code>/home/rstudio</code>) is a directory that is only present in the Docker container, and not my Mac.</p>
+<p>This is a great way to test newer versions of packages without upgrading your own local versions. One downside to using the container as it is, is that as soon as the container is removed, the installed packages will be deleted too. There is a method to avoid this (by using <code>docker commit</code> to create a new image with changes made in the container - see more at: <a href="https://ropenscilabs.github.io/r-docker-tutorial/03-install-packages.html" class="uri">https://ropenscilabs.github.io/r-docker-tutorial/03-install-packages.html</a>), but we will focus on doing this by writing a Dockerfile.</p>
+<p>Finally, to stop a container simply run <code>docker stop &lt;container_id&gt;</code>. In our case, this will also remove the container since we used <code>--rm</code> with the <code>run</code> command, but the image will remain locally unless the user deletes it with <code>docker image rm &lt;image_id&gt;</code>.</p>
+</div>
+<div id="build-and-customize-your-image-with-dockerfile" class="section level1">
+<h1>Build and customize your image with Dockerfile</h1>
+<p>Developing your own image and container allows you to customize the R session to suit your needs, and thus ensuring that your research is reproducible and scalable.</p>
+<p>Let’s start with a simple example, where we want to run RStudio with R version 3.6.3 and plot data with <code>ggplot2</code>, which is a CRAN package (we will cover Bioconductor later).</p>
+<p>The following defines the Dockerfile containing the necessary R version and package dependency along with a small data set to be included in the container.</p>
+<pre class="docker"><code>FROM rocker/rstudio:3.6.3
+
+RUN mkdir /home/rstudio/data_plots
+
+# location for mounting (optional)
+RUN mkdir /home/rstudio/data_mount
+
+COPY ./ggplot2_example.R /home/rstudio/data_plots
+
+# here we add data in when we write the image as opposed to mounting
+COPY ./data_for_dockerfile /home/rstudio/data_plots
+
+RUN R -e &#39;install.packages(&quot;ggplot2&quot;)&#39;</code></pre>
+<p>Note that the example above only uses a subset of Docker directives. For a full reference of directives see <a href="https://docs.docker.com/engine/reference/builder/" class="uri">https://docs.docker.com/engine/reference/builder/</a>. Also note that the data and script added to the image could have also been added via mounting - <a href="#%20mounting-a-directory-to-the-container">shown in mounting section</a>. This is usually best practice in many cases to keep the image size smaller, but for this example we include the small dataset/script to demonstrate two directives.</p>
+<p>Now, that we have the Dockerfile ready, we build the image and run to launch the container - make sure you are in the directory that contains the Dockerfile for this example (in <code>./src/intro_to_docker_part1</code> of the <a href="https://github.com/U-BDS/training_guides/tree/main/src">GitHub repository which contains this material</a>):</p>
+<pre class="bash"><code>docker build --rm --force-rm -t rstudio_ggplot2:3.6.3 .</code></pre>
+<p>(by not providing a tag to <code>-t rstudio_ggplot2</code>, it will default to <code>latest</code> tag)</p>
+<pre><code>Sending build context to Docker daemon  3.613MB
+Step 1/6 : FROM rocker/rstudio:3.6.3
+ ---&gt; 0e89f80390af
+Step 2/6 : RUN mkdir /home/rstudio/data_plots
+ ---&gt; Running in 363aece8e2d2
+Removing intermediate container 363aece8e2d2
+ ---&gt; c4f81c427c87
+Step 3/6 : RUN mkdir /home/rstudio/data_mount
+ ---&gt; Running in e6ea2fbdd2bc
+Removing intermediate container e6ea2fbdd2bc
+ ---&gt; 8bb4a2960cb7
+Step 4/6 : COPY ./ggplot2_example.R /home/rstudio/data_plots
+ ---&gt; 944f156a9a17
+Step 5/6 : COPY ./data_for_dockerfile /home/rstudio/data_plots
+ ---&gt; 9774922404e5
+Step 6/6 : RUN R -e &#39;install.packages(&quot;ggplot2&quot;)&#39;
+ ---&gt; Running in 4302f07f9511
+
+###--- R ggplot2 installation starts ---###</code></pre>
+<p>And now we <code>run</code>:</p>
+<pre class="bash"><code>docker run -d --rm -p 8787:8787 -e PASSWORD=NBI rstudio_ggplot2:3.6.3</code></pre>
+<p>Now, in our <code>localhost:8787</code>, you should the new RStudio session with the environment we specified in the Dockerfile (R version 3.6.3 and ggplot2 available), along with the R script and data file present in <code>/home/rstudio/data_plots</code></p>
+<p><img src="figs/intro_to_docker_part1/rstudio_ggplot2_3_6_3.png" align="center" width="850px" /></p>
+<hr />
+</div>
+<div id="mounting-a-directory-to-the-container" class="section level1">
+<h1>Mounting a directory to the container</h1>
+<p>While adding data files and scripts to the image is a good solution to ship a container with all data for a specific project, a user may want to simply use the same environment for their own data or decide to mount to keep the image size small. This can be done without modifying the image by mounting a local directory to the container with flag <code>-v &lt;local_dir&gt;:&lt;remote_container_dir&gt;</code> to the <code>run</code> command:</p>
+<pre class="bash"><code>docker run -d --rm -p 8787:8787 -e PASSWORD=NBI -v `pwd`/dir_for_mounting:/home/rstudio/data_mount rstudio_ggplot2:3.6.3</code></pre>
+<p><strong>NOTE</strong>: creating a subdirectory to <code>/home/rstudio</code> for mounting is not needed and added here just as an example. The <code>/home/rstudio</code> can be used directly for mounting purposes (<code>-v `pwd`:/home/rstudio/</code>)</p>
+<p><strong>Continue tutorial to part 2 from the drop down menu at the navigation bar of this website.</strong></p>
+</div>
+
+<html>
+
+<hr class="solid">
+
+<div class="footer">For more information about the UAB Biological Data Science core please visit the <a href="https://www.uab.edu/cores/ircp/bds">U-BDS website</a>. If you have an enquiry about a project or grant you would like to collaborate with us please fill out the <a href="https://www.wrike.com/frontend/requestforms/index.html?token=eyJhY2NvdW50SWQiOjQ2ODk3ODQsInRhc2tGb3JtSWQiOjUxMTIyNn0JNDc3OTg5MTE1NzQxNwlkNDgyOTg3Zjc0N2YyYmE4YWE3YThiYjVmNjQ3NzM1MzYyMTM5ZDlmN2I4NTU2NWZkZDZiMWY4MDg4MTJmYzI2">enquiry form.</a></div>
+</html>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
