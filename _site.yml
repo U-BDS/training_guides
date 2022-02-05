@@ -12,7 +12,7 @@ navbar:
     icon: fa-cube
     menu:
       - text: "Part 1"
-        #href: Part1.html
+        href: intro_to_docker_rstudio_part1.html
 output:
   html_document:
     css: "style.css"

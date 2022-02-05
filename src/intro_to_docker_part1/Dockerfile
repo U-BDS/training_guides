@@ -2,7 +2,7 @@ FROM rocker/rstudio:3.6.3
 
 RUN mkdir /home/rstudio/data_plots
 
-# location for mounting
+# location for mounting (optional)
 RUN mkdir /home/rstudio/data_mount
 
 COPY ./ggplot2_example.R /home/rstudio/data_plots
