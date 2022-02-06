@@ -1,12 +1,13 @@
-# Using Docker with RStudio - Introduction Part 3
+---
+title: "Intro to Docker for RStudio - Part 3"
+author: "Lara Ianov, Ph.D."
+---
 
-## Requirements:
+# Requirements
 
-[Review part 1](https://github.com/U-BDS/Intro_Docker_RStudio_Part1)
+Review part 1 and 2 available in this website.
 
-[Review part 2](https://github.com/U-BDS/Intro_Docker_RStudio_Part2)
-
-## Brief background:
+# Brief background
 
 So far, everything has been run in my local Mac with Docker. However, for large datasets, a user may need computational resources which exceed a personal computer.
 
@@ -14,7 +15,7 @@ Yet, a requirement for running Docker containers is `sudo` privilege which not a
 
 A short answer to this question is that Docker is a more popular tool than Singularity and thus, there are more resources available to Docker. Furthermore, Docker is compatible with many container technology including Singularity. Therefore, a user can easily develop a Docker container and convert it to Singularity. Importantly, if you do choose to use Singularity for development, you will still need sudo privilege during the original image development as opposed to simply running the container where sudo privilege is not needed. [For a more detailed overview check our this post by Itamar Turner-Trauring.](https://pythonspeed.com/articles/containers-filesystem-data-processing/)
 
-## Running a container at the UAB HPC cluster, Cheaha:
+# Running a container at the UAB HPC cluster, Cheaha
 
 Since we will need to connect to RStudio in a web browser, we will launch Singularity within a VNC Session:
 
@@ -72,10 +73,10 @@ Further, any data and directories that were copied in the Dockerfile to `/home/r
 
 Thus, in my Singularity session, I can re-create the ggplot2 plot that was generated in Part 1 using the data in the container from the rstudio username:
 
-<img src="rstudio_ggplot2_3_6_3_HPC.png" align="center" width="850px" />
+<img src="./figs/intro_to_docker_part3/rstudio_ggplot2_3_6_3_HPC.png" align="center" width="850px" />
 
 *****
-__Mounting a directory to the container__
+# Mounting a directory to the container
 
 As briefly mentioned, Singularity already mounts specific paths ([see docs](https://sylabs.io/guides/3.5/user-guide/bind_paths_and_mounts.html?%20bind#bind-paths-and-mounts)), but if you would like to mount a specific path to the container, you may do so in the similar method to Docker where we mount a path from host to a target path on the container with `--bind $USER_SCRATCH/HPC_path_mount:/home/rstudio/data_mount` (you can choose another target path) :
 
@@ -88,12 +89,12 @@ Or you may also mount the host path directly without a target path in the contai
 ```bash
 PASSWORD='NBI' singularity exec --bind $USER_SCRATCH/HPC_path_mount rstudio_ggplot2_3.6.3.sif rserver --auth-none=0  --auth-pam-helper-path=pam-helper --www-address=127.0.0.1
 ```
-__Singularity cache__
+# Singularity cache
 
 The containers are cached in `$USER_DATA/.singularity`. To list them you may use `singularity cache list -v`. To remove, use the `singularity cache clean` command (see `singularity cache clean -h` for more details). I recommend to use the dry-run flag before running the clean command (`singularity cache clean -n`)
 
 
-### A note for other use-cases:
+# A note for other use-cases
 
 For this session we have focused on utilizing containers with an active RStudio session as many R analysis are interactive. However, it's important to emphasize, that a user can also run a container (Docker or Singularity) for other purposes, such as running a command within the container:
 
@@ -115,9 +116,9 @@ docker run -it --rm bioconductor/bioconductor_docker:RELEASE_3_10 R -e '(5 + 8) 
 
 Similarly, this can also be accomplished with Singularity in Cheaha. For an overview of using Singularity containers for this purpose, please see the following: https://docs.uabgrid.uab.edu/wiki/Singularity_containers
 
-## Troubleshooting tips:
+# Troubleshooting tips
 
-### Using images linked to R > 4.0.0 with RStudio
+## Using images linked to R > 4.0.0 with RStudio
 
 1. If you are using an image such as `rocker/rstudio:4.0.4`, it's necessary to `--bind` the following (a process documented in rocker's website: https://www.rocker-project.org/use/singularity/)
 
@@ -149,7 +150,7 @@ In the error above, the issue is that it's attempting to run the container with 
 singularity exec --bind run:/run,var-lib-rstudio-server:/var/lib/rstudio-server,database.conf:/etc/rstudio/database.conf rstudio_4.0.4.sif rserver --server-user=lianov --www-address=127.0.0.1
 ```
 
-### Additional tips:
+## Additional tips
 
 1. If you come across the following error:
 
@@ -172,18 +173,20 @@ PASSWORD='NBI' singularity exec --bind $USER_SCRATCH/HPC_path_mount --bind $USER
     * Create separate tmp directories per container.
     * In HPC VNC, when running containers that need Firefox such as RStudio, they are linked to a default Firefox user. Thus, if more than one session is running the following may occur:
 
-    ```
-    Firefox is already running, but is not responding. To open a new window, you must first close the existing Firefox process, or restart your system
-    ```
+```
+Firefox is already running, but is not responding. To open a new window, you must first close the existing Firefox process, or restart your system
+```
 
 One solution is outlined in the Firefox user questions: https://support.mozilla.org/en-US/questions/971866 and summarized below:
+
 * Create a separate firefox profile with `firefox -p profilename`. All profiles can be view at `/home/<HPC_id>/.mozilla/firefox`
+
 * That should resolve the issue, but importantly this makes your latest profile set as default. Thus, if you encounter the same error switch to the older existing profile. You can read more about setting default profile for Firefox at: https://support.mozilla.org/en-US/kb/profile-manager-create-remove-switch-firefox-profiles
 
 3. If you encounter `ERROR system error 98 (Address already in use)`, it means the default port number (8787) is busy, and you can resolve it by adding `--www-port <port #>` after `rserver`.
 
 
-## Additional learning resources:
+# Additional learning resources
 
 * By default, Docker uses only a subset of your computational resources available. See the following for more information on how to change the settings such as assigning more memory: https://stackoverflow.com/questions/44533319/how-to-assign-more-memory-to-docker-container
 

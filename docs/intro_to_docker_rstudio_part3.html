@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Lara Ianov, Ph.D." />
+
+
+<title>Intro to Docker for RStudio - Part 3</title>
+
+<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-sm-12 col-md-4 col-lg-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-sm-12 col-md-8 col-lg-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">U-BDS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fas fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="nf_core_tips.html">nf-core tips</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fas fa-cube"></span>
+     
+    Intro to Docker with RStudio
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="intro_to_docker_rstudio_part1.html">Part 1</a>
+    </li>
+    <li>
+      <a href="intro_to_docker_rstudio_part2.html">Part 2</a>
+    </li>
+    <li>
+      <a href="intro_to_docker_rstudio_part3.html">Part 3</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Intro to Docker for RStudio - Part 3</h1>
+<h4 class="author">Lara Ianov, Ph.D.</h4>
+
+</div>
+
+
+<div id="requirements" class="section level1">
+<h1>Requirements</h1>
+<p>Review part 1 and 2 available in this website.</p>
+</div>
+<div id="brief-background" class="section level1">
+<h1>Brief background</h1>
+<p>So far, everything has been run in my local Mac with Docker. However, for large datasets, a user may need computational resources which exceed a personal computer.</p>
+<p>Yet, a requirement for running Docker containers is <code>sudo</code> privilege which not available to users in a shared system such as HPC. For this reason, users should use <a href="https://sylabs.io/docs/">Singularity</a> when running containers in HPC. But if that’s the case, you may wonder why did we cover Docker up until now?</p>
+<p>A short answer to this question is that Docker is a more popular tool than Singularity and thus, there are more resources available to Docker. Furthermore, Docker is compatible with many container technology including Singularity. Therefore, a user can easily develop a Docker container and convert it to Singularity. Importantly, if you do choose to use Singularity for development, you will still need sudo privilege during the original image development as opposed to simply running the container where sudo privilege is not needed. <a href="https://pythonspeed.com/articles/containers-filesystem-data-processing/">For a more detailed overview check our this post by Itamar Turner-Trauring.</a></p>
+</div>
+<div id="running-a-container-at-the-uab-hpc-cluster-cheaha" class="section level1">
+<h1>Running a container at the UAB HPC cluster, Cheaha</h1>
+<p>Since we will need to connect to RStudio in a web browser, we will launch Singularity within a VNC Session:</p>
+<ol style="list-style-type: decimal">
+<li>Login to OnDemand: <a href="https://rc.uab.edu" class="uri">https://rc.uab.edu</a></li>
+<li>Go to “Interactive Apps &gt; HPC Desktop”</li>
+<li>Choose your computational resources (e.g.: hours, partition etc.) and click “Launch”</li>
+<li>Once the session is running, click “Launch Desktop in new tab”</li>
+<li>Open the terminal in the VNC session ("Applications &gt; Terminal Emulator or right-click the desktop and choose terminal).</li>
+<li>Load Singularity, in this case we are loading the latest version available in HPC which is <code>Singularity/3.5.2-GCC-5.4.0-2.26</code></li>
+</ol>
+<pre><code>module load Singularity</code></pre>
+<pre><code>module list
+
+Currently Loaded Modules:
+  1) shared           4) gcc/8.2.0       7) binutils/2.26-GCCcore-5.4.0  10) Singularity/3.5.2-GCC-5.4.0-2.26
+  2) rc-base          5) slurm/18.08.9   8) GCC/5.4.0-2.26
+  3) DefaultModules   6) GCCcore/5.4.0   9) Go/1.13.1
+</code></pre>
+<ol start="7" style="list-style-type: decimal">
+<li>Go to a directory where you would like to place the image and pull the image from Docker Hub. In this case, we will pull the ggplot2 image that was generated in part 1 available at <a href="https://hub.docker.com/r/lianov/rstudio_ggplot2" class="uri">https://hub.docker.com/r/lianov/rstudio_ggplot2</a>. When we pull from docker, Singularity will already convert the image. Note that you must use the following syntax: <code>docker://user/image:tag</code> (<a href="https://sylabs.io/guides/3.5/user-guide/cli/singularity_pull.html">see the docs for more</a>)</li>
+</ol>
+<pre class="bash"><code>cd $USER_SCRATCH
+mkdir HPC_container_session
+cd HPC_container_session
+
+# Pull from Docker (NOTE the `docker://`)
+
+singularity pull docker://lianov/rstudio_ggplot2:3.6.3</code></pre>
+<p>This may take a few minutes, but after pulling and unpacking you should see:</p>
+<pre><code>INFO:    Creating SIF file...
+INFO:    Build complete: rstudio_ggplot2_3.6.3.sif</code></pre>
+<ol start="8" style="list-style-type: decimal">
+<li>Start the container. The Rocker project describes this process quite well for RStudio (<a href="https://www.rocker-project.org/use/singularity/" class="uri">https://www.rocker-project.org/use/singularity/</a>), and this is what we follow:</li>
+</ol>
+<pre class="bash"><code>PASSWORD=&#39;NBI&#39; singularity exec rstudio_ggplot2_3.6.3.sif rserver --auth-none=0  --auth-pam-helper-path=pam-helper --www-address=127.0.0.1</code></pre>
+<ol start="9" style="list-style-type: decimal">
+<li><p>Open the browser in the VNC session ("Applications &gt; Web Browser) and go to <code>http://localhost:8787</code></p></li>
+<li><p>Importantly, in Singularity, you will want to use your Cheaha ID as the username to login with the password that was provided above which you can change. Unlike Docker which is fully isolated, Singularity is more integrated with the host filesystem (and it automatically mounts <code>$HOME</code>, <code>$PWD</code> and <code>/tmp</code>).</p></li>
+</ol>
+<p>Further, any data and directories that were copied in the Dockerfile to <code>/home/rstudio</code> such as <code>/home/rstudio/data_plots</code> are still available in the same path even with your Cheaha ID (this is also true in Docker if you change the user name to another one using <code>-e USER=&lt;username&gt;</code>).</p>
+<p>Thus, in my Singularity session, I can re-create the ggplot2 plot that was generated in Part 1 using the data in the container from the rstudio username:</p>
+<p><img src="figs/intro_to_docker_part3/rstudio_ggplot2_3_6_3_HPC.png" align="center" width="850px" /></p>
+<hr />
+</div>
+<div id="mounting-a-directory-to-the-container" class="section level1">
+<h1>Mounting a directory to the container</h1>
+<p>As briefly mentioned, Singularity already mounts specific paths (<a href="https://sylabs.io/guides/3.5/user-guide/bind_paths_and_mounts.html?%20bind#bind-paths-and-mounts">see docs</a>), but if you would like to mount a specific path to the container, you may do so in the similar method to Docker where we mount a path from host to a target path on the container with <code>--bind $USER_SCRATCH/HPC_path_mount:/home/rstudio/data_mount</code> (you can choose another target path) :</p>
+<pre class="bash"><code>PASSWORD=&#39;NBI&#39; singularity exec --bind $USER_SCRATCH/HPC_path_mount:/home/rstudio/data_mount rstudio_ggplot2_3.6.3.sif rserver --auth-none=0  --auth-pam-helper-path=pam-helper --www-address=127.0.0.1</code></pre>
+<p>Or you may also mount the host path directly without a target path in the container with just <code>--bind $USER_SCRATCH/HPC_path_mount</code></p>
+<pre class="bash"><code>PASSWORD=&#39;NBI&#39; singularity exec --bind $USER_SCRATCH/HPC_path_mount rstudio_ggplot2_3.6.3.sif rserver --auth-none=0  --auth-pam-helper-path=pam-helper --www-address=127.0.0.1</code></pre>
+</div>
+<div id="singularity-cache" class="section level1">
+<h1>Singularity cache</h1>
+<p>The containers are cached in <code>$USER_DATA/.singularity</code>. To list them you may use <code>singularity cache list -v</code>. To remove, use the <code>singularity cache clean</code> command (see <code>singularity cache clean -h</code> for more details). I recommend to use the dry-run flag before running the clean command (<code>singularity cache clean -n</code>)</p>
+</div>
+<div id="a-note-for-other-use-cases" class="section level1">
+<h1>A note for other use-cases</h1>
+<p>For this session we have focused on utilizing containers with an active RStudio session as many R analysis are interactive. However, it’s important to emphasize, that a user can also run a container (Docker or Singularity) for other purposes, such as running a command within the container:</p>
+<p>Using my locally cached Bioconductor container, I can run a simple Linux command:</p>
+<pre class="bash"><code>docker run --rm bioconductor/bioconductor_docker:RELEASE_3_10 echo Hello World</code></pre>
+<p>Or a simple R computation:</p>
+<pre class="bash"><code>docker run -it --rm bioconductor/bioconductor_docker:RELEASE_3_10 R -e &#39;(5 + 8) * 2 == 26&#39;
+
+# ... output
+&gt; (5 + 8) * 2 == 26
+[1] TRUE</code></pre>
+<p>Similarly, this can also be accomplished with Singularity in Cheaha. For an overview of using Singularity containers for this purpose, please see the following: <a href="https://docs.uabgrid.uab.edu/wiki/Singularity_containers" class="uri">https://docs.uabgrid.uab.edu/wiki/Singularity_containers</a></p>
+</div>
+<div id="troubleshooting-tips" class="section level1">
+<h1>Troubleshooting tips</h1>
+<div id="using-images-linked-to-r-4.0.0-with-rstudio" class="section level2">
+<h2>Using images linked to R &gt; 4.0.0 with RStudio</h2>
+<ol style="list-style-type: decimal">
+<li>If you are using an image such as <code>rocker/rstudio:4.0.4</code>, it’s necessary to <code>--bind</code> the following (a process documented in rocker’s website: <a href="https://www.rocker-project.org/use/singularity/" class="uri">https://www.rocker-project.org/use/singularity/</a>)</li>
+</ol>
+<pre><code>singularity pull docker://rocker/rstudio:4.0.4
+
+mkdir -p run var-lib-rstudio-server
+
+printf &#39;provider=sqlite\ndirectory=/var/lib/rstudio-server\n&#39; &gt; database.conf
+
+singularity exec --bind run:/run,var-lib-rstudio-server:/var/lib/rstudio-server,database.conf:/etc/rstudio/database.conf rstudio_4.0.4.sif rserver --www-address=127.0.0.1</code></pre>
+<p>Not doing so, will cause the following error:</p>
+<pre><code>ERROR database error 7 (sqlite3_statement_backend::loadOne: attempt to write a readonly database) [description: Could not delete expired revoked cookies from the database, description: Could not read revoked cookies from the database]; OCCURRED AT virtual rstudio::core::Error rstudio::core::database::Connection::execute(rstudio::core::database::Query&amp;, bool*) src/cpp/core/Database.cpp:510; LOGGED FROM: int main(int, char* const*) src/cpp/server/ServerMain.cpp:763</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Additionally, newer RStudio images may enforce the <code>--server-user arg (=rstudio-server)</code> argument, and users may encounter the following error:</li>
+</ol>
+<pre><code>ERROR Attempt to run server as user &#39;rstudio-server&#39; (uid 999) from account &#39;lianov&#39; (uid 10993) without privilege, which is required to run as a different uid; LOGGED FROM: virtual rstudio::core::ProgramStatus rstudio::server::Options::read(int, char* const*, std::ostream&amp;) src/cpp/server/ServerOptions.cpp:322</code></pre>
+<p>In the error above, the issue is that it’s attempting to run the container with my user id when it’s expecting <code>rstudio-server</code>. To solve this, add in your user id to the <code>--server-user</code> (e.g.: <code>rserver --server-user=lianov</code>) such as:</p>
+<pre><code>singularity exec --bind run:/run,var-lib-rstudio-server:/var/lib/rstudio-server,database.conf:/etc/rstudio/database.conf rstudio_4.0.4.sif rserver --server-user=lianov --www-address=127.0.0.1</code></pre>
+</div>
+<div id="additional-tips" class="section level2">
+<h2>Additional tips</h2>
+<ol style="list-style-type: decimal">
+<li>If you come across the following error:</li>
+</ol>
+<pre><code>[rserver] ERROR system error 11 (Resource temporarily unavailable) [description: Could not acquire revocation list file lock]; OCCURRED AT rstudio::core::Error rstudio::server::auth::handler::initialize() src/cpp/server/auth/ServerAuthHandler.cpp:569; LOGGED FROM: int main(int, char* const*) src/cpp/server/ServerMain.cpp:674</code></pre>
+<p>It’s due to another instance of rstudio creating a lock in the default tmp directory. The solution is to create your own temporary directory and pass it to <code>rserver</code> command with the flag <code>--server-data-dir</code> (and to <code>--bind</code> in <code>singularity exec</code>).</p>
+<p>Example:</p>
+<pre class="bash"><code>mkdir -p $USER_SCRATCH/singularity_rstudio_tmp
+
+PASSWORD=&#39;NBI&#39; singularity exec --bind $USER_SCRATCH/HPC_path_mount --bind $USER_SCRATCH/singularity_rstudio_tmp rstudio_ggplot2_3.6.3.sif rserver --auth-none=0  --auth-pam-helper-path=pam-helper --www-address=127.0.0.1 --server-data-dir $USER_SCRATCH/singularity_rstudio_tmp</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>When running more than one RStudio Singularity container:
+<ul>
+<li>Although not a requirement, I recommend to launch the container from a separate VNC/HPC Desktop job with its own dedicated computational resources.</li>
+<li>Create separate tmp directories per container.</li>
+<li>In HPC VNC, when running containers that need Firefox such as RStudio, they are linked to a default Firefox user. Thus, if more than one session is running the following may occur:</li>
+</ul></li>
+</ol>
+<pre><code>Firefox is already running, but is not responding. To open a new window, you must first close the existing Firefox process, or restart your system</code></pre>
+<p>One solution is outlined in the Firefox user questions: <a href="https://support.mozilla.org/en-US/questions/971866" class="uri">https://support.mozilla.org/en-US/questions/971866</a> and summarized below:</p>
+<ul>
+<li><p>Create a separate firefox profile with <code>firefox -p profilename</code>. All profiles can be view at <code>/home/&lt;HPC_id&gt;/.mozilla/firefox</code></p></li>
+<li><p>That should resolve the issue, but importantly this makes your latest profile set as default. Thus, if you encounter the same error switch to the older existing profile. You can read more about setting default profile for Firefox at: <a href="https://support.mozilla.org/en-US/kb/profile-manager-create-remove-switch-firefox-profiles" class="uri">https://support.mozilla.org/en-US/kb/profile-manager-create-remove-switch-firefox-profiles</a></p></li>
+</ul>
+<ol start="3" style="list-style-type: decimal">
+<li>If you encounter <code>ERROR system error 98 (Address already in use)</code>, it means the default port number (8787) is busy, and you can resolve it by adding <code>--www-port &lt;port #&gt;</code> after <code>rserver</code>.</li>
+</ol>
+</div>
+</div>
+<div id="additional-learning-resources" class="section level1">
+<h1>Additional learning resources</h1>
+<ul>
+<li><p>By default, Docker uses only a subset of your computational resources available. See the following for more information on how to change the settings such as assigning more memory: <a href="https://stackoverflow.com/questions/44533319/how-to-assign-more-memory-to-docker-container" class="uri">https://stackoverflow.com/questions/44533319/how-to-assign-more-memory-to-docker-container</a></p></li>
+<li><p>The following tutorial covers some of the basics we also covered, but it also briefly discussing how to use Docker in AWS: <a href="https://mdneuzerling.com/post/user-getting-started-with-r-and-docker/" class="uri">https://mdneuzerling.com/post/user-getting-started-with-r-and-docker/</a></p></li>
+<li><p>You may also consider using package installation methods that also specify a package version if needed (just check <code>sessionInfo()</code> once you load the packages during initial build):</p></li>
+</ul>
+<pre class="docker"><code>RUN R -e &quot;install.packages(&#39;remotes&#39;); \
+  remotes::install_version(&#39;&lt;package_name&gt;&#39;, &#39;&lt;package_version&gt;&#39;)&quot;</code></pre>
+<p>This is usually only needed for sources like CRAN, since Bioconductor follows a release schedule with packages being linked to specific releases.</p>
+<ul>
+<li><p>Ten simple rules for writing Dockerfiles for reproducible data science: <a href="https://doi.org/10.1371/journal.pcbi.1008316" class="uri">https://doi.org/10.1371/journal.pcbi.1008316</a></p></li>
+<li><p>If you have issues with R Studio filling up your home directory in HPC, check out the solutions presented by Ming Tang under “Fix home directory filled up issue”: <a href="https://divingintogeneticsandgenomics.rbind.io/post/run-rstudio-server-with-singularity-on-hpc/" class="uri">https://divingintogeneticsandgenomics.rbind.io/post/run-rstudio-server-with-singularity-on-hpc/</a></p></li>
+</ul>
+</div>
+
+<html>
+
+<hr class="solid">
+
+<div class="footer">For more information about the UAB Biological Data Science core please visit the <a href="https://www.uab.edu/cores/ircp/bds">U-BDS website</a>. If you have an enquiry about a project or grant you would like to collaborate with us please fill out the <a href="https://www.wrike.com/frontend/requestforms/index.html?token=eyJhY2NvdW50SWQiOjQ2ODk3ODQsInRhc2tGb3JtSWQiOjUxMTIyNn0JNDc3OTg5MTE1NzQxNwlkNDgyOTg3Zjc0N2YyYmE4YWE3YThiYjVmNjQ3NzM1MzYyMTM5ZDlmN2I4NTU2NWZkZDZiMWY4MDg4MTJmYzI2">enquiry form.</a></div>
+</html>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

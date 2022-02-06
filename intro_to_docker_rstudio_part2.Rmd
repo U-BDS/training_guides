@@ -5,7 +5,7 @@ author: "Lara Ianov, Ph.D."
 
 # Requirements
 
-Review part 1 available in this website
+Review part 1 available in this website.
 
 # Build an image with dependencies from Bioconductor
 
