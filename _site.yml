@@ -13,6 +13,10 @@ navbar:
     menu:
       - text: "Part 1"
         href: intro_to_docker_rstudio_part1.html
+      - text: "Part 2"
+        href: intro_to_docker_rstudio_part2.html
+      - text: "Part 3"
+        href: intro_to_docker_rstudio_part3.html        
 output:
   html_document:
     css: "style.css"

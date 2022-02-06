@@ -343,6 +343,12 @@ div.tocify {
     <li>
       <a href="intro_to_docker_rstudio_part1.html">Part 1</a>
     </li>
+    <li>
+      <a href="intro_to_docker_rstudio_part2.html">Part 2</a>
+    </li>
+    <li>
+      <a href="intro_to_docker_rstudio_part3.html">Part 3</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -447,8 +453,8 @@ COPY ./ggplot2_example.R /home/rstudio/data_plots
 COPY ./data_for_dockerfile /home/rstudio/data_plots
 
 RUN R -e &#39;install.packages(&quot;ggplot2&quot;)&#39;</code></pre>
-<p>Note that the example above only uses a subset of Docker directives. For a full reference of directives see <a href="https://docs.docker.com/engine/reference/builder/" class="uri">https://docs.docker.com/engine/reference/builder/</a>. Also note that the data and script added to the image could have also been added via mounting - <a href="#%20mounting-a-directory-to-the-container">shown in mounting section</a>. This is usually best practice in many cases to keep the image size smaller, but for this example we include the small dataset/script to demonstrate two directives.</p>
-<p>Now, that we have the Dockerfile ready, we build the image and run to launch the container - make sure you are in the directory that contains the Dockerfile for this example (in <code>./src/intro_to_docker_part1</code> of the <a href="https://github.com/U-BDS/training_guides/tree/main/src">GitHub repository which contains this material</a>):</p>
+<p>Note that the example above only uses a subset of Docker directives. For a full reference of directives see <a href="https://docs.docker.com/engine/reference/builder/" class="uri">https://docs.docker.com/engine/reference/builder/</a>. Also note that the data and script added to the image could have also been added via mounting - shown later in this guide under <strong>“Mounting a directory to the container”</strong>. This is usually best practice in many cases to keep the image size smaller, but for this example we include the small dataset/script to demonstrate two directives.</p>
+<p>Now, that that the Dockerfile is ready, the image can be built and the container can be launched after the built is finished - make sure you are in the directory that contains the Dockerfile for this example. You may either copy and paste the above, or acquire it from <code>./src/intro_to_docker_part1</code> of the <a href="https://github.com/U-BDS/training_guides/tree/main/src">GitHub repository which contains this material</a>. Note the folder names as well as shown in the Dockerfile (also present in the GitHub). The data inside of them can be anything, but for this example, data from kaggle.com was used (same versions can be downloaded at <a href="https://uab.box.com/s/qq5vjdv9ao5skp6fl0yumek817um3lru">here</a>)</p>
 <pre class="bash"><code>docker build --rm --force-rm -t rstudio_ggplot2:3.6.3 .</code></pre>
 <p>(by not providing a tag to <code>-t rstudio_ggplot2</code>, it will default to <code>latest</code> tag)</p>
 <pre><code>Sending build context to Docker daemon  3.613MB
