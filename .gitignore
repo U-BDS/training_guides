@@ -10,3 +10,5 @@
 .config
 data/*
 results/*
+#ignore any files not needed for the website:
+docs/src/*

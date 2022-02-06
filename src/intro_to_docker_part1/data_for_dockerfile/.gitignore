@@ -1,0 +1,4 @@
+# this directory should always remain empty in the repo (should only contain files during analysis)
+# but keep this ignore file
+*
+!.gitignore
