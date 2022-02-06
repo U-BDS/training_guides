@@ -6,6 +6,5 @@ title: "U-BDS training guides"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Training guides
 
 Page under construction
