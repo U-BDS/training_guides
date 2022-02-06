@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Lara Ianov, Ph.D." />
+
+
+<title>Mouse Whole Cortex and Hippocampus 10x dataset</title>
+
+<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
+<script src="site_libs/jquery-3.5.1/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="site_libs/datatables-binding-0.17/datatables.js"></script>
+<link href="site_libs/dt-core-1.10.20/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="site_libs/dt-core-1.10.20/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="site_libs/dt-core-1.10.20/js/jquery.dataTables.min.js"></script>
+<link href="site_libs/crosstalk-1.1.1/css/crosstalk.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.1.1/js/crosstalk.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-sm-12 col-md-4 col-lg-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-sm-12 col-md-8 col-lg-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">U-BDS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">
+    <span class="fas fa-home"></span>
+     
+    Home
+  </a>
+</li>
+<li>
+  <a href="nf_core_tips.html">nf-core tips</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fas fa-cube"></span>
+     
+    Intro to Docker with RStudio
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="intro_to_docker_rstudio_part1.html">Part 1</a>
+    </li>
+    <li>
+      <a href="intro_to_docker_rstudio_part2.html">Part 2</a>
+    </li>
+    <li>
+      <a href="intro_to_docker_rstudio_part3.html">Part 3</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Data wrangling examples
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Mouse_cortex_hippocampus_Allen_brain.html">Allen Brain Map - Mouse single-cell dataset</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Mouse Whole Cortex and Hippocampus 10x dataset</h1>
+<h4 class="author">Lara Ianov, Ph.D.</h4>
+
+</div>
+
+
+<div id="overview" class="section level1">
+<h1>Overview</h1>
+<p>This is a data wrangling example from the Mouse Whole Cortex and Hippocampus 10x dataset.</p>
+<p>Recently, a UAB collaborator, Dr. Farah Lubin and her lab, asked U-BDS to summarize a subset of the the Allen Brain Map data derived from the Mouse Whole Cortex and Hippocampus 10x dataset. A driver for this request was due to the limitation in the dataset that is provided directly from the website. For example, while users can choose to view any gene per celltype <a href="https://celltypes.brain-map.org/rnaseq/mouse_ctx-hpf_10x?selectedVisualization=Heatmap&amp;colorByFeature=Cell+Type&amp;colorByFeatureValue=Gad1" class="uri">https://celltypes.brain-map.org/rnaseq/mouse_ctx-hpf_10x?selectedVisualization=Heatmap&amp;colorByFeature=Cell+Type&amp;colorByFeatureValue=Gad1</a>, it’s difficult to summarize the data based on cell classes. In this example, we illustrate how you can start from the data available at the Allen Brain Atlas website, to interpret the data in more detail.</p>
+<p><strong>The gene list in this example differs from the original request by Dr. Lubin, and user can choose change it to any gene list of interest.</strong></p>
+<ul>
+<li>Input data from: <a href="https://portal.brain-map.org/atlases-and-data/rnaseq/mouse-whole-cortex-and-hippocampus-10x" class="uri">https://portal.brain-map.org/atlases-and-data/rnaseq/mouse-whole-cortex-and-hippocampus-10x</a></li>
+<li>The same version of the data used in this guide can be acquired at: <a href="https://uab.box.com/s/2ye54fsiue7sq97nmvbh46sb806ya6i9" class="uri">https://uab.box.com/s/2ye54fsiue7sq97nmvbh46sb806ya6i9</a></li>
+<li>Publication: <a href="https://pubmed.ncbi.nlm.nih.gov/34004146/" class="uri">https://pubmed.ncbi.nlm.nih.gov/34004146/</a></li>
+<li><strong>Goal:</strong> to acquire summarized values across classes of cells label (e.g.: GABAergic, glutamatergic etc.) rather than viewing them from the app which only provides values split by <code>subclass_label</code>/<code>cell_type_alias_label</code>.</li>
+</ul>
+<p>To stay consistent with what the user sees in the app, the input data is the trimmed mean expression values which are available from the download pages cited above.</p>
+<p>In addition, the metadata file is also needed.</p>
+<div id="information-about-available-data" class="section level2">
+<h2>Information about available data</h2>
+<p>In the README from the data download page, we find the following information about the <code>medians.csv</code> which was generated in a similar manner as the trimmed means file.</p>
+<p><code>medians.csv</code> file</p>
+<blockquote>
+<p>Medians (medians.csv) A table of median expression values for each gene (rows) in each cluster (columns). Medians are calculated by first normalizing gene expression as follows: norm_data = log2(CPM(exons+introns)), and then calculating the medians independently for each gene and each cluster. The first row lists the cluster name (cluster_label), which matches the cell type alias shown in the Transcriptomic Explorer. The first column lists the unique gene identifier (gene), which in most cases is the gene symbol.</p>
+</blockquote>
+<p>The <code>medians.csv</code> (“Gene Expression by Cluster, median”) is briefly described from the data download page with:</p>
+<blockquote>
+<p>Gene expression aggregated per cluster, calculated as medians.</p>
+</blockquote>
+<p>Similarly the trimmed means values (“Gene Expression by Cluster, trimmed means”), is described as:</p>
+<blockquote>
+<p>Gene expression aggregated per cell type, calculated as trimmed means (25%-75%).</p>
+</blockquote>
+<p>The metadata description is:</p>
+<blockquote>
+<p>Metadata about each cell. Each entry has an _order, _label, and _color column.</p>
+</blockquote>
+</div>
+</div>
+<div id="metadata" class="section level1">
+<h1>Metadata</h1>
+<p>Since the trimmed mean expression values are readily available, we will summarize this by metadata available in the <code>metadata.csv</code>.</p>
+<pre class="r"><code>library(ggplot2)
+library(dplyr)</code></pre>
+<p>The files needed were downloaded and placed into the <code>./data</code> sub-directory from this project which follows the general standard practice for R projects (see more at: <a href="https://swcarpentry.github.io/r-novice-gapminder/02-project-intro/index.html" class="uri">https://swcarpentry.github.io/r-novice-gapminder/02-project-intro/index.html</a>).</p>
+<pre class="r"><code>trimmed_mean_expression &lt;- read.csv(&quot;./data/trimmed_means.csv&quot;, check.names = FALSE, row.names = 1)
+metadata &lt;- read.csv(&quot;./data/metadata.csv&quot;)</code></pre>
+<pre class="r"><code># If unfamiliar with dataset, please look over the metadata in more detail, View(metadata), for better understanding of all the information present here
+
+# but here is a quick overview of some key features
+
+str(metadata)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    1169213 obs. of  57 variables:
+##  $ sample_name                : chr  &quot;ACGCAGCAGACCGGAT-L8TX_180221_01_C11&quot; &quot;CCATGTCAGCGCTTAT-L8TX_180221_01_C11&quot; &quot;GCGCAGTAGTGTCTCA-L8TX_180712_01_H05&quot; &quot;GTCACGGCACCAACCG-L8TX_180712_01_H05&quot; ...
+##  $ donor_sex_id               : int  2 2 2 2 2 2 2 2 2 2 ...
+##  $ donor_sex_label            : chr  &quot;M&quot; &quot;M&quot; &quot;M&quot; &quot;M&quot; ...
+##  $ donor_sex_color            : chr  &quot;#ADC4C3&quot; &quot;#ADC4C3&quot; &quot;#ADC4C3&quot; &quot;#ADC4C3&quot; ...
+##  $ region_id                  : int  20 20 21 21 21 21 21 21 21 21 ...
+##  $ region_label               : chr  &quot;RSP&quot; &quot;RSP&quot; &quot;TEa-PERI-ECT&quot; &quot;TEa-PERI-ECT&quot; ...
+##  $ region_color               : chr  &quot;#2B9EAD&quot; &quot;#2B9EAD&quot; &quot;#76CBE2&quot; &quot;#76CBE2&quot; ...
+##  $ platform_label             : chr  &quot;10X&quot; &quot;10X&quot; &quot;10X&quot; &quot;10X&quot; ...
+##  $ cluster_order              : int  116 364 18 15 18 18 18 15 18 18 ...
+##  $ cluster_label              : chr  &quot;116_Pvalb&quot; &quot;364_DG&quot; &quot;18_Lamp5&quot; &quot;15_Lamp5&quot; ...
+##  $ cluster_color              : chr  &quot;#EC2D46&quot; &quot;#413BE2&quot; &quot;#D97C80&quot; &quot;#A6666F&quot; ...
+##  $ subclass_order             : int  8 36 3 3 3 3 3 3 3 3 ...
+##  $ subclass_label             : chr  &quot;Pvalb&quot; &quot;DG&quot; &quot;Lamp5&quot; &quot;Lamp5&quot; ...
+##  $ subclass_color             : chr  &quot;#D93137&quot; &quot;#394FD3&quot; &quot;#DA808C&quot; &quot;#DA808C&quot; ...
+##  $ neighborhood_id            : int  2 7 1 1 1 1 1 1 1 1 ...
+##  $ neighborhood_label         : chr  &quot;MGE&quot; &quot;DG/SUB/CA&quot; &quot;CGE&quot; &quot;CGE&quot; ...
+##  $ neighborhood_color         : chr  &quot;#ED892E&quot; &quot;#9AB7E2&quot; &quot;#CC93C2&quot; &quot;#CC93C2&quot; ...
+##  $ class_order                : int  2 1 2 2 2 2 2 2 2 2 ...
+##  $ class_label                : chr  &quot;GABAergic&quot; &quot;Glutamatergic&quot; &quot;GABAergic&quot; &quot;GABAergic&quot; ...
+##  $ class_color                : chr  &quot;#F05A28&quot; &quot;#00ADEE&quot; &quot;#F05A28&quot; &quot;#F05A28&quot; ...
+##  $ exp_component_name         : chr  &quot;ACGCAGCAGACCGGAT-L8TX_180221_01_C11&quot; &quot;CCATGTCAGCGCTTAT-L8TX_180221_01_C11&quot; &quot;GCGCAGTAGTGTCTCA-L8TX_180712_01_H05&quot; &quot;GTCACGGCACCAACCG-L8TX_180712_01_H05&quot; ...
+##  $ external_donor_name_label  : int  373822 373822 395345 395345 395345 395345 395345 385670 385670 385670 ...
+##  $ full_genotype_label        : chr  &quot;Snap25-IRES2-Cre/wt;Ai14(RCL-tdT)/wt&quot; &quot;Snap25-IRES2-Cre/wt;Ai14(RCL-tdT)/wt&quot; &quot;Snap25-IRES2-Cre/wt;Ai14(RCL-tdT)/wt&quot; &quot;Snap25-IRES2-Cre/wt;Ai14(RCL-tdT)/wt&quot; ...
+##  $ facs_population_plan_label : chr  &quot;RFP-positive&quot; &quot;RFP-positive&quot; &quot;RFP-positive&quot; &quot;RFP-positive&quot; ...
+##  $ injection_roi_label        : logi  NA NA NA NA NA NA ...
+##  $ injection_materials_label  : logi  NA NA NA NA NA NA ...
+##  $ injection_method_label     : logi  NA NA NA NA NA NA ...
+##  $ injection_type_label       : logi  NA NA NA NA NA NA ...
+##  $ full_genotype_id           : int  67 67 67 67 67 67 67 67 67 67 ...
+##  $ full_genotype_color        : chr  &quot;#E726&quot; &quot;#E726&quot; &quot;#E726&quot; &quot;#E726&quot; ...
+##  $ external_donor_name_id     : int  454 454 507 507 507 507 507 488 488 488 ...
+##  $ external_donor_name_color  : chr  &quot;#C14D&quot; &quot;#C14D&quot; &quot;#99177F&quot; &quot;#99177F&quot; ...
+##  $ facs_population_plan_id    : int  6 6 6 6 6 6 6 6 6 6 ...
+##  $ facs_population_plan_color : chr  &quot;#4C2E99&quot; &quot;#4C2E99&quot; &quot;#4C2E99&quot; &quot;#4C2E99&quot; ...
+##  $ injection_materials_id     : int  1 1 1 1 1 1 1 1 1 1 ...
+##  $ injection_materials_color  : chr  &quot;#FF7373&quot; &quot;#FF7373&quot; &quot;#FF7373&quot; &quot;#FF7373&quot; ...
+##  $ injection_method_id        : int  1 1 1 1 1 1 1 1 1 1 ...
+##  $ injection_method_color     : chr  &quot;#FF7373&quot; &quot;#FF7373&quot; &quot;#FF7373&quot; &quot;#FF7373&quot; ...
+##  $ injection_roi_id           : int  1 1 1 1 1 1 1 1 1 1 ...
+##  $ injection_roi_color        : chr  &quot;#FF7373&quot; &quot;#FF7373&quot; &quot;#FF7373&quot; &quot;#FF7373&quot; ...
+##  $ injection_type_id          : int  1 1 1 1 1 1 1 1 1 1 ...
+##  $ injection_type_color       : chr  &quot;#FF7373&quot; &quot;#FF7373&quot; &quot;#FF7373&quot; &quot;#FF7373&quot; ...
+##  $ cell_type_accession_label  : chr  &quot;CS202106160_116&quot; &quot;CS202106160_364&quot; &quot;CS202106160_18&quot; &quot;CS202106160_15&quot; ...
+##  $ cell_type_alias_label      : chr  &quot;116_Pvalb&quot; &quot;364_DG&quot; &quot;18_Lamp5&quot; &quot;15_Lamp5&quot; ...
+##  $ cell_type_alt_alias_label  : logi  NA NA NA NA NA NA ...
+##  $ cell_type_designation_label: chr  &quot;CTX-HPF 116&quot; &quot;CTX-HPF 364&quot; &quot;CTX-HPF 018&quot; &quot;CTX-HPF 015&quot; ...
+##  $ cell_type_designation_id   : int  116 364 18 15 18 18 18 15 18 18 ...
+##  $ cell_type_alt_alias_id     : int  116 364 18 15 18 18 18 15 18 18 ...
+##  $ cell_type_alias_id         : int  116 364 18 15 18 18 18 15 18 18 ...
+##  $ cell_type_accession_id     : int  116 364 18 15 18 18 18 15 18 18 ...
+##  $ cell_type_designation_color: chr  &quot;#EC2D46&quot; &quot;#413BE2&quot; &quot;#D97C80&quot; &quot;#A6666F&quot; ...
+##  $ cell_type_alt_alias_color  : chr  &quot;#EC2D46&quot; &quot;#413BE2&quot; &quot;#D97C80&quot; &quot;#A6666F&quot; ...
+##  $ cell_type_alias_color      : chr  &quot;#EC2D46&quot; &quot;#413BE2&quot; &quot;#D97C80&quot; &quot;#A6666F&quot; ...
+##  $ cell_type_accession_color  : chr  &quot;#EC2D46&quot; &quot;#413BE2&quot; &quot;#D97C80&quot; &quot;#A6666F&quot; ...
+##  $ cortical_layer_label       : logi  NA NA NA NA NA NA ...
+##  $ cortical_layer_order       : int  1 1 1 1 1 1 1 1 1 1 ...
+##  $ cortical_layer_color       : chr  &quot;#FF7373&quot; &quot;#FF7373&quot; &quot;#FF7373&quot; &quot;#FF7373&quot; ...</code></pre>
+<p>In particular columns named <code>class_label</code> and <code>cell_type_designation_label</code> contain cell classification which is of high interest to the main goal.</p>
+<pre class="r"><code>unique(metadata$class_label)</code></pre>
+<pre><code>## [1] &quot;GABAergic&quot;     &quot;Glutamatergic&quot; &quot;Non-Neuronal&quot;</code></pre>
+<pre class="r"><code>head(unique(metadata$cluster_label)) # same as metadata$cell_type_alias_label</code></pre>
+<pre><code>## [1] &quot;116_Pvalb&quot; &quot;364_DG&quot;    &quot;18_Lamp5&quot;  &quot;15_Lamp5&quot; 
+## [5] &quot;12_Lamp5&quot;  &quot;11_Lamp5&quot;</code></pre>
+<pre class="r"><code>unique(metadata$subclass_label)</code></pre>
+<pre><code>##  [1] &quot;Pvalb&quot;           &quot;DG&quot;              &quot;Lamp5&quot;          
+##  [4] &quot;Sncg&quot;            &quot;Vip&quot;             &quot;L2 IT ENTl&quot;     
+##  [7] &quot;Sst&quot;             &quot;L4/5 IT CTX&quot;     &quot;L2/3 IT ENTl&quot;   
+## [10] &quot;Meis2&quot;           &quot;L5/6 NP CTX&quot;     &quot;L5 PT CTX&quot;      
+## [13] &quot;L5/6 IT TPE-ENT&quot; &quot;Sst Chodl&quot;       &quot;CA3&quot;            
+## [16] &quot;L2/3 IT CTX&quot;     &quot;L5 IT CTX&quot;       &quot;L6 IT CTX&quot;      
+## [19] &quot;L2/3 IT RHP&quot;     &quot;L4 RSP-ACA&quot;      &quot;L2/3 IT PPP&quot;    
+## [22] &quot;NP SUB&quot;          &quot;CT SUB&quot;          &quot;L6 CT CTX&quot;      
+## [25] &quot;L3 IT ENT&quot;       &quot;L6b/CT ENT&quot;      &quot;NP PPP&quot;         
+## [28] &quot;L5 PPP&quot;          &quot;L2 IT ENTm&quot;      &quot;L6 IT ENTl&quot;     
+## [31] &quot;CA1-ProS&quot;        &quot;SUB-ProS&quot;        &quot;Car3&quot;           
+## [34] &quot;L6b CTX&quot;         &quot;Oligo&quot;           &quot;CA2-IG-FC&quot;      
+## [37] &quot;CR&quot;              &quot;Astro&quot;           &quot;SMC-Peri&quot;       
+## [40] &quot;Micro-PVM&quot;       &quot;Endo&quot;            &quot;VLMC&quot;</code></pre>
+<p>Thus, the column names from the trimmed means files matches values in <code>metadata$cluster_label</code>:</p>
+<pre class="r"><code>identical(sort(unique(metadata$cluster_label)),
+          sort(unique(colnames(trimmed_mean_expression)))
+          )</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>Now, since the variables which links the two input files have been identified, the data can be merged and summarized.</p>
+<div id="filter-metadata" class="section level2">
+<h2>Filter metadata</h2>
+<p>First, filter the metadata to only keep the variables of interest highlighted above for simplicity. Do not keep <code>sample_name</code> since the trimmed values are summarized per cluster rather then single-cells. Further, since the original metadata has all information per cell, further filter this output to keep unique rows.</p>
+<p>If new metadata is needed in the future, modify the following to keep the needed data.</p>
+<pre class="r"><code>metadata %&gt;%
+    select(class_label, cluster_label, subclass_label)  %&gt;%
+    unique(.) %&gt;%
+    {.} -&gt; metadata</code></pre>
+</div>
+</div>
+<div id="reshape-trimmed-means" class="section level1">
+<h1>Reshape trimmed means</h1>
+<p>Transpose the trimmed means data.frame to have gene names as column names and add a new column which contains the <code>cluster_label</code> information (which are transposed as row names). This will allow us to merge the metadata information into a new data.frame and summarize and plot the data grouped by any variable that has been retained to this point.</p>
+<pre class="r"><code>trimmed_mean_expression_transposed &lt;- as.data.frame(t(trimmed_mean_expression))
+
+trimmed_mean_expression_transposed$cluster_label &lt;- rownames(trimmed_mean_expression_transposed)</code></pre>
+<p>Merge the two data.frames to have all needed data in a single data.frame and save this new data. Note there is a single row that contains values (trimmed means), but no cluster information. We will keep this here in this version, but could be optionally removed.</p>
+<pre class="r"><code>trimmed_mean_with_metadata &lt;- merge(metadata, trimmed_mean_expression_transposed, by = &quot;cluster_label&quot;)
+
+dir.create(&quot;results&quot;, showWarnings = FALSE)
+
+write.csv(trimmed_mean_with_metadata, file = &quot;./results/trimmed_means_with_selected_metadata.csv&quot;, row.names = FALSE)
+
+# transposed version if that&#39;s preferred...
+
+write.csv(t(trimmed_mean_with_metadata), file = &quot;./results/trimmed_means_with_selected_metadata_transposed.csv&quot;, row.names = TRUE)</code></pre>
+</div>
+<div id="example-plots-and-data-summary" class="section level1">
+<h1>Example plots and data summary</h1>
+<p>For plotting and summarizing this data, all that is needed is the data present in the <code>trimmed_mean_with_metadata</code> object created in this workflow (or the file saved as <code>./results/trimmed_means_with_selected_metadata.csv</code>).</p>
+<p>The following are just some examples of what we may now do with this new file/data:</p>
+<div id="violin-plots-for-gabaergic-class" class="section level2">
+<h2>Violin plots for GABAergic class</h2>
+<p>The goal here would be to generate data split by <code>subclass_label</code> for only <code>GABAergic</code> class. This should match the same values we see in the heatmaps available online but gives us the flexibility of plotting is differently and also allows us to verify that our data wrangling above was properly performed.</p>
+<p>To perform this:</p>
+<ul>
+<li><code>filter</code> the data to contain the feature of interest (e.g.: <code>class_label</code> or <code>subclass_label</code>)</li>
+<li>Plot violin plots for a gene of interest</li>
+</ul>
+<p>For the following example, we will plot data for the gene <code>Gad1</code> for <code>class_label == GABAergic</code></p>
+<div id="example-of-filtering" class="section level3">
+<h3>Example of filtering</h3>
+<p>For a quick overview of data frame manipulation, please see <a href="https://swcarpentry.github.io/r-novice-gapminder/13-dplyr/index.html" class="uri">https://swcarpentry.github.io/r-novice-gapminder/13-dplyr/index.html</a></p>
+<pre class="r"><code>feature_to_filter_for &lt;- &quot;GABAergic&quot;
+
+trimmed_mean_with_metadata %&gt;%
+    filter(class_label == feature_to_filter_for) %&gt;%
+    {.} -&gt; trimmed_mean_with_metadata_filtered</code></pre>
+<p>We now have the trimmed means values for GABAergic cluster in <code>trimmed_mean_with_metadata_filtered</code>.</p>
+<p>Or we can plot these values colored by <code>subclass_label</code></p>
+<pre class="r"><code># Gad1
+ggplot(trimmed_mean_with_metadata_filtered, 
+       mapping = aes(x = subclass_label, y = Gad1, fill = subclass_label)) + 
+    geom_violin() + geom_point() + theme_bw() + 
+    ggtitle(paste0(&quot;Trimmed means values for data filtered for &quot;, feature_to_filter_for))</code></pre>
+<p><img src="Mouse_cortex_hippocampus_Allen_brain_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+</div>
+</div>
+<div id="summarizing-data" class="section level2">
+<h2>Summarizing data</h2>
+<p>Aside from generating figures, this data can be summarized in any form the user would like. To the original goal, we can compute the <code>mean</code> for example, using the dataset which we have already pre-filtered (e.g. using <code>GABAergic</code> filtered data).</p>
+<p>For example the mean for <code>Gad1</code> across <code>GABAergic</code> class can be computed by:</p>
+<pre class="r"><code>median(trimmed_mean_with_metadata_filtered$Gad1)</code></pre>
+<pre><code>## [1] 9.603235</code></pre>
+<p>To summarize this across a list of genes, you may do the following:</p>
+<ol style="list-style-type: decimal">
+<li>Import a list of genes of interest, which in this case is saved to a file named <code>genes_of_interest.csv</code></li>
+</ol>
+<pre class="r"><code>genes_of_interest &lt;- read.csv(file =  &quot;./data/genes_of_interest.csv&quot;, header = TRUE)</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Summarize across all genes:</li>
+</ol>
+<p>There are several ways of accomplishing this type of goal. A common method is using <code>group_by</code> and <code>summarize</code> functions from <code>dplyr</code>. An overview of this can be seen at <a href="https://swcarpentry.github.io/r-novice-gapminder/13-dplyr/index.html" class="uri">https://swcarpentry.github.io/r-novice-gapminder/13-dplyr/index.html</a></p>
+<p>Here, we take another approach by working with the already filtered data <code>trimmed_mean_with_metadata_filtered</code> to acquire the means of each gene across all <code>GABAergic</code> entries:</p>
+<pre class="r"><code>trimmed_mean_with_metadata_filtered %&gt;%
+    select(genes_of_interest$genes_of_interest) %&gt;%
+    {.}-&gt; trimmed_mean_with_metadata_filtered_by_gene
+
+
+summary_data &lt;- as.data.frame(apply(trimmed_mean_with_metadata_filtered_by_gene,2,summary))
+
+#save
+
+write.csv(summary_data, file = paste0(&quot;./results/summary_by_gene_of_interest_&quot;, feature_to_filter_for, &quot;.csv&quot;))</code></pre>
+<div id="htmlwidget-5f73b0f34a2efa932235" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5f73b0f34a2efa932235">{"x":{"filter":"none","data":[["Gad1","Syn1","Gad2","Tlr4","Sst","Foxp2","Drd1","Gab1","Slc32a1","Slc17a1","Esr1","Gabra1","Gabra2","Gabra3","Fos","Nsg2","Syn2"],[7.756,3.5822222,8.192095,0,0,0,0,0,0.8488889,0,0,0,0,0,0,4.4555554,7.9062157],[9.0168955,7.905671125,9.46612575,0,0,0,0,0,7.735111825,0,0,4.56100115,2.0227278,0.72626455,0,8.866695,8.808655],[9.603235,8.1730345,9.9040365,0,0.060081589,0,0,0,8.034642,0,0,8.5581785,3.8446002,2.94234805,0.0111077,9.224402,9.1825405],[9.57330360245902,7.91877247131148,9.90548362704918,0,4.56391521714754,0,0.0923175636491803,0,7.43232477540984,0,0.115003491614754,7.30245981426229,4.46282522377049,3.1938536347582,0.459984845540984,9.16318865163935,9.18464016147541],[10.178462625,8.31904075,10.2717615,0,11.317027625,0,0,0,8.2579185,0,0,9.67238925,7.79531025,4.541270875,0.6520043,9.484589,9.53225175],[11.104347,8.554,11.572996,0,12.828,0,2.7603798,0,8.666262,0,4.0923076,10.603816,9.615054,7.6321054,2.5761435,10.944285,10.406511]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Min.<\/th>\n      <th>1st Qu.<\/th>\n      <th>Median<\/th>\n      <th>Mean<\/th>\n      <th>3rd Qu.<\/th>\n      <th>Max.<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div id="sessioninfo" class="section level1">
+<h1><code>sessionInfo</code></h1>
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>## R version 4.0.4 (2021-02-15)
+## Platform: x86_64-apple-darwin17.0 (64-bit)
+## Running under: macOS 12.0.1
+## 
+## Matrix products: default
+## LAPACK: /Library/Frameworks/R.framework/Versions/4.0/Resources/lib/libRlapack.dylib
+## 
+## locale:
+## [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets 
+## [6] methods   base     
+## 
+## other attached packages:
+## [1] dplyr_1.0.5   ggplot2_3.3.5
+## 
+## loaded via a namespace (and not attached):
+##  [1] highr_0.8         bslib_0.2.4       compiler_4.0.4   
+##  [4] pillar_1.5.1      jquerylib_0.1.3   tools_4.0.4      
+##  [7] digest_0.6.27     jsonlite_1.7.2    evaluate_0.14    
+## [10] lifecycle_1.0.0   tibble_3.1.0      gtable_0.3.0     
+## [13] debugme_1.1.0     pkgconfig_2.0.3   rlang_0.4.10     
+## [16] DBI_1.1.1         crosstalk_1.1.1   yaml_2.2.1       
+## [19] xfun_0.22         withr_2.4.1       stringr_1.4.0    
+## [22] knitr_1.31        generics_0.1.0    htmlwidgets_1.5.3
+## [25] sass_0.3.1        vctrs_0.3.7       grid_4.0.4       
+## [28] DT_0.17           tidyselect_1.1.0  glue_1.4.2       
+## [31] R6_2.5.0          fansi_0.4.2       rmarkdown_2.7    
+## [34] farver_2.1.0      purrr_0.3.4       magrittr_2.0.1   
+## [37] scales_1.1.1      htmltools_0.5.1.1 ellipsis_0.3.1   
+## [40] assertthat_0.2.1  colorspace_2.0-0  labeling_0.4.2   
+## [43] utf8_1.2.1        stringi_1.5.3     munsell_0.5.0    
+## [46] crayon_1.4.1</code></pre>
+</div>
+
+<html>
+
+<hr class="solid">
+
+<div class="footer">For more information about the UAB Biological Data Science core please visit the <a href="https://www.uab.edu/cores/ircp/bds">U-BDS website</a>. If you have an enquiry about a project or grant you would like to collaborate with us please fill out the <a href="https://www.wrike.com/frontend/requestforms/index.html?token=eyJhY2NvdW50SWQiOjQ2ODk3ODQsInRhc2tGb3JtSWQiOjUxMTIyNn0JNDc3OTg5MTE1NzQxNwlkNDgyOTg3Zjc0N2YyYmE4YWE3YThiYjVmNjQ3NzM1MzYyMTM5ZDlmN2I4NTU2NWZkZDZiMWY4MDg4MTJmYzI2">enquiry form.</a></div>
+</html>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
