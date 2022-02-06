@@ -1,10 +1,13 @@
-# Using Docker with RStudio - Introduction Part 2
+---
+title: "Intro to Docker for RStudio - Part 2"
+author: "Lara Ianov, Ph.D."
+---
 
-## Requirements:
+# Requirements
 
-[Review part 1](https://github.com/U-BDS/Intro_Docker_RStudio_Part1)
+Review part 1 available in this website
 
-## Build an image with dependencies from Bioconductor
+# Build an image with dependencies from Bioconductor
 
 Recently, Bioconductor adopted a new container architecture which streamlines using Docker with Bioconductor packages.
 
@@ -27,7 +30,7 @@ Further:
 > * __bioconductor/bioconductor_docker:RELEASE_X_Y__
 > * __bioconductor/bioconductor_docker:devel__
 
-Thus, if you have package dependencies from Bioconductor, it's highly recommended to use the Bioconductor container which are built using rocker rstudio containers (see the `FROM` directive in the [Bioconductor Dockerfile](https://hub.docker.com/r/bioconductor/bioconductor_docker/dockerfile)). This streamlined resources saves effort for users from having to troubleshoot potential issues that might arise from using Bioconductor resources in Docker (e.g.: missing Bioconductor dependencies).
+Thus, if you have package dependencies from Bioconductor, it's highly recommended to use the Bioconductor container which are built using rocker rstudio containers (see the `FROM` directive in the [Bioconductor Dockerfile](https://hub.docker.com/r/bioconductor/bioconductor_docker/dockerfile)). This streamlined resource saves effort for users from having to troubleshoot potential issues that might arise from using Bioconductor resources in Docker (e.g.: missing Bioconductor dependencies).
 
 __NOTE__: As mentioned above, Biconductor containers are released based on Bioconducor releases (`bioconductor/bioconductor_docker:RELEASE_X_Y`), keeping in mind that each bioconductor release is linked to specific R versions. Thus, when choosing a container repository, use the following release history to track down R versions compatible with the Bioconductor releases: https://www.bioconductor.org/about/release-announcements/
 
@@ -40,7 +43,7 @@ FROM bioconductor/bioconductor_docker:RELEASE_3_10
 LABEL maintainer="Lara Ianov <lianov@uab.edu>"
 LABEL description="An environment for running DESeq2 from Bioconductor 3.10"
 
-# a location to mount ...
+# a location to mount ...(again optional to do this in the Dockerfile)
 RUN mkdir /home/rstudio/DESeq2_analysis
 
 # Install Bioconductor and other commonly used CRAN packages in DESeq2...
@@ -52,7 +55,7 @@ RUN R -e 'install.packages(c("readr","ggrepel","pheatmap"))'
 
 Note I have added the `LABEL` directive. This adds metadata to the image which can be fetched with `docker image inspect` command. While not required, it can be helpful to add relevant information in this field.
 
-Now build the image and run the container in the same form as shown in Part 1:
+Now build the image and run the container in the same form as shown in Part 1 (once again assuming you are in the directory which contains the Dockerfile shown in this part. You can find it at the `./src/intro_to_docker_part2` of the [GitHub repository which contains this material](https://github.com/U-BDS/training_guides/tree/main/src)):
 
 ```bash
 docker build --rm --force-rm -t rstudio_deseq2:3.10 .
@@ -66,15 +69,13 @@ docker run -d --rm -p 8787:8787 -e PASSWORD=NBI -v `pwd`/dir_for_mounting:/home/
 
 The RStudio session is now available at `localhost:8787`
 
-<img src="bioconductor_rstudio_deseq2.png" align="center" width="850px" />
+<img src="./figs/intro_to_docker_part2/bioconductor_rstudio_deseq2.png" align="center" width="850px" />
 
-## Pushing images to Docker Hub
+# Pushing images to Docker Hub
 
-To easily share your images with others, use [Docker Hub](https://hub.docker.com/) as the registry to distribute publish images. I recommend to read [Part 3 of the Docker Getting Started documentation](https://docs.docker.com/get-started/part3/) if you have not done so, but we will briefly cover the steps to publish the Bioconductor image which was just created:
+To easily share your images with others, use [Docker Hub](https://hub.docker.com/) as the registry to distribute publish images. I recommend to read [Docker Getting Started documentation on Sharing the application](https://docs.docker.com/get-started/04_sharing_app/) if you have not done so, but here, I briefly cover the steps to publish the Bioconductor image which was just created:
 
-1. Create a repository in Docker Hub by navigating to  "Repositories > Create". Provide a name and click "Create".
-
-Note that images must be namespaced correctly to be shared in Docker Hub following: `<Your Docker ID>/<Repository Name>:<tag>`
+1. Create a repository in Docker Hub by navigating to  "Repositories > Create". Provide a name and click "Create". Note that images must be namespaced correctly to be shared in Docker Hub following: `<Your Docker ID>/<Repository Name>:<tag>`
 
 2. Tag and push the image:
 
@@ -90,8 +91,8 @@ docker push <Your Docker ID>/rstudio_deseq2:3.10
 
 The same container we created in this session is available at: https://hub.docker.com/r/lianov/rstudio_deseq2
 
-## Inspecting an image history
+# Inspecting an image history
 
 A very useful command to your own images and others publicly available is `docker history` (https://docs.docker.com/engine/reference/commandline/history/). It allows you to inspect the history of the image, including the specific commands called from the Dockerfile. `docker history --no-trunc <image:tag>` expands the outputs for further details.
 
-## [Continue tutorial to Part 3 - running RStudio containers in HPC with Singularity](https://github.com/U-BDS/Intro_Docker_RStudio_Part3)
+__Continue tutorial to part 3 from the drop down menu at the navigation bar of this website. This section will cover running RStudio containers in the UAB HPC with Singularity__

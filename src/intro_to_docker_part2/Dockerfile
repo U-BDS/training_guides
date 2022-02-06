@@ -4,7 +4,7 @@ FROM bioconductor/bioconductor_docker:RELEASE_3_10
 LABEL maintainer="Lara Ianov <lianov@uab.edu>"
 LABEL description="An environment for running DESeq2 from Bioconductor 3.10"
 
-# a location to mount ...
+# a location to mount ...(again optional to do this in the Dockerfile)
 RUN mkdir /home/rstudio/DESeq2_analysis
 
 # Install Bioconductor and other commonly used CRAN packages in DESeq2...
