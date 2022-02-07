@@ -13,8 +13,8 @@
 
 <title>U-BDS training guides</title>
 
-<script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
-<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
@@ -298,12 +298,12 @@ div.tocify {
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row">
-<div class="col-sm-12 col-md-4 col-lg-3">
+<div class="col-xs-12 col-sm-4 col-md-3">
 <div id="TOC" class="tocify">
 </div>
 </div>
 
-<div class="toc-content col-sm-12 col-md-8 col-lg-9">
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -322,7 +322,7 @@ div.tocify {
       <ul class="nav navbar-nav">
         <li>
   <a href="index.html">
-    <span class="fas fa-home"></span>
+    <span class="fa fa-home"></span>
      
     Home
   </a>
@@ -332,7 +332,7 @@ div.tocify {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fas fa-cube"></span>
+    <span class="fa fa-cube"></span>
      
     Intro to Docker with RStudio
      
@@ -379,7 +379,32 @@ div.tocify {
 </div>
 
 
-<p>Page under construction</p>
+<div id="about" class="section level1">
+<h1>About</h1>
+<p>The UAB Biological Data Science Core (U-BDS) is a research resource that provides services to the UAB community in a variety of tasks linked to analysis, training, pipeline and app development. For more information linked to the core and its services please visit the main U-BDS page at: <a href="https://www.uab.edu/cores/ircp/bds" class="uri">https://www.uab.edu/cores/ircp/bds</a></p>
+<p><strong>This page is specifically dedicated to training resources we share</strong>. Our long-term goal is to continue to add more training guides which will aid the scientific community in the implementation of commonly used resources in computational biology. Thus, please check back regularly for new material. If you have any ideas for training guides, please open an issue linked to the GitHub of this webpage describing the topic you would like to see: <a href="https://github.com/U-BDS/training_guides/issues" class="uri">https://github.com/U-BDS/training_guides/issues</a> ; <strong>NOTE</strong> that we will prioritize topics which overlap with areas of research/support we offer at U-BDS.</p>
+<div id="research-team" class="section level2">
+<h2>Research Team</h2>
+<ul>
+<li>Director: Liz Worthey, Ph.D.</li>
+<li>Co-Director: Brittany Lasseigne, Ph.D.</li>
+<li>Managing Director: Lara Ianov, Ph.D.</li>
+<li>U-BDS staff:
+<ul>
+<li>Austyn Trull</li>
+</ul></li>
+</ul>
+<p>This resource is actively maintained by Lara Ianov and Austyn Trull.</p>
+</div>
+</div>
+<div id="training" class="section level1">
+<h1>Training:</h1>
+<p>U-BDS offers weekly data science office hours on Thursdays from 3:30pm-4:00pm. If you are a UAB trainee, staff or faculty please feel free to stop by. The Zoom information is in the <code>#datascience</code> channel of the following Slack group: <a href="https://join.slack.com/t/uablabs/signup" class="uri">https://join.slack.com/t/uablabs/signup</a> (if you can find, just ask in <code>#datascience</code>)</p>
+</div>
+<div id="other-resources" class="section level1">
+<h1>Other resources:</h1>
+<p>In collaboration with Dr. Lasseigne and her lab, be sure sure to check the training guides hosted at her lab’s website. Please visit the following for more information: <a href="https://www.lasseigne.org/education/" class="uri">https://www.lasseigne.org/education/</a></p>
+</div>
 
 <html>
 
@@ -425,6 +450,9 @@ $(document).ready(function () {
 
 <script>
 $(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
 
     // move toc-ignore selectors from section div to header
     $('div.section.toc-ignore')
