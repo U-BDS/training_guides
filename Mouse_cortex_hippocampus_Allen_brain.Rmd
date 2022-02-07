@@ -183,9 +183,9 @@ ggplot(trimmed_mean_with_metadata_filtered,
 
 ## Summarizing data
 
-Aside from generating figures, this data can be summarized in any form the user would like. To the original goal, we can compute the `mean` for example, using the dataset which we have already pre-filtered (e.g. using `GABAergic` filtered data).
+Aside from generating figures, this data can be summarized in any form the user would like. To the original goal, we can compute the `median` for example, using the dataset which we have already pre-filtered (e.g. using `GABAergic` filtered data).
 
-For example the mean for `Gad1` across `GABAergic` class can be computed by:
+For example the median for `Gad1` across `GABAergic` class can be computed by:
 
 ```{r}
 median(trimmed_mean_with_metadata_filtered$Gad1)
@@ -203,7 +203,7 @@ genes_of_interest <- read.csv(file =  "./data/genes_of_interest.csv", header = T
 
 There are several ways of accomplishing this type of goal. A common method is using `group_by` and `summarize` functions from `dplyr`. An overview of this can be seen at https://swcarpentry.github.io/r-novice-gapminder/13-dplyr/index.html
 
-Here, we take another approach by working with the already filtered data `trimmed_mean_with_metadata_filtered` to acquire the means of each gene across all `GABAergic` entries:
+Here, we take another approach by working with the already filtered data `trimmed_mean_with_metadata_filtered` to acquire the medians and other stats of each gene across all `GABAergic` entries:
 
 
 ```{r}
