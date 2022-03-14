@@ -14,7 +14,7 @@
 
 <title>Mouse Whole Cortex and Hippocampus 10x dataset</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -38,7 +38,7 @@
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <script src="site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
 <link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
-<script src="site_libs/datatables-binding-0.20/datatables.js"></script>
+<script src="site_libs/datatables-binding-0.21/datatables.js"></script>
 <link href="site_libs/dt-core-1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" />
 <link href="site_libs/dt-core-1.11.3/css/jquery.dataTables.extra.css" rel="stylesheet" />
 <script src="site_libs/dt-core-1.11.3/js/jquery.dataTables.min.js"></script>
@@ -71,6 +71,7 @@ if (window.hljs) {
 
 
 
+
 <link rel="stylesheet" href="style.css" type="text/css" />
 
 
@@ -95,6 +96,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -320,7 +324,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -340,7 +344,7 @@ div.tocify {
   <a href="nf_core_tips.html">nf-core tips</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fa fa-cube"></span>
      
     Intro to Docker with RStudio
@@ -360,7 +364,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Data wrangling examples
      
     <span class="caret"></span>
@@ -500,10 +504,12 @@ str(metadata)</code></pre>
 <pre class="r"><code>head(unique(metadata$cluster_label)) # same as metadata$cell_type_alias_label</code></pre>
 <pre><code>## [1] &quot;116_Pvalb&quot; &quot;364_DG&quot;    &quot;18_Lamp5&quot;  &quot;15_Lamp5&quot;  &quot;12_Lamp5&quot;  &quot;11_Lamp5&quot;</code></pre>
 <pre class="r"><code>unique(metadata$subclass_label)</code></pre>
-<pre><code>##  [1] &quot;Pvalb&quot;           &quot;DG&quot;              &quot;Lamp5&quot;           &quot;Sncg&quot;            &quot;Vip&quot;             &quot;L2 IT ENTl&quot;      &quot;Sst&quot;             &quot;L4/5 IT CTX&quot;     &quot;L2/3 IT ENTl&quot;    &quot;Meis2&quot;           &quot;L5/6 NP CTX&quot;     &quot;L5 PT CTX&quot;      
-## [13] &quot;L5/6 IT TPE-ENT&quot; &quot;Sst Chodl&quot;       &quot;CA3&quot;             &quot;L2/3 IT CTX&quot;     &quot;L5 IT CTX&quot;       &quot;L6 IT CTX&quot;       &quot;L2/3 IT RHP&quot;     &quot;L4 RSP-ACA&quot;      &quot;L2/3 IT PPP&quot;     &quot;NP SUB&quot;          &quot;CT SUB&quot;          &quot;L6 CT CTX&quot;      
-## [25] &quot;L3 IT ENT&quot;       &quot;L6b/CT ENT&quot;      &quot;NP PPP&quot;          &quot;L5 PPP&quot;          &quot;L2 IT ENTm&quot;      &quot;L6 IT ENTl&quot;      &quot;CA1-ProS&quot;        &quot;SUB-ProS&quot;        &quot;Car3&quot;            &quot;L6b CTX&quot;         &quot;Oligo&quot;           &quot;CA2-IG-FC&quot;      
-## [37] &quot;CR&quot;              &quot;Astro&quot;           &quot;SMC-Peri&quot;        &quot;Micro-PVM&quot;       &quot;Endo&quot;            &quot;VLMC&quot;</code></pre>
+<pre><code>##  [1] &quot;Pvalb&quot;           &quot;DG&quot;              &quot;Lamp5&quot;           &quot;Sncg&quot;            &quot;Vip&quot;             &quot;L2 IT ENTl&quot;      &quot;Sst&quot;             &quot;L4/5 IT CTX&quot;    
+##  [9] &quot;L2/3 IT ENTl&quot;    &quot;Meis2&quot;           &quot;L5/6 NP CTX&quot;     &quot;L5 PT CTX&quot;       &quot;L5/6 IT TPE-ENT&quot; &quot;Sst Chodl&quot;       &quot;CA3&quot;             &quot;L2/3 IT CTX&quot;    
+## [17] &quot;L5 IT CTX&quot;       &quot;L6 IT CTX&quot;       &quot;L2/3 IT RHP&quot;     &quot;L4 RSP-ACA&quot;      &quot;L2/3 IT PPP&quot;     &quot;NP SUB&quot;          &quot;CT SUB&quot;          &quot;L6 CT CTX&quot;      
+## [25] &quot;L3 IT ENT&quot;       &quot;L6b/CT ENT&quot;      &quot;NP PPP&quot;          &quot;L5 PPP&quot;          &quot;L2 IT ENTm&quot;      &quot;L6 IT ENTl&quot;      &quot;CA1-ProS&quot;        &quot;SUB-ProS&quot;       
+## [33] &quot;Car3&quot;            &quot;L6b CTX&quot;         &quot;Oligo&quot;           &quot;CA2-IG-FC&quot;       &quot;CR&quot;              &quot;Astro&quot;           &quot;SMC-Peri&quot;        &quot;Micro-PVM&quot;      
+## [41] &quot;Endo&quot;            &quot;VLMC&quot;</code></pre>
 <p>Thus, the column names from the trimmed means files matches values in <code>metadata$cluster_label</code>:</p>
 <pre class="r"><code>identical(sort(unique(metadata$cluster_label)),
           sort(unique(colnames(trimmed_mean_expression)))
@@ -594,8 +600,8 @@ summary_data &lt;- as.data.frame(apply(trimmed_mean_with_metadata_filtered_by_ge
 #save
 
 write.csv(summary_data, file = paste0(&quot;./results/summary_by_gene_of_interest_&quot;, feature_to_filter_for, &quot;.csv&quot;))</code></pre>
-<div id="htmlwidget-5914cad5383b0d6d87ef" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-5914cad5383b0d6d87ef">{"x":{"filter":"none","vertical":false,"data":[["Gad1","Syn1","Gad2","Tlr4","Sst","Foxp2","Drd1","Gab1","Slc32a1","Slc17a1","Esr1","Gabra1","Gabra2","Gabra3","Fos","Nsg2","Syn2"],[7.756,3.5822222,8.192095,0,0,0,0,0,0.8488889,0,0,0,0,0,0,4.4555554,7.9062157],[9.0168955,7.905671125,9.46612575,0,0,0,0,0,7.735111825,0,0,4.56100115,2.0227278,0.72626455,0,8.866695,8.808655],[9.603235,8.1730345,9.9040365,0,0.060081589,0,0,0,8.034642,0,0,8.5581785,3.8446002,2.94234805,0.0111077,9.224402,9.1825405],[9.57330360245902,7.91877247131148,9.90548362704918,0,4.56391521714754,0,0.0923175636491803,0,7.43232477540984,0,0.115003491614754,7.30245981426229,4.46282522377049,3.1938536347582,0.459984845540984,9.16318865163935,9.18464016147541],[10.178462625,8.31904075,10.2717615,0,11.317027625,0,0,0,8.2579185,0,0,9.67238925,7.79531025,4.541270875,0.6520043,9.484589,9.53225175],[11.104347,8.554,11.572996,0,12.828,0,2.7603798,0,8.666262,0,4.0923076,10.603816,9.615054,7.6321054,2.5761435,10.944285,10.406511]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Min.<\/th>\n      <th>1st Qu.<\/th>\n      <th>Median<\/th>\n      <th>Mean<\/th>\n      <th>3rd Qu.<\/th>\n      <th>Max.<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-6032d30f99d24cc36c3f" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-6032d30f99d24cc36c3f">{"x":{"filter":"none","vertical":false,"data":[["Gad1","Syn1","Gad2","Tlr4","Sst","Foxp2","Drd1","Gab1","Slc32a1","Slc17a1","Esr1","Gabra1","Gabra2","Gabra3","Fos","Nsg2","Syn2"],[7.756,3.5822222,8.192095,0,0,0,0,0,0.8488889,0,0,0,0,0,0,4.4555554,7.9062157],[9.0168955,7.905671125,9.46612575,0,0,0,0,0,7.735111825,0,0,4.56100115,2.0227278,0.72626455,0,8.866695,8.808655],[9.603235,8.1730345,9.9040365,0,0.060081589,0,0,0,8.034642,0,0,8.5581785,3.8446002,2.94234805,0.0111077,9.224402,9.1825405],[9.57330360245902,7.91877247131148,9.90548362704918,0,4.56391521714754,0,0.0923175636491803,0,7.43232477540984,0,0.115003491614754,7.30245981426229,4.46282522377049,3.1938536347582,0.459984845540984,9.16318865163935,9.18464016147541],[10.178462625,8.31904075,10.2717615,0,11.317027625,0,0,0,8.2579185,0,0,9.67238925,7.79531025,4.541270875,0.6520043,9.484589,9.53225175],[11.104347,8.554,11.572996,0,12.828,0,2.7603798,0,8.666262,0,4.0923076,10.603816,9.615054,7.6321054,2.5761435,10.944285,10.406511]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Min.<\/th>\n      <th>1st Qu.<\/th>\n      <th>Median<\/th>\n      <th>Mean<\/th>\n      <th>3rd Qu.<\/th>\n      <th>Max.<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div id="sessioninfo" class="section level1">
@@ -603,7 +609,7 @@ write.csv(summary_data, file = paste0(&quot;./results/summary_by_gene_of_interes
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>## R version 4.1.2 (2021-11-01)
 ## Platform: x86_64-apple-darwin17.0 (64-bit)
-## Running under: macOS Big Sur 11.6
+## Running under: macOS Big Sur 11.6.4
 ## 
 ## Matrix products: default
 ## LAPACK: /Library/Frameworks/R.framework/Versions/4.1/Resources/lib/libRlapack.dylib
@@ -615,13 +621,15 @@ write.csv(summary_data, file = paste0(&quot;./results/summary_by_gene_of_interes
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] dplyr_1.0.7   ggplot2_3.3.5
+## [1] dplyr_1.0.8   ggplot2_3.3.5
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] highr_0.9         bslib_0.3.1       compiler_4.1.2    pillar_1.6.4      jquerylib_0.1.4   tools_4.1.2       digest_0.6.29     jsonlite_1.7.2    evaluate_0.14     lifecycle_1.0.1   tibble_3.1.6      gtable_0.3.0     
-## [13] pkgconfig_2.0.3   rlang_0.4.12      DBI_1.1.2         crosstalk_1.2.0   yaml_2.2.1        xfun_0.29         fastmap_1.1.0     withr_2.4.3       stringr_1.4.0     knitr_1.37        generics_0.1.1    htmlwidgets_1.5.4
-## [25] sass_0.4.0        vctrs_0.3.8       grid_4.1.2        DT_0.20           tidyselect_1.1.1  glue_1.6.0        R6_2.5.1          fansi_1.0.0       rmarkdown_2.11    farver_2.1.0      purrr_0.3.4       magrittr_2.0.1   
-## [37] scales_1.1.1      htmltools_0.5.2   ellipsis_0.3.2    assertthat_0.2.1  colorspace_2.0-2  labeling_0.4.2    utf8_1.2.2        stringi_1.7.6     munsell_0.5.0     crayon_1.4.2</code></pre>
+##  [1] highr_0.9         bslib_0.3.1       compiler_4.1.2    pillar_1.7.0      jquerylib_0.1.4   tools_4.1.2       digest_0.6.29     jsonlite_1.8.0   
+##  [9] evaluate_0.15     lifecycle_1.0.1   tibble_3.1.6      gtable_0.3.0      pkgconfig_2.0.3   rlang_1.0.2       DBI_1.1.2         cli_3.2.0        
+## [17] crosstalk_1.2.0   yaml_2.3.5        xfun_0.30         fastmap_1.1.0     withr_2.5.0       stringr_1.4.0     knitr_1.37        generics_0.1.2   
+## [25] htmlwidgets_1.5.4 sass_0.4.0        vctrs_0.3.8       tidyselect_1.1.2  grid_4.1.2        DT_0.21           glue_1.6.2        R6_2.5.1         
+## [33] fansi_1.0.2       rmarkdown_2.13    farver_2.1.0      purrr_0.3.4       magrittr_2.0.2    scales_1.1.1      htmltools_0.5.2   ellipsis_0.3.2   
+## [41] assertthat_0.2.1  colorspace_2.0-3  labeling_0.4.2    utf8_1.2.2        stringi_1.7.6     munsell_0.5.0     crayon_1.5.0</code></pre>
 </div>
 
 <html>

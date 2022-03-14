@@ -19,8 +19,9 @@ __This page is specifically dedicated to training resources we share__. Our long
 * Managing Director: Lara Ianov, Ph.D.
 * U-BDS staff:
   * Austyn Trull
+  * Basil Khuder
   
-This resource is actively maintained by Lara Ianov and Austyn Trull.
+This resource is actively maintained by Lara Ianov and the U-BDS staff.
 
 # Training
 
