@@ -78,34 +78,26 @@ Place the above lines in a file called `custom.config`. When the pipleine is run
 ## nf-core/fetchngs
 * The input file passed in via the `--input` must end in `.txt`
 * It is possible that curl may exceed the default timeout that is set in the pipeline. In order to increase or turn this off you will need a to add the below code to a custom config.
-    In order to turn off curl timelimit, the custom config will need to contain the following lines:
-    ```
-    process {
-        withName: SRA_FASTQ_FTP {
-            ext.args = '--retry 5  --continue-at -'
-        }
+In order to turn off curl timelimit, the custom config will need to contain the following lines:
+```
+process {
+    withName: SRA_FASTQ_FTP {
+        ext.args = '--retry 5  --continue-at -'
     }
-    ```
+}
+```
 
-    To increase the curl time limit, rather than remove the time limit, modify the number that is specified after the `--max-time` flag in the below snippet. This number is time in seconds, and by default the pipeline sets the max amount of time for curl to be 20 minutes.
-    ```
-    process {
-        withName: SRA_FASTQ_FTP {
-            ext.args = '--retry 5 --continue-at - --max-time 1200'
-        }
-    }
-    ```
 * If curl does not work, you can set the pipeline to use sra-toolkit instead. In order to set the pipeline to use sra-toolkit to download data, you will need to place the following lines into a `params.yml` file, and pass that to the pipeline by adding `-params-file params.yml` to the nextflow run command.
-    ``` 
-    enable_conda: true
-    force_sra_downloads: true
-    ```
-* Prefetch has a default filesize (20GB), however files you download may be larger than this default. In order to increase the limit, you will want to place the following lines into a `custom.conf` file and pass it to the pipeline by adding `-c custom.conf` to the nextflow run command.
-    ```
-    process {
-        withName: SRATOOLS_PREFETCH {
-            ext.args = '--max-size 50G'
-        }
+``` 
+enable_conda: true
+force_sra_downloads: true
+```
+
+* Prefetch has a default filesize (20GB), however files you download may be larger than this default. In order to increase the limit, you will want to place the following lines into a `custom.conf` file and pass it to the pipeline by adding `-c custom.conf` to the nextflow run command. Note that this command sets the max size to 50GB but just tweak this number to accommodate your downloads
+```
+process {
+    withName: SRATOOLS_PREFETCH {
+        ext.args = '--max-size 50G'
     }
-    ```
-    This command will allow prefetch to download files up to 50 GB in size. This number can be changed to another in order to accomodate your files.
+}
+```

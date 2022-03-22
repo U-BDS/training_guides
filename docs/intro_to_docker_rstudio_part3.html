@@ -391,20 +391,44 @@ div.tocify {
 </div>
 <div id="brief-background" class="section level1">
 <h1>Brief background</h1>
-<p>So far, everything has been run in my local Mac with Docker. However, for large datasets, a user may need computational resources which exceed a personal computer.</p>
-<p>Yet, a requirement for running Docker containers is <code>sudo</code> privilege which not available to users in a shared system such as HPC. For this reason, users should use <a href="https://sylabs.io/docs/">Singularity</a> when running containers in HPC. But if that’s the case, you may wonder why did we cover Docker up until now?</p>
-<p>A short answer to this question is that Docker is a more popular tool than Singularity and thus, there are more resources available to Docker. Furthermore, Docker is compatible with many container technology including Singularity. Therefore, a user can easily develop a Docker container and convert it to Singularity. Importantly, if you do choose to use Singularity for development, you will still need sudo privilege during the original image development as opposed to simply running the container where sudo privilege is not needed. <a href="https://pythonspeed.com/articles/containers-filesystem-data-processing/">For a more detailed overview check our this post by Itamar Turner-Trauring.</a></p>
+<p>So far, everything has been run in my local Mac with Docker. However,
+for large datasets, a user may need computational resources which exceed
+a personal computer.</p>
+<p>Yet, a requirement for running Docker containers is <code>sudo</code>
+privilege which not available to users in a shared system such as HPC.
+For this reason, users should use <a
+href="https://sylabs.io/docs/">Singularity</a> when running containers
+in HPC. But if that’s the case, you may wonder why did we cover Docker
+up until now?</p>
+<p>A short answer to this question is that Docker is a more popular tool
+than Singularity and thus, there are more resources available to Docker.
+Furthermore, Docker is compatible with many container technology
+including Singularity. Therefore, a user can easily develop a Docker
+container and convert it to Singularity. Importantly, if you do choose
+to use Singularity for development, you will still need sudo privilege
+during the original image development as opposed to simply running the
+container where sudo privilege is not needed. <a
+href="https://pythonspeed.com/articles/containers-filesystem-data-processing/">For
+a more detailed overview check our this post by Itamar
+Turner-Trauring.</a></p>
 </div>
-<div id="running-a-container-at-the-uab-hpc-cluster-cheaha" class="section level1">
+<div id="running-a-container-at-the-uab-hpc-cluster-cheaha"
+class="section level1">
 <h1>Running a container at the UAB HPC cluster, Cheaha</h1>
-<p>Since we will need to connect to RStudio in a web browser, we will launch Singularity within a VNC Session:</p>
+<p>Since we will need to connect to RStudio in a web browser, we will
+launch Singularity within a VNC Session:</p>
 <ol style="list-style-type: decimal">
-<li>Login to OnDemand: <a href="https://rc.uab.edu" class="uri">https://rc.uab.edu</a></li>
+<li>Login to OnDemand: <a href="https://rc.uab.edu"
+class="uri">https://rc.uab.edu</a></li>
 <li>Go to “Interactive Apps &gt; HPC Desktop”</li>
-<li>Choose your computational resources (e.g.: hours, partition etc.) and click “Launch”</li>
+<li>Choose your computational resources (e.g.: hours, partition etc.)
+and click “Launch”</li>
 <li>Once the session is running, click “Launch Desktop in new tab”</li>
-<li>Open the terminal in the VNC session ("Applications &gt; Terminal Emulator or right-click the desktop and choose terminal).</li>
-<li>Load Singularity, in this case we are loading the latest version available in HPC which is <code>Singularity/3.5.2-GCC-5.4.0-2.26</code></li>
+<li>Open the terminal in the VNC session (“Applications &gt; Terminal
+Emulator or right-click the desktop and choose terminal).</li>
+<li>Load Singularity, in this case we are loading the latest version
+available in HPC which is
+<code>Singularity/3.5.2-GCC-5.4.0-2.26</code></li>
 </ol>
 <pre><code>module load Singularity</code></pre>
 <pre><code>module list
@@ -415,7 +439,16 @@ Currently Loaded Modules:
   3) DefaultModules   6) GCCcore/5.4.0   9) Go/1.13.1
 </code></pre>
 <ol start="7" style="list-style-type: decimal">
-<li>Go to a directory where you would like to place the image and pull the image from Docker Hub. In this case, we will pull the ggplot2 image that was generated in part 1 available at <a href="https://hub.docker.com/r/lianov/rstudio_ggplot2" class="uri">https://hub.docker.com/r/lianov/rstudio_ggplot2</a>. When we pull from docker, Singularity will already convert the image. Note that you must use the following syntax: <code>docker://user/image:tag</code> (<a href="https://sylabs.io/guides/3.5/user-guide/cli/singularity_pull.html">see the docs for more</a>)</li>
+<li>Go to a directory where you would like to place the image and pull
+the image from Docker Hub. In this case, we will pull the ggplot2 image
+that was generated in part 1 available at <a
+href="https://hub.docker.com/r/lianov/rstudio_ggplot2"
+class="uri">https://hub.docker.com/r/lianov/rstudio_ggplot2</a>. When we
+pull from docker, Singularity will already convert the image. Note that
+you must use the following syntax: <code>docker://user/image:tag</code>
+(<a
+href="https://sylabs.io/guides/3.5/user-guide/cli/singularity_pull.html">see
+the docs for more</a>)</li>
 </ol>
 <pre class="bash"><code>cd $USER_SCRATCH
 mkdir HPC_container_session
@@ -424,37 +457,72 @@ cd HPC_container_session
 # Pull from Docker (NOTE the `docker://`)
 
 singularity pull docker://lianov/rstudio_ggplot2:3.6.3</code></pre>
-<p>This may take a few minutes, but after pulling and unpacking you should see:</p>
+<p>This may take a few minutes, but after pulling and unpacking you
+should see:</p>
 <pre><code>INFO:    Creating SIF file...
 INFO:    Build complete: rstudio_ggplot2_3.6.3.sif</code></pre>
 <ol start="8" style="list-style-type: decimal">
-<li>Start the container. The Rocker project describes this process quite well for RStudio (<a href="https://www.rocker-project.org/use/singularity/" class="uri">https://www.rocker-project.org/use/singularity/</a>), and this is what we follow:</li>
+<li>Start the container. The Rocker project describes this process quite
+well for RStudio (<a
+href="https://www.rocker-project.org/use/singularity/"
+class="uri">https://www.rocker-project.org/use/singularity/</a>), and
+this is what we follow:</li>
 </ol>
 <pre class="bash"><code>PASSWORD=&#39;NBI&#39; singularity exec rstudio_ggplot2_3.6.3.sif rserver --auth-none=0  --auth-pam-helper-path=pam-helper --www-address=127.0.0.1</code></pre>
 <ol start="9" style="list-style-type: decimal">
-<li><p>Open the browser in the VNC session ("Applications &gt; Web Browser) and go to <code>http://localhost:8787</code></p></li>
-<li><p>Importantly, in Singularity, you will want to use your Cheaha ID as the username to login with the password that was provided above which you can change. Unlike Docker which is fully isolated, Singularity is more integrated with the host filesystem (and it automatically mounts <code>$HOME</code>, <code>$PWD</code> and <code>/tmp</code>).</p></li>
+<li><p>Open the browser in the VNC session (“Applications &gt; Web
+Browser) and go to <code>http://localhost:8787</code></p></li>
+<li><p>Importantly, in Singularity, you will want to use your Cheaha ID
+as the username to login with the password that was provided above which
+you can change. Unlike Docker which is fully isolated, Singularity is
+more integrated with the host filesystem (and it automatically mounts
+<code>$HOME</code>, <code>$PWD</code> and <code>/tmp</code>).</p></li>
 </ol>
-<p>Further, any data and directories that were copied in the Dockerfile to <code>/home/rstudio</code> such as <code>/home/rstudio/data_plots</code> are still available in the same path even with your Cheaha ID (this is also true in Docker if you change the user name to another one using <code>-e USER=&lt;username&gt;</code>).</p>
-<p>Thus, in my Singularity session, I can re-create the ggplot2 plot that was generated in Part 1 using the data in the container from the rstudio username:</p>
+<p>Further, any data and directories that were copied in the Dockerfile
+to <code>/home/rstudio</code> such as
+<code>/home/rstudio/data_plots</code> are still available in the same
+path even with your Cheaha ID (this is also true in Docker if you change
+the user name to another one using
+<code>-e USER=&lt;username&gt;</code>).</p>
+<p>Thus, in my Singularity session, I can re-create the ggplot2 plot
+that was generated in Part 1 using the data in the container from the
+rstudio username:</p>
 <p><img src="figs/intro_to_docker_part3/rstudio_ggplot2_3_6_3_HPC.png" align="center" width="850px" /></p>
 <hr />
 </div>
 <div id="mounting-a-directory-to-the-container" class="section level1">
 <h1>Mounting a directory to the container</h1>
-<p>As briefly mentioned, Singularity already mounts specific paths (<a href="https://sylabs.io/guides/3.5/user-guide/bind_paths_and_mounts.html?%20bind#bind-paths-and-mounts">see docs</a>), but if you would like to mount a specific path to the container, you may do so in the similar method to Docker where we mount a path from host to a target path on the container with <code>--bind $USER_SCRATCH/HPC_path_mount:/home/rstudio/data_mount</code> (you can choose another target path) :</p>
+<p>As briefly mentioned, Singularity already mounts specific paths (<a
+href="https://sylabs.io/guides/3.5/user-guide/bind_paths_and_mounts.html?%20bind#bind-paths-and-mounts">see
+docs</a>), but if you would like to mount a specific path to the
+container, you may do so in the similar method to Docker where we mount
+a path from host to a target path on the container with
+<code>--bind $USER_SCRATCH/HPC_path_mount:/home/rstudio/data_mount</code>
+(you can choose another target path) :</p>
 <pre class="bash"><code>PASSWORD=&#39;NBI&#39; singularity exec --bind $USER_SCRATCH/HPC_path_mount:/home/rstudio/data_mount rstudio_ggplot2_3.6.3.sif rserver --auth-none=0  --auth-pam-helper-path=pam-helper --www-address=127.0.0.1</code></pre>
-<p>Or you may also mount the host path directly without a target path in the container with just <code>--bind $USER_SCRATCH/HPC_path_mount</code></p>
+<p>Or you may also mount the host path directly without a target path in
+the container with just
+<code>--bind $USER_SCRATCH/HPC_path_mount</code></p>
 <pre class="bash"><code>PASSWORD=&#39;NBI&#39; singularity exec --bind $USER_SCRATCH/HPC_path_mount rstudio_ggplot2_3.6.3.sif rserver --auth-none=0  --auth-pam-helper-path=pam-helper --www-address=127.0.0.1</code></pre>
 </div>
 <div id="singularity-cache" class="section level1">
 <h1>Singularity cache</h1>
-<p>The containers are cached in <code>$USER_DATA/.singularity</code>. To list them you may use <code>singularity cache list -v</code>. To remove, use the <code>singularity cache clean</code> command (see <code>singularity cache clean -h</code> for more details). I recommend to use the dry-run flag before running the clean command (<code>singularity cache clean -n</code>)</p>
+<p>The containers are cached in <code>$USER_DATA/.singularity</code>. To
+list them you may use <code>singularity cache list -v</code>. To remove,
+use the <code>singularity cache clean</code> command (see
+<code>singularity cache clean -h</code> for more details). I recommend
+to use the dry-run flag before running the clean command
+(<code>singularity cache clean -n</code>)</p>
 </div>
 <div id="a-note-for-other-use-cases" class="section level1">
 <h1>A note for other use-cases</h1>
-<p>For this session we have focused on utilizing containers with an active RStudio session as many R analysis are interactive. However, it’s important to emphasize, that a user can also run a container (Docker or Singularity) for other purposes, such as running a command within the container:</p>
-<p>Using my locally cached Bioconductor container, I can run a simple Linux command:</p>
+<p>For this session we have focused on utilizing containers with an
+active RStudio session as many R analysis are interactive. However, it’s
+important to emphasize, that a user can also run a container (Docker or
+Singularity) for other purposes, such as running a command within the
+container:</p>
+<p>Using my locally cached Bioconductor container, I can run a simple
+Linux command:</p>
 <pre class="bash"><code>docker run --rm bioconductor/bioconductor_docker:RELEASE_3_10 echo Hello World</code></pre>
 <p>Or a simple R computation:</p>
 <pre class="bash"><code>docker run -it --rm bioconductor/bioconductor_docker:RELEASE_3_10 R -e &#39;(5 + 8) * 2 == 26&#39;
@@ -462,14 +530,23 @@ INFO:    Build complete: rstudio_ggplot2_3.6.3.sif</code></pre>
 # ... output
 &gt; (5 + 8) * 2 == 26
 [1] TRUE</code></pre>
-<p>Similarly, this can also be accomplished with Singularity in Cheaha. For an overview of using Singularity containers for this purpose, please see the following: <a href="https://docs.uabgrid.uab.edu/wiki/Singularity_containers" class="uri">https://docs.uabgrid.uab.edu/wiki/Singularity_containers</a></p>
+<p>Similarly, this can also be accomplished with Singularity in Cheaha.
+For an overview of using Singularity containers for this purpose, please
+see the following: <a
+href="https://docs.uabgrid.uab.edu/wiki/Singularity_containers"
+class="uri">https://docs.uabgrid.uab.edu/wiki/Singularity_containers</a></p>
 </div>
 <div id="troubleshooting-tips" class="section level1">
 <h1>Troubleshooting tips</h1>
-<div id="using-images-linked-to-r-4.0.0-with-rstudio" class="section level2">
+<div id="using-images-linked-to-r-4.0.0-with-rstudio"
+class="section level2">
 <h2>Using images linked to R &gt; 4.0.0 with RStudio</h2>
 <ol style="list-style-type: decimal">
-<li>If you are using an image such as <code>rocker/rstudio:4.0.4</code>, it’s necessary to <code>--bind</code> the following (a process documented in rocker’s website: <a href="https://www.rocker-project.org/use/singularity/" class="uri">https://www.rocker-project.org/use/singularity/</a>)</li>
+<li>If you are using an image such as <code>rocker/rstudio:4.0.4</code>,
+it’s necessary to <code>--bind</code> the following (a process
+documented in rocker’s website: <a
+href="https://www.rocker-project.org/use/singularity/"
+class="uri">https://www.rocker-project.org/use/singularity/</a>)</li>
 </ol>
 <pre><code>singularity pull docker://rocker/rstudio:4.0.4
 
@@ -481,10 +558,16 @@ singularity exec --bind run:/run,var-lib-rstudio-server:/var/lib/rstudio-server,
 <p>Not doing so, will cause the following error:</p>
 <pre><code>ERROR database error 7 (sqlite3_statement_backend::loadOne: attempt to write a readonly database) [description: Could not delete expired revoked cookies from the database, description: Could not read revoked cookies from the database]; OCCURRED AT virtual rstudio::core::Error rstudio::core::database::Connection::execute(rstudio::core::database::Query&amp;, bool*) src/cpp/core/Database.cpp:510; LOGGED FROM: int main(int, char* const*) src/cpp/server/ServerMain.cpp:763</code></pre>
 <ol start="2" style="list-style-type: decimal">
-<li>Additionally, newer RStudio images may enforce the <code>--server-user arg (=rstudio-server)</code> argument, and users may encounter the following error:</li>
+<li>Additionally, newer RStudio images may enforce the
+<code>--server-user arg (=rstudio-server)</code> argument, and users may
+encounter the following error:</li>
 </ol>
 <pre><code>ERROR Attempt to run server as user &#39;rstudio-server&#39; (uid 999) from account &#39;lianov&#39; (uid 10993) without privilege, which is required to run as a different uid; LOGGED FROM: virtual rstudio::core::ProgramStatus rstudio::server::Options::read(int, char* const*, std::ostream&amp;) src/cpp/server/ServerOptions.cpp:322</code></pre>
-<p>In the error above, the issue is that it’s attempting to run the container with my user id when it’s expecting <code>rstudio-server</code>. To solve this, add in your user id to the <code>--server-user</code> (e.g.: <code>rserver --server-user=lianov</code>) such as:</p>
+<p>In the error above, the issue is that it’s attempting to run the
+container with my user id when it’s expecting
+<code>rstudio-server</code>. To solve this, add in your user id to the
+<code>--server-user</code> (e.g.:
+<code>rserver --server-user=lianov</code>) such as:</p>
 <pre><code>singularity exec --bind run:/run,var-lib-rstudio-server:/var/lib/rstudio-server,database.conf:/etc/rstudio/database.conf rstudio_4.0.4.sif rserver --server-user=lianov --www-address=127.0.0.1</code></pre>
 </div>
 <div id="additional-tips" class="section level2">
@@ -493,7 +576,11 @@ singularity exec --bind run:/run,var-lib-rstudio-server:/var/lib/rstudio-server,
 <li>If you come across the following error:</li>
 </ol>
 <pre><code>[rserver] ERROR system error 11 (Resource temporarily unavailable) [description: Could not acquire revocation list file lock]; OCCURRED AT rstudio::core::Error rstudio::server::auth::handler::initialize() src/cpp/server/auth/ServerAuthHandler.cpp:569; LOGGED FROM: int main(int, char* const*) src/cpp/server/ServerMain.cpp:674</code></pre>
-<p>It’s due to another instance of rstudio creating a lock in the default tmp directory. The solution is to create your own temporary directory and pass it to <code>rserver</code> command with the flag <code>--server-data-dir</code> (and to <code>--bind</code> in <code>singularity exec</code>).</p>
+<p>It’s due to another instance of rstudio creating a lock in the
+default tmp directory. The solution is to create your own temporary
+directory and pass it to <code>rserver</code> command with the flag
+<code>--server-data-dir</code> (and to <code>--bind</code> in
+<code>singularity exec</code>).</p>
 <p>Example:</p>
 <pre class="bash"><code>mkdir -p $USER_SCRATCH/singularity_rstudio_tmp
 
@@ -501,35 +588,70 @@ PASSWORD=&#39;NBI&#39; singularity exec --bind $USER_SCRATCH/HPC_path_mount --bi
 <ol start="2" style="list-style-type: decimal">
 <li>When running more than one RStudio Singularity container:
 <ul>
-<li>Although not a requirement, I recommend to launch the container from a separate VNC/HPC Desktop job with its own dedicated computational resources.</li>
+<li>Although not a requirement, I recommend to launch the container from
+a separate VNC/HPC Desktop job with its own dedicated computational
+resources.</li>
 <li>Create separate tmp directories per container.</li>
-<li>In HPC VNC, when running containers that need Firefox such as RStudio, they are linked to a default Firefox user. Thus, if more than one session is running the following may occur:</li>
+<li>In HPC VNC, when running containers that need Firefox such as
+RStudio, they are linked to a default Firefox user. Thus, if more than
+one session is running the following may occur:</li>
 </ul></li>
 </ol>
 <pre><code>Firefox is already running, but is not responding. To open a new window, you must first close the existing Firefox process, or restart your system</code></pre>
-<p>One solution is outlined in the Firefox user questions: <a href="https://support.mozilla.org/en-US/questions/971866" class="uri">https://support.mozilla.org/en-US/questions/971866</a> and summarized below:</p>
+<p>One solution is outlined in the Firefox user questions: <a
+href="https://support.mozilla.org/en-US/questions/971866"
+class="uri">https://support.mozilla.org/en-US/questions/971866</a> and
+summarized below:</p>
 <ul>
-<li><p>Create a separate firefox profile with <code>firefox -p profilename</code>. All profiles can be view at <code>/home/&lt;HPC_id&gt;/.mozilla/firefox</code></p></li>
-<li><p>That should resolve the issue, but importantly this makes your latest profile set as default. Thus, if you encounter the same error switch to the older existing profile. You can read more about setting default profile for Firefox at: <a href="https://support.mozilla.org/en-US/kb/profile-manager-create-remove-switch-firefox-profiles" class="uri">https://support.mozilla.org/en-US/kb/profile-manager-create-remove-switch-firefox-profiles</a></p></li>
+<li><p>Create a separate firefox profile with
+<code>firefox -p profilename</code>. All profiles can be view at
+<code>/home/&lt;HPC_id&gt;/.mozilla/firefox</code></p></li>
+<li><p>That should resolve the issue, but importantly this makes your
+latest profile set as default. Thus, if you encounter the same error
+switch to the older existing profile. You can read more about setting
+default profile for Firefox at: <a
+href="https://support.mozilla.org/en-US/kb/profile-manager-create-remove-switch-firefox-profiles"
+class="uri">https://support.mozilla.org/en-US/kb/profile-manager-create-remove-switch-firefox-profiles</a></p></li>
 </ul>
 <ol start="3" style="list-style-type: decimal">
-<li>If you encounter <code>ERROR system error 98 (Address already in use)</code>, it means the default port number (8787) is busy, and you can resolve it by adding <code>--www-port &lt;port #&gt;</code> after <code>rserver</code>.</li>
+<li>If you encounter
+<code>ERROR system error 98 (Address already in use)</code>, it means
+the default port number (8787) is busy, and you can resolve it by adding
+<code>--www-port &lt;port #&gt;</code> after <code>rserver</code>.</li>
 </ol>
 </div>
 </div>
 <div id="additional-learning-resources" class="section level1">
 <h1>Additional learning resources</h1>
 <ul>
-<li><p>By default, Docker uses only a subset of your computational resources available. See the following for more information on how to change the settings such as assigning more memory: <a href="https://stackoverflow.com/questions/44533319/how-to-assign-more-memory-to-docker-container" class="uri">https://stackoverflow.com/questions/44533319/how-to-assign-more-memory-to-docker-container</a></p></li>
-<li><p>The following tutorial covers some of the basics we also covered, but it also briefly discussing how to use Docker in AWS: <a href="https://mdneuzerling.com/post/user-getting-started-with-r-and-docker/" class="uri">https://mdneuzerling.com/post/user-getting-started-with-r-and-docker/</a></p></li>
-<li><p>You may also consider using package installation methods that also specify a package version if needed (just check <code>sessionInfo()</code> once you load the packages during initial build):</p></li>
+<li><p>By default, Docker uses only a subset of your computational
+resources available. See the following for more information on how to
+change the settings such as assigning more memory: <a
+href="https://stackoverflow.com/questions/44533319/how-to-assign-more-memory-to-docker-container"
+class="uri">https://stackoverflow.com/questions/44533319/how-to-assign-more-memory-to-docker-container</a></p></li>
+<li><p>The following tutorial covers some of the basics we also covered,
+but it also briefly discussing how to use Docker in AWS: <a
+href="https://mdneuzerling.com/post/user-getting-started-with-r-and-docker/"
+class="uri">https://mdneuzerling.com/post/user-getting-started-with-r-and-docker/</a></p></li>
+<li><p>You may also consider using package installation methods that
+also specify a package version if needed (just check
+<code>sessionInfo()</code> once you load the packages during initial
+build):</p></li>
 </ul>
 <pre class="docker"><code>RUN R -e &quot;install.packages(&#39;remotes&#39;); \
   remotes::install_version(&#39;&lt;package_name&gt;&#39;, &#39;&lt;package_version&gt;&#39;)&quot;</code></pre>
-<p>This is usually only needed for sources like CRAN, since Bioconductor follows a release schedule with packages being linked to specific releases.</p>
+<p>This is usually only needed for sources like CRAN, since Bioconductor
+follows a release schedule with packages being linked to specific
+releases.</p>
 <ul>
-<li><p>Ten simple rules for writing Dockerfiles for reproducible data science: <a href="https://doi.org/10.1371/journal.pcbi.1008316" class="uri">https://doi.org/10.1371/journal.pcbi.1008316</a></p></li>
-<li><p>If you have issues with R Studio filling up your home directory in HPC, check out the solutions presented by Ming Tang under “Fix home directory filled up issue”: <a href="https://divingintogeneticsandgenomics.rbind.io/post/run-rstudio-server-with-singularity-on-hpc/" class="uri">https://divingintogeneticsandgenomics.rbind.io/post/run-rstudio-server-with-singularity-on-hpc/</a></p></li>
+<li><p>Ten simple rules for writing Dockerfiles for reproducible data
+science: <a href="https://doi.org/10.1371/journal.pcbi.1008316"
+class="uri">https://doi.org/10.1371/journal.pcbi.1008316</a></p></li>
+<li><p>If you have issues with R Studio filling up your home directory
+in HPC, check out the solutions presented by Ming Tang under “Fix home
+directory filled up issue”: <a
+href="https://divingintogeneticsandgenomics.rbind.io/post/run-rstudio-server-with-singularity-on-hpc/"
+class="uri">https://divingintogeneticsandgenomics.rbind.io/post/run-rstudio-server-with-singularity-on-hpc/</a></p></li>
 </ul>
 </div>
 

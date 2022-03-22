@@ -389,20 +389,62 @@ div.tocify {
 <h1>Requirements</h1>
 <p>Review part 1 available in this website.</p>
 </div>
-<div id="build-an-image-with-dependencies-from-bioconductor" class="section level1">
+<div id="build-an-image-with-dependencies-from-bioconductor"
+class="section level1">
 <h1>Build an image with dependencies from Bioconductor</h1>
-<p>Recently, Bioconductor adopted a new container architecture which streamlines using Docker with Bioconductor packages.</p>
-<p>Directly from Bioconductor’s documentation, which I highly recommend to read (<a href="http://bioconductor.org/help/docker/" class="uri">http://bioconductor.org/help/docker/</a>), the following should be noted:</p>
+<p>Recently, Bioconductor adopted a new container architecture which
+streamlines using Docker with Bioconductor packages.</p>
+<p>Directly from Bioconductor’s documentation, which I highly recommend
+to read (<a href="http://bioconductor.org/help/docker/"
+class="uri">http://bioconductor.org/help/docker/</a>), the following
+should be noted:</p>
 <blockquote>
-<p><strong>Goals for new container architecture</strong><br> A few of our key goals to migrate to a new set of Docker containers are, * to keep the image size being shipped by the Bioconductor team at a manageable size. * easy to extend, so developers can just use a single image to inherit and build their docker image. * easy to maintain, by streamlining the docker inheritance chain. * Adopt a “best practices” outline so that new community contributed docker images get reviewed and follow standards. * Adopt a deprecation policy and life cycle for images similar to Bioconductor packages. * Replicate the Linux build machines (malbec2) on the bioconductor/bioconductor_docker:devel image as closely as possible. While this is not fully possible just yet, this image can be used by maintainers who wish to reproduce errors seen on the Bioconductor Linux build machine and as a helpful debugging tool.</p>
+<p><strong>Goals for new container architecture</strong><br> A few of
+our key goals to migrate to a new set of Docker containers are, * to
+keep the image size being shipped by the Bioconductor team at a
+manageable size. * easy to extend, so developers can just use a single
+image to inherit and build their docker image. * easy to maintain, by
+streamlining the docker inheritance chain. * Adopt a “best practices”
+outline so that new community contributed docker images get reviewed and
+follow standards. * Adopt a deprecation policy and life cycle for images
+similar to Bioconductor packages. * Replicate the Linux build machines
+(malbec2) on the bioconductor/bioconductor_docker:devel image as closely
+as possible. While this is not fully possible just yet, this image can
+be used by maintainers who wish to reproduce errors seen on the
+Bioconductor Linux build machine and as a helpful debugging tool.</p>
 </blockquote>
 <p>Further:</p>
 <blockquote>
-<p><strong>Current Containers</strong><br> For each supported version of Bioconductor, we provide: * <strong>bioconductor/bioconductor_docker:RELEASE_X_Y</strong> * <strong>bioconductor/bioconductor_docker:devel</strong></p>
+<p><strong>Current Containers</strong><br> For each supported version of
+Bioconductor, we provide: *
+<strong>bioconductor/bioconductor_docker:RELEASE_X_Y</strong> *
+<strong>bioconductor/bioconductor_docker:devel</strong></p>
 </blockquote>
-<p>Thus, if you have package dependencies from Bioconductor, it’s highly recommended to use the Bioconductor container which are built using rocker rstudio containers (see the <code>FROM</code> directive in the <a href="https://hub.docker.com/r/bioconductor/bioconductor_docker/dockerfile">Bioconductor Dockerfile</a>). This streamlined resource saves effort for users from having to troubleshoot potential issues that might arise from using Bioconductor resources in Docker (e.g.: missing Bioconductor dependencies).</p>
-<p><strong>NOTE</strong>: As mentioned above, Biconductor containers are released based on Bioconducor releases (<code>bioconductor/bioconductor_docker:RELEASE_X_Y</code>), keeping in mind that each bioconductor release is linked to specific R versions. Thus, when choosing a container repository, use the following release history to track down R versions compatible with the Bioconductor releases: <a href="https://www.bioconductor.org/about/release-announcements/" class="uri">https://www.bioconductor.org/about/release-announcements/</a></p>
-<p>The following defines the Dockerfile with Bioconductor release 3.10 (linked to R version 3.6), along with installations (with <code>BiocManager::install</code>) for Bioconductor packages <code>DESeq2</code> and <code>pasilla</code>. I am also adding a few CRAN packages via the standard R install function <code>install.packages</code> to simply demonstrate that you can still install any non-bioconductor dependencies in the same form you would normally do without using the Bioconductor parent image.</p>
+<p>Thus, if you have package dependencies from Bioconductor, it’s highly
+recommended to use the Bioconductor container which are built using
+rocker rstudio containers (see the <code>FROM</code> directive in the <a
+href="https://hub.docker.com/r/bioconductor/bioconductor_docker/dockerfile">Bioconductor
+Dockerfile</a>). This streamlined resource saves effort for users from
+having to troubleshoot potential issues that might arise from using
+Bioconductor resources in Docker (e.g.: missing Bioconductor
+dependencies).</p>
+<p><strong>NOTE</strong>: As mentioned above, Biconductor containers are
+released based on Bioconducor releases
+(<code>bioconductor/bioconductor_docker:RELEASE_X_Y</code>), keeping in
+mind that each bioconductor release is linked to specific R versions.
+Thus, when choosing a container repository, use the following release
+history to track down R versions compatible with the Bioconductor
+releases: <a
+href="https://www.bioconductor.org/about/release-announcements/"
+class="uri">https://www.bioconductor.org/about/release-announcements/</a></p>
+<p>The following defines the Dockerfile with Bioconductor release 3.10
+(linked to R version 3.6), along with installations (with
+<code>BiocManager::install</code>) for Bioconductor packages
+<code>DESeq2</code> and <code>pasilla</code>. I am also adding a few
+CRAN packages via the standard R install function
+<code>install.packages</code> to simply demonstrate that you can still
+install any non-bioconductor dependencies in the same form you would
+normally do without using the Bioconductor parent image.</p>
 <pre class="docker"><code>FROM bioconductor/bioconductor_docker:RELEASE_3_10
 
 # LABEL adds metadata to an image:
@@ -417,32 +459,66 @@ RUN mkdir /home/rstudio/DESeq2_analysis
 # installing CRAN with install.packages as example
 RUN R -e &#39;BiocManager::install(c(&quot;DESeq2&quot;, &quot;pasilla&quot;))&#39;
 RUN R -e &#39;install.packages(c(&quot;readr&quot;,&quot;ggrepel&quot;,&quot;pheatmap&quot;))&#39;</code></pre>
-<p>Note I have added the <code>LABEL</code> directive. This adds metadata to the image which can be fetched with <code>docker image inspect</code> command. While not required, it can be helpful to add relevant information in this field.</p>
-<p>Now build the image and run the container in the same form as shown in Part 1 (once again assuming you are in the directory which contains the Dockerfile shown in this part. You can find it at the <code>./src/intro_to_docker_part2</code> of the <a href="https://github.com/U-BDS/training_guides/tree/main/src">GitHub repository which contains this material</a>):</p>
+<p>Note I have added the <code>LABEL</code> directive. This adds
+metadata to the image which can be fetched with
+<code>docker image inspect</code> command. While not required, it can be
+helpful to add relevant information in this field.</p>
+<p>Now build the image and run the container in the same form as shown
+in Part 1 (once again assuming you are in the directory which contains
+the Dockerfile shown in this part. You can find it at the
+<code>./src/intro_to_docker_part2</code> of the <a
+href="https://github.com/U-BDS/training_guides/tree/main/src">GitHub
+repository which contains this material</a>):</p>
 <pre class="bash"><code>docker build --rm --force-rm -t rstudio_deseq2:3.10 .</code></pre>
 <pre class="bash"><code>docker run -d --rm -p 8787:8787 -e PASSWORD=NBI -v `pwd`/dir_for_mounting:/home/rstudio/DESeq2_analysis rstudio_deseq2:3.10</code></pre>
-<p>(For this example I am adding the R analysis script to <code>dir_for_mounting</code> instead of copying it to the container with the <code>COPY</code> directive. Further as we are using the <code>pasilla</code> dataset, there is no external data here, but this directory could also be used to add your own datasets.)</p>
-<p>The RStudio session is now available at <code>localhost:8787</code></p>
+<p>(For this example I am adding the R analysis script to
+<code>dir_for_mounting</code> instead of copying it to the container
+with the <code>COPY</code> directive. Further as we are using the
+<code>pasilla</code> dataset, there is no external data here, but this
+directory could also be used to add your own datasets.)</p>
+<p>The RStudio session is now available at
+<code>localhost:8787</code></p>
 <p><img src="figs/intro_to_docker_part2/bioconductor_rstudio_deseq2.png" align="center" width="850px" /></p>
 </div>
 <div id="pushing-images-to-docker-hub" class="section level1">
 <h1>Pushing images to Docker Hub</h1>
-<p>To easily share your images with others, use <a href="https://hub.docker.com/">Docker Hub</a> as the registry to distribute publish images. I recommend to read <a href="https://docs.docker.com/get-started/04_sharing_app/">Docker Getting Started documentation on Sharing the application</a> if you have not done so, but here, I briefly cover the steps to publish the Bioconductor image which was just created:</p>
+<p>To easily share your images with others, use <a
+href="https://hub.docker.com/">Docker Hub</a> as the registry to
+distribute publish images. I recommend to read <a
+href="https://docs.docker.com/get-started/04_sharing_app/">Docker
+Getting Started documentation on Sharing the application</a> if you have
+not done so, but here, I briefly cover the steps to publish the
+Bioconductor image which was just created:</p>
 <ol style="list-style-type: decimal">
-<li><p>Create a repository in Docker Hub by navigating to “Repositories &gt; Create”. Provide a name and click “Create”. Note that images must be namespaced correctly to be shared in Docker Hub following: <code>&lt;Your Docker ID&gt;/&lt;Repository Name&gt;:&lt;tag&gt;</code></p></li>
+<li><p>Create a repository in Docker Hub by navigating to “Repositories
+&gt; Create”. Provide a name and click “Create”. Note that images must
+be namespaced correctly to be shared in Docker Hub following:
+<code>&lt;Your Docker ID&gt;/&lt;Repository Name&gt;:&lt;tag&gt;</code></p></li>
 <li><p>Tag and push the image:</p></li>
 </ol>
 <pre class="bash"><code>docker tag rstudio_deseq2:3.10 &lt;Your Docker ID&gt;/rstudio_deseq2:3.10</code></pre>
 <pre class="bash"><code>docker push &lt;Your Docker ID&gt;/rstudio_deseq2:3.10</code></pre>
 <ol start="3" style="list-style-type: decimal">
-<li>Add any documentation necessary in the README section under “Manage Repository”.</li>
+<li>Add any documentation necessary in the README section under “Manage
+Repository”.</li>
 </ol>
-<p>The same container we created in this session is available at: <a href="https://hub.docker.com/r/lianov/rstudio_deseq2" class="uri">https://hub.docker.com/r/lianov/rstudio_deseq2</a></p>
+<p>The same container we created in this session is available at: <a
+href="https://hub.docker.com/r/lianov/rstudio_deseq2"
+class="uri">https://hub.docker.com/r/lianov/rstudio_deseq2</a></p>
 </div>
 <div id="inspecting-an-image-history" class="section level1">
 <h1>Inspecting an image history</h1>
-<p>A very useful command to your own images and others publicly available is <code>docker history</code> (<a href="https://docs.docker.com/engine/reference/commandline/history/" class="uri">https://docs.docker.com/engine/reference/commandline/history/</a>). It allows you to inspect the history of the image, including the specific commands called from the Dockerfile. <code>docker history --no-trunc &lt;image:tag&gt;</code> expands the outputs for further details.</p>
-<p><strong>Continue tutorial to part 3 from the drop down menu at the navigation bar of this website. This section will cover running RStudio containers in the UAB HPC with Singularity</strong></p>
+<p>A very useful command to your own images and others publicly
+available is <code>docker history</code> (<a
+href="https://docs.docker.com/engine/reference/commandline/history/"
+class="uri">https://docs.docker.com/engine/reference/commandline/history/</a>).
+It allows you to inspect the history of the image, including the
+specific commands called from the Dockerfile.
+<code>docker history --no-trunc &lt;image:tag&gt;</code> expands the
+outputs for further details.</p>
+<p><strong>Continue tutorial to part 3 from the drop down menu at the
+navigation bar of this website. This section will cover running RStudio
+containers in the UAB HPC with Singularity</strong></p>
 </div>
 
 <html>
