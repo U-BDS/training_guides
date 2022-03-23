@@ -387,7 +387,8 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Mouse Whole Cortex and Hippocampus 10x dataset</h1>
+<h1 class="title toc-ignore">Mouse Whole Cortex and Hippocampus 10x
+dataset</h1>
 <h4 class="author">Lara Ianov, Ph.D.</h4>
 
 </div>
@@ -395,44 +396,86 @@ div.tocify {
 
 <div id="overview" class="section level1">
 <h1>Overview</h1>
-<p>This is a data wrangling example from the Mouse Whole Cortex and Hippocampus 10x dataset.</p>
-<p>Recently, a UAB collaborator, Dr. Farah Lubin and her lab, asked U-BDS to summarize a subset of the the Allen Brain Map data derived from the Mouse Whole Cortex and Hippocampus 10x dataset. A driver for this request was due to the limitation in the dataset that is provided directly from the website. For example, while users can choose to view any gene per celltype <a href="https://celltypes.brain-map.org/rnaseq/mouse_ctx-hpf_10x?selectedVisualization=Heatmap&amp;colorByFeature=Cell+Type&amp;colorByFeatureValue=Gad1" class="uri">https://celltypes.brain-map.org/rnaseq/mouse_ctx-hpf_10x?selectedVisualization=Heatmap&amp;colorByFeature=Cell+Type&amp;colorByFeatureValue=Gad1</a>, it’s difficult to summarize the data based on cell classes. In this example, we illustrate how you can start from the data available at the Allen Brain Atlas website, to interpret the data in more detail.</p>
-<p><strong>The gene list in this example differs from the original request by Dr. Lubin, and user can choose change it to any gene list of interest.</strong></p>
+<p>This is a data wrangling example from the Mouse Whole Cortex and
+Hippocampus 10x dataset.</p>
+<p>Recently, a UAB collaborator, Dr. Farah Lubin and her lab, asked
+U-BDS to summarize a subset of the the Allen Brain Map data derived from
+the Mouse Whole Cortex and Hippocampus 10x dataset. A driver for this
+request was due to the limitation in the dataset that is provided
+directly from the website. For example, while users can choose to view
+any gene per celltype <a
+href="https://celltypes.brain-map.org/rnaseq/mouse_ctx-hpf_10x?selectedVisualization=Heatmap&amp;colorByFeature=Cell+Type&amp;colorByFeatureValue=Gad1"
+class="uri">https://celltypes.brain-map.org/rnaseq/mouse_ctx-hpf_10x?selectedVisualization=Heatmap&amp;colorByFeature=Cell+Type&amp;colorByFeatureValue=Gad1</a>,
+it’s difficult to summarize the data based on cell classes. In this
+example, we illustrate how you can start from the data available at the
+Allen Brain Atlas website, to interpret the data in more detail.</p>
+<p><strong>The gene list in this example differs from the original
+request by Dr. Lubin, and user can choose change it to any gene list of
+interest.</strong></p>
 <ul>
-<li>Input data from: <a href="https://portal.brain-map.org/atlases-and-data/rnaseq/mouse-whole-cortex-and-hippocampus-10x" class="uri">https://portal.brain-map.org/atlases-and-data/rnaseq/mouse-whole-cortex-and-hippocampus-10x</a></li>
-<li>The same version of the data used in this guide can be acquired at: <a href="https://uab.box.com/s/2ye54fsiue7sq97nmvbh46sb806ya6i9" class="uri">https://uab.box.com/s/2ye54fsiue7sq97nmvbh46sb806ya6i9</a></li>
-<li>Publication: <a href="https://pubmed.ncbi.nlm.nih.gov/34004146/" class="uri">https://pubmed.ncbi.nlm.nih.gov/34004146/</a></li>
-<li><strong>Goal:</strong> to acquire summarized values across classes of cells label (e.g.: GABAergic, glutamatergic etc.) rather than viewing them from the app which only provides values split by <code>subclass_label</code>/<code>cell_type_alias_label</code>.</li>
+<li>Input data from: <a
+href="https://portal.brain-map.org/atlases-and-data/rnaseq/mouse-whole-cortex-and-hippocampus-10x"
+class="uri">https://portal.brain-map.org/atlases-and-data/rnaseq/mouse-whole-cortex-and-hippocampus-10x</a></li>
+<li>The same version of the data used in this guide can be acquired at:
+<a href="https://uab.box.com/s/2ye54fsiue7sq97nmvbh46sb806ya6i9"
+class="uri">https://uab.box.com/s/2ye54fsiue7sq97nmvbh46sb806ya6i9</a></li>
+<li>Publication: <a href="https://pubmed.ncbi.nlm.nih.gov/34004146/"
+class="uri">https://pubmed.ncbi.nlm.nih.gov/34004146/</a></li>
+<li><strong>Goal:</strong> to acquire summarized values across classes
+of cells label (e.g.: GABAergic, glutamatergic etc.) rather than viewing
+them from the app which only provides values split by
+<code>subclass_label</code>/<code>cell_type_alias_label</code>.</li>
 </ul>
-<p>To stay consistent with what the user sees in the app, the input data is the trimmed mean expression values which are available from the download pages cited above.</p>
+<p>To stay consistent with what the user sees in the app, the input data
+is the trimmed mean expression values which are available from the
+download pages cited above.</p>
 <p>In addition, the metadata file is also needed.</p>
 <div id="information-about-available-data" class="section level2">
 <h2>Information about available data</h2>
-<p>In the README from the data download page, we find the following information about the <code>medians.csv</code> which was generated in a similar manner as the trimmed means file.</p>
+<p>In the README from the data download page, we find the following
+information about the <code>medians.csv</code> which was generated in a
+similar manner as the trimmed means file.</p>
 <p><code>medians.csv</code> file</p>
 <blockquote>
-<p>Medians (medians.csv) A table of median expression values for each gene (rows) in each cluster (columns). Medians are calculated by first normalizing gene expression as follows: norm_data = log2(CPM(exons+introns)), and then calculating the medians independently for each gene and each cluster. The first row lists the cluster name (cluster_label), which matches the cell type alias shown in the Transcriptomic Explorer. The first column lists the unique gene identifier (gene), which in most cases is the gene symbol.</p>
+<p>Medians (medians.csv) A table of median expression values for each
+gene (rows) in each cluster (columns). Medians are calculated by first
+normalizing gene expression as follows: norm_data =
+log2(CPM(exons+introns)), and then calculating the medians independently
+for each gene and each cluster. The first row lists the cluster name
+(cluster_label), which matches the cell type alias shown in the
+Transcriptomic Explorer. The first column lists the unique gene
+identifier (gene), which in most cases is the gene symbol.</p>
 </blockquote>
-<p>The <code>medians.csv</code> (“Gene Expression by Cluster, median”) is briefly described from the data download page with:</p>
+<p>The <code>medians.csv</code> (“Gene Expression by Cluster, median”)
+is briefly described from the data download page with:</p>
 <blockquote>
 <p>Gene expression aggregated per cluster, calculated as medians.</p>
 </blockquote>
-<p>Similarly the trimmed means values (“Gene Expression by Cluster, trimmed means”), is described as:</p>
+<p>Similarly the trimmed means values (“Gene Expression by Cluster,
+trimmed means”), is described as:</p>
 <blockquote>
-<p>Gene expression aggregated per cell type, calculated as trimmed means (25%-75%).</p>
+<p>Gene expression aggregated per cell type, calculated as trimmed means
+(25%-75%).</p>
 </blockquote>
 <p>The metadata description is:</p>
 <blockquote>
-<p>Metadata about each cell. Each entry has an _order, _label, and _color column.</p>
+<p>Metadata about each cell. Each entry has an _order, _label, and
+_color column.</p>
 </blockquote>
 </div>
 </div>
 <div id="metadata" class="section level1">
 <h1>Metadata</h1>
-<p>Since the trimmed mean expression values are readily available, we will summarize this by metadata available in the <code>metadata.csv</code>.</p>
+<p>Since the trimmed mean expression values are readily available, we
+will summarize this by metadata available in the
+<code>metadata.csv</code>.</p>
 <pre class="r"><code>library(ggplot2)
 library(dplyr)</code></pre>
-<p>The files needed were downloaded and placed into the <code>./data</code> sub-directory from this project which follows the general standard practice for R projects (see more at: <a href="https://swcarpentry.github.io/r-novice-gapminder/02-project-intro/index.html" class="uri">https://swcarpentry.github.io/r-novice-gapminder/02-project-intro/index.html</a>).</p>
+<p>The files needed were downloaded and placed into the
+<code>./data</code> sub-directory from this project which follows the
+general standard practice for R projects (see more at: <a
+href="https://swcarpentry.github.io/r-novice-gapminder/02-project-intro/index.html"
+class="uri">https://swcarpentry.github.io/r-novice-gapminder/02-project-intro/index.html</a>).</p>
 <pre class="r"><code>trimmed_mean_expression &lt;- read.csv(&quot;./data/trimmed_means.csv&quot;, check.names = FALSE, row.names = 1)
 metadata &lt;- read.csv(&quot;./data/metadata.csv&quot;)</code></pre>
 <pre class="r"><code># If unfamiliar with dataset, please look over the metadata in more detail, View(metadata), for better understanding of all the information present here
@@ -498,28 +541,38 @@ str(metadata)</code></pre>
 ##  $ cortical_layer_label       : logi  NA NA NA NA NA NA ...
 ##  $ cortical_layer_order       : int  1 1 1 1 1 1 1 1 1 1 ...
 ##  $ cortical_layer_color       : chr  &quot;#FF7373&quot; &quot;#FF7373&quot; &quot;#FF7373&quot; &quot;#FF7373&quot; ...</code></pre>
-<p>In particular columns named <code>class_label</code> and <code>cell_type_designation_label</code> contain cell classification which is of high interest to the main goal.</p>
+<p>In particular columns named <code>class_label</code> and
+<code>cell_type_designation_label</code> contain cell classification
+which is of high interest to the main goal.</p>
 <pre class="r"><code>unique(metadata$class_label)</code></pre>
 <pre><code>## [1] &quot;GABAergic&quot;     &quot;Glutamatergic&quot; &quot;Non-Neuronal&quot;</code></pre>
 <pre class="r"><code>head(unique(metadata$cluster_label)) # same as metadata$cell_type_alias_label</code></pre>
 <pre><code>## [1] &quot;116_Pvalb&quot; &quot;364_DG&quot;    &quot;18_Lamp5&quot;  &quot;15_Lamp5&quot;  &quot;12_Lamp5&quot;  &quot;11_Lamp5&quot;</code></pre>
 <pre class="r"><code>unique(metadata$subclass_label)</code></pre>
-<pre><code>##  [1] &quot;Pvalb&quot;           &quot;DG&quot;              &quot;Lamp5&quot;           &quot;Sncg&quot;            &quot;Vip&quot;             &quot;L2 IT ENTl&quot;      &quot;Sst&quot;             &quot;L4/5 IT CTX&quot;    
-##  [9] &quot;L2/3 IT ENTl&quot;    &quot;Meis2&quot;           &quot;L5/6 NP CTX&quot;     &quot;L5 PT CTX&quot;       &quot;L5/6 IT TPE-ENT&quot; &quot;Sst Chodl&quot;       &quot;CA3&quot;             &quot;L2/3 IT CTX&quot;    
-## [17] &quot;L5 IT CTX&quot;       &quot;L6 IT CTX&quot;       &quot;L2/3 IT RHP&quot;     &quot;L4 RSP-ACA&quot;      &quot;L2/3 IT PPP&quot;     &quot;NP SUB&quot;          &quot;CT SUB&quot;          &quot;L6 CT CTX&quot;      
-## [25] &quot;L3 IT ENT&quot;       &quot;L6b/CT ENT&quot;      &quot;NP PPP&quot;          &quot;L5 PPP&quot;          &quot;L2 IT ENTm&quot;      &quot;L6 IT ENTl&quot;      &quot;CA1-ProS&quot;        &quot;SUB-ProS&quot;       
-## [33] &quot;Car3&quot;            &quot;L6b CTX&quot;         &quot;Oligo&quot;           &quot;CA2-IG-FC&quot;       &quot;CR&quot;              &quot;Astro&quot;           &quot;SMC-Peri&quot;        &quot;Micro-PVM&quot;      
-## [41] &quot;Endo&quot;            &quot;VLMC&quot;</code></pre>
-<p>Thus, the column names from the trimmed means files matches values in <code>metadata$cluster_label</code>:</p>
+<pre><code>##  [1] &quot;Pvalb&quot;           &quot;DG&quot;              &quot;Lamp5&quot;           &quot;Sncg&quot;            &quot;Vip&quot;             &quot;L2 IT ENTl&quot;     
+##  [7] &quot;Sst&quot;             &quot;L4/5 IT CTX&quot;     &quot;L2/3 IT ENTl&quot;    &quot;Meis2&quot;           &quot;L5/6 NP CTX&quot;     &quot;L5 PT CTX&quot;      
+## [13] &quot;L5/6 IT TPE-ENT&quot; &quot;Sst Chodl&quot;       &quot;CA3&quot;             &quot;L2/3 IT CTX&quot;     &quot;L5 IT CTX&quot;       &quot;L6 IT CTX&quot;      
+## [19] &quot;L2/3 IT RHP&quot;     &quot;L4 RSP-ACA&quot;      &quot;L2/3 IT PPP&quot;     &quot;NP SUB&quot;          &quot;CT SUB&quot;          &quot;L6 CT CTX&quot;      
+## [25] &quot;L3 IT ENT&quot;       &quot;L6b/CT ENT&quot;      &quot;NP PPP&quot;          &quot;L5 PPP&quot;          &quot;L2 IT ENTm&quot;      &quot;L6 IT ENTl&quot;     
+## [31] &quot;CA1-ProS&quot;        &quot;SUB-ProS&quot;        &quot;Car3&quot;            &quot;L6b CTX&quot;         &quot;Oligo&quot;           &quot;CA2-IG-FC&quot;      
+## [37] &quot;CR&quot;              &quot;Astro&quot;           &quot;SMC-Peri&quot;        &quot;Micro-PVM&quot;       &quot;Endo&quot;            &quot;VLMC&quot;</code></pre>
+<p>Thus, the column names from the trimmed means files matches values in
+<code>metadata$cluster_label</code>:</p>
 <pre class="r"><code>identical(sort(unique(metadata$cluster_label)),
           sort(unique(colnames(trimmed_mean_expression)))
           )</code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<p>Now, since the variables which links the two input files have been identified, the data can be merged and summarized.</p>
+<p>Now, since the variables which links the two input files have been
+identified, the data can be merged and summarized.</p>
 <div id="filter-metadata" class="section level2">
 <h2>Filter metadata</h2>
-<p>First, filter the metadata to only keep the variables of interest highlighted above for simplicity. Do not keep <code>sample_name</code> since the trimmed values are summarized per cluster rather then single-cells. Further, since the original metadata has all information per cell, further filter this output to keep unique rows.</p>
-<p>If new metadata is needed in the future, modify the following to keep the needed data.</p>
+<p>First, filter the metadata to only keep the variables of interest
+highlighted above for simplicity. Do not keep <code>sample_name</code>
+since the trimmed values are summarized per cluster rather then
+single-cells. Further, since the original metadata has all information
+per cell, further filter this output to keep unique rows.</p>
+<p>If new metadata is needed in the future, modify the following to keep
+the needed data.</p>
 <pre class="r"><code>metadata %&gt;%
     select(class_label, cluster_label, subclass_label)  %&gt;%
     unique(.) %&gt;%
@@ -528,11 +581,19 @@ str(metadata)</code></pre>
 </div>
 <div id="reshape-trimmed-means" class="section level1">
 <h1>Reshape trimmed means</h1>
-<p>Transpose the trimmed means data.frame to have gene names as column names and add a new column which contains the <code>cluster_label</code> information (which are transposed as row names). This will allow us to merge the metadata information into a new data.frame and summarize and plot the data grouped by any variable that has been retained to this point.</p>
+<p>Transpose the trimmed means data.frame to have gene names as column
+names and add a new column which contains the <code>cluster_label</code>
+information (which are transposed as row names). This will allow us to
+merge the metadata information into a new data.frame and summarize and
+plot the data grouped by any variable that has been retained to this
+point.</p>
 <pre class="r"><code>trimmed_mean_expression_transposed &lt;- as.data.frame(t(trimmed_mean_expression))
 
 trimmed_mean_expression_transposed$cluster_label &lt;- rownames(trimmed_mean_expression_transposed)</code></pre>
-<p>Merge the two data.frames to have all needed data in a single data.frame and save this new data. Note there is a single row that contains values (trimmed means), but no cluster information. We will keep this here in this version, but could be optionally removed.</p>
+<p>Merge the two data.frames to have all needed data in a single
+data.frame and save this new data. Note there is a single row that
+contains values (trimmed means), but no cluster information. We will
+keep this here in this version, but could be optionally removed.</p>
 <pre class="r"><code>trimmed_mean_with_metadata &lt;- merge(metadata, trimmed_mean_expression_transposed, by = &quot;cluster_label&quot;)
 
 dir.create(&quot;results&quot;, showWarnings = FALSE)
@@ -545,27 +606,41 @@ write.csv(t(trimmed_mean_with_metadata), file = &quot;./results/trimmed_means_wi
 </div>
 <div id="example-plots-and-data-summary" class="section level1">
 <h1>Example plots and data summary</h1>
-<p>For plotting and summarizing this data, all that is needed is the data present in the <code>trimmed_mean_with_metadata</code> object created in this workflow (or the file saved as <code>./results/trimmed_means_with_selected_metadata.csv</code>).</p>
-<p>The following are just some examples of what we may now do with this new file/data:</p>
+<p>For plotting and summarizing this data, all that is needed is the
+data present in the <code>trimmed_mean_with_metadata</code> object
+created in this workflow (or the file saved as
+<code>./results/trimmed_means_with_selected_metadata.csv</code>).</p>
+<p>The following are just some examples of what we may now do with this
+new file/data:</p>
 <div id="violin-plots-for-gabaergic-class" class="section level2">
 <h2>Violin plots for GABAergic class</h2>
-<p>The goal here would be to generate data split by <code>subclass_label</code> for only <code>GABAergic</code> class. This should match the same values we see in the heatmaps available online but gives us the flexibility of plotting is differently and also allows us to verify that our data wrangling above was properly performed.</p>
+<p>The goal here would be to generate data split by
+<code>subclass_label</code> for only <code>GABAergic</code> class. This
+should match the same values we see in the heatmaps available online but
+gives us the flexibility of plotting is differently and also allows us
+to verify that our data wrangling above was properly performed.</p>
 <p>To perform this:</p>
 <ul>
-<li><code>filter</code> the data to contain the feature of interest (e.g.: <code>class_label</code> or <code>subclass_label</code>)</li>
+<li><code>filter</code> the data to contain the feature of interest
+(e.g.: <code>class_label</code> or <code>subclass_label</code>)</li>
 <li>Plot violin plots for a gene of interest</li>
 </ul>
-<p>For the following example, we will plot data for the gene <code>Gad1</code> for <code>class_label == GABAergic</code></p>
+<p>For the following example, we will plot data for the gene
+<code>Gad1</code> for <code>class_label == GABAergic</code></p>
 <div id="example-of-filtering" class="section level3">
 <h3>Example of filtering</h3>
-<p>For a quick overview of data frame manipulation, please see <a href="https://swcarpentry.github.io/r-novice-gapminder/13-dplyr/index.html" class="uri">https://swcarpentry.github.io/r-novice-gapminder/13-dplyr/index.html</a></p>
+<p>For a quick overview of data frame manipulation, please see <a
+href="https://swcarpentry.github.io/r-novice-gapminder/13-dplyr/index.html"
+class="uri">https://swcarpentry.github.io/r-novice-gapminder/13-dplyr/index.html</a></p>
 <pre class="r"><code>feature_to_filter_for &lt;- &quot;GABAergic&quot;
 
 trimmed_mean_with_metadata %&gt;%
     filter(class_label == feature_to_filter_for) %&gt;%
     {.} -&gt; trimmed_mean_with_metadata_filtered</code></pre>
-<p>We now have the trimmed means values for GABAergic cluster in <code>trimmed_mean_with_metadata_filtered</code>.</p>
-<p>Or we can plot these values colored by <code>subclass_label</code></p>
+<p>We now have the trimmed means values for GABAergic cluster in
+<code>trimmed_mean_with_metadata_filtered</code>.</p>
+<p>Or we can plot these values colored by
+<code>subclass_label</code></p>
 <pre class="r"><code># Gad1
 ggplot(trimmed_mean_with_metadata_filtered, 
        mapping = aes(x = subclass_label, y = Gad1, fill = subclass_label)) + 
@@ -576,20 +651,33 @@ ggplot(trimmed_mean_with_metadata_filtered,
 </div>
 <div id="summarizing-data" class="section level2">
 <h2>Summarizing data</h2>
-<p>Aside from generating figures, this data can be summarized in any form the user would like. To the original goal, we can compute the <code>median</code> for example, using the dataset which we have already pre-filtered (e.g. using <code>GABAergic</code> filtered data).</p>
-<p>For example the median for <code>Gad1</code> across <code>GABAergic</code> class can be computed by:</p>
+<p>Aside from generating figures, this data can be summarized in any
+form the user would like. To the original goal, we can compute the
+<code>median</code> for example, using the dataset which we have already
+pre-filtered (e.g. using <code>GABAergic</code> filtered data).</p>
+<p>For example the median for <code>Gad1</code> across
+<code>GABAergic</code> class can be computed by:</p>
 <pre class="r"><code>median(trimmed_mean_with_metadata_filtered$Gad1)</code></pre>
 <pre><code>## [1] 9.603235</code></pre>
-<p>To summarize this across a list of genes, you may do the following:</p>
+<p>To summarize this across a list of genes, you may do the
+following:</p>
 <ol style="list-style-type: decimal">
-<li>Import a list of genes of interest, which in this case is saved to a file named <code>genes_of_interest.csv</code></li>
+<li>Import a list of genes of interest, which in this case is saved to a
+file named <code>genes_of_interest.csv</code></li>
 </ol>
 <pre class="r"><code>genes_of_interest &lt;- read.csv(file =  &quot;./data/genes_of_interest.csv&quot;, header = TRUE)</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Summarize across all genes:</li>
 </ol>
-<p>There are several ways of accomplishing this type of goal. A common method is using <code>group_by</code> and <code>summarize</code> functions from <code>dplyr</code>. An overview of this can be seen at <a href="https://swcarpentry.github.io/r-novice-gapminder/13-dplyr/index.html" class="uri">https://swcarpentry.github.io/r-novice-gapminder/13-dplyr/index.html</a></p>
-<p>Here, we take another approach by working with the already filtered data <code>trimmed_mean_with_metadata_filtered</code> to acquire the medians and other stats of each gene across all <code>GABAergic</code> entries:</p>
+<p>There are several ways of accomplishing this type of goal. A common
+method is using <code>group_by</code> and <code>summarize</code>
+functions from <code>dplyr</code>. An overview of this can be seen at <a
+href="https://swcarpentry.github.io/r-novice-gapminder/13-dplyr/index.html"
+class="uri">https://swcarpentry.github.io/r-novice-gapminder/13-dplyr/index.html</a></p>
+<p>Here, we take another approach by working with the already filtered
+data <code>trimmed_mean_with_metadata_filtered</code> to acquire the
+medians and other stats of each gene across all <code>GABAergic</code>
+entries:</p>
 <pre class="r"><code>trimmed_mean_with_metadata_filtered %&gt;%
     select(genes_of_interest$genes_of_interest) %&gt;%
     {.}-&gt; trimmed_mean_with_metadata_filtered_by_gene
@@ -600,16 +688,16 @@ summary_data &lt;- as.data.frame(apply(trimmed_mean_with_metadata_filtered_by_ge
 #save
 
 write.csv(summary_data, file = paste0(&quot;./results/summary_by_gene_of_interest_&quot;, feature_to_filter_for, &quot;.csv&quot;))</code></pre>
-<div id="htmlwidget-6032d30f99d24cc36c3f" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-6032d30f99d24cc36c3f">{"x":{"filter":"none","vertical":false,"data":[["Gad1","Syn1","Gad2","Tlr4","Sst","Foxp2","Drd1","Gab1","Slc32a1","Slc17a1","Esr1","Gabra1","Gabra2","Gabra3","Fos","Nsg2","Syn2"],[7.756,3.5822222,8.192095,0,0,0,0,0,0.8488889,0,0,0,0,0,0,4.4555554,7.9062157],[9.0168955,7.905671125,9.46612575,0,0,0,0,0,7.735111825,0,0,4.56100115,2.0227278,0.72626455,0,8.866695,8.808655],[9.603235,8.1730345,9.9040365,0,0.060081589,0,0,0,8.034642,0,0,8.5581785,3.8446002,2.94234805,0.0111077,9.224402,9.1825405],[9.57330360245902,7.91877247131148,9.90548362704918,0,4.56391521714754,0,0.0923175636491803,0,7.43232477540984,0,0.115003491614754,7.30245981426229,4.46282522377049,3.1938536347582,0.459984845540984,9.16318865163935,9.18464016147541],[10.178462625,8.31904075,10.2717615,0,11.317027625,0,0,0,8.2579185,0,0,9.67238925,7.79531025,4.541270875,0.6520043,9.484589,9.53225175],[11.104347,8.554,11.572996,0,12.828,0,2.7603798,0,8.666262,0,4.0923076,10.603816,9.615054,7.6321054,2.5761435,10.944285,10.406511]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Min.<\/th>\n      <th>1st Qu.<\/th>\n      <th>Median<\/th>\n      <th>Mean<\/th>\n      <th>3rd Qu.<\/th>\n      <th>Max.<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-f3418bc7b57c11dff02b" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-f3418bc7b57c11dff02b">{"x":{"filter":"none","vertical":false,"data":[["Gad1","Syn1","Gad2","Tlr4","Sst","Foxp2","Drd1","Gab1","Slc32a1","Slc17a1","Esr1","Gabra1","Gabra2","Gabra3","Fos","Nsg2","Syn2"],[7.756,3.5822222,8.192095,0,0,0,0,0,0.8488889,0,0,0,0,0,0,4.4555554,7.9062157],[9.0168955,7.905671125,9.46612575,0,0,0,0,0,7.735111825,0,0,4.56100115,2.0227278,0.72626455,0,8.866695,8.808655],[9.603235,8.1730345,9.9040365,0,0.060081589,0,0,0,8.034642,0,0,8.5581785,3.8446002,2.94234805,0.0111077,9.224402,9.1825405],[9.57330360245902,7.91877247131148,9.90548362704918,0,4.56391521714754,0,0.0923175636491803,0,7.43232477540984,0,0.115003491614754,7.30245981426229,4.46282522377049,3.1938536347582,0.459984845540984,9.16318865163935,9.18464016147541],[10.178462625,8.31904075,10.2717615,0,11.317027625,0,0,0,8.2579185,0,0,9.67238925,7.79531025,4.541270875,0.6520043,9.484589,9.53225175],[11.104347,8.554,11.572996,0,12.828,0,2.7603798,0,8.666262,0,4.0923076,10.603816,9.615054,7.6321054,2.5761435,10.944285,10.406511]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Min.<\/th>\n      <th>1st Qu.<\/th>\n      <th>Median<\/th>\n      <th>Mean<\/th>\n      <th>3rd Qu.<\/th>\n      <th>Max.<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div id="sessioninfo" class="section level1">
 <h1><code>sessionInfo</code></h1>
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>## R version 4.1.2 (2021-11-01)
+<pre><code>## R version 4.1.3 (2022-03-10)
 ## Platform: x86_64-apple-darwin17.0 (64-bit)
-## Running under: macOS Big Sur 11.6.4
+## Running under: macOS Monterey 12.1
 ## 
 ## Matrix products: default
 ## LAPACK: /Library/Frameworks/R.framework/Versions/4.1/Resources/lib/libRlapack.dylib
@@ -624,12 +712,14 @@ write.csv(summary_data, file = paste0(&quot;./results/summary_by_gene_of_interes
 ## [1] dplyr_1.0.8   ggplot2_3.3.5
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] highr_0.9         bslib_0.3.1       compiler_4.1.2    pillar_1.7.0      jquerylib_0.1.4   tools_4.1.2       digest_0.6.29     jsonlite_1.8.0   
-##  [9] evaluate_0.15     lifecycle_1.0.1   tibble_3.1.6      gtable_0.3.0      pkgconfig_2.0.3   rlang_1.0.2       DBI_1.1.2         cli_3.2.0        
-## [17] crosstalk_1.2.0   yaml_2.3.5        xfun_0.30         fastmap_1.1.0     withr_2.5.0       stringr_1.4.0     knitr_1.37        generics_0.1.2   
-## [25] htmlwidgets_1.5.4 sass_0.4.0        vctrs_0.3.8       tidyselect_1.1.2  grid_4.1.2        DT_0.21           glue_1.6.2        R6_2.5.1         
-## [33] fansi_1.0.2       rmarkdown_2.13    farver_2.1.0      purrr_0.3.4       magrittr_2.0.2    scales_1.1.1      htmltools_0.5.2   ellipsis_0.3.2   
-## [41] assertthat_0.2.1  colorspace_2.0-3  labeling_0.4.2    utf8_1.2.2        stringi_1.7.6     munsell_0.5.0     crayon_1.5.0</code></pre>
+##  [1] highr_0.9         bslib_0.3.1       compiler_4.1.3    pillar_1.7.0      jquerylib_0.1.4   tools_4.1.3      
+##  [7] digest_0.6.29     jsonlite_1.8.0    evaluate_0.15     lifecycle_1.0.1   tibble_3.1.6      gtable_0.3.0     
+## [13] pkgconfig_2.0.3   rlang_1.0.2       cli_3.2.0         crosstalk_1.2.0   yaml_2.3.5        xfun_0.30        
+## [19] fastmap_1.1.0     withr_2.5.0       stringr_1.4.0     knitr_1.37        htmlwidgets_1.5.4 generics_0.1.2   
+## [25] sass_0.4.0        vctrs_0.3.8       DT_0.21           grid_4.1.3        tidyselect_1.1.2  glue_1.6.2       
+## [31] R6_2.5.1          fansi_1.0.2       rmarkdown_2.13    farver_2.1.0      purrr_0.3.4       magrittr_2.0.2   
+## [37] scales_1.1.1      htmltools_0.5.2   ellipsis_0.3.2    colorspace_2.0-3  labeling_0.4.2    utf8_1.2.2       
+## [43] stringi_1.7.6     munsell_0.5.0     crayon_1.5.0</code></pre>
 </div>
 
 <html>

@@ -388,26 +388,68 @@ div.tocify {
 <div id="general-notes" class="section level1">
 <h1>General Notes</h1>
 <ul>
-<li>Use at minimum 3 samples when running a pipeline (even for minimal testing purposes). Some pipelines will not be able to complete successfully when running only a single sample.</li>
-<li>Although not a requirement, we advise to not use the iGenomes option suggested in a number of pipelines due to the lack of information on versioning linked to each assembly which may compromise reproducibility to a small degree. Instead pass on a reference (genome, and annotation file(s)) from a source and version that is suitable to your needs.</li>
-<li>Some tips that we have found require the use of a custom config. Custom configs allow for modifying the values the pipeline uses, including passing in new command flags to the underlying software the pipeline uses. Custom configs are passed in via the command line using <code>-c ${custom_config}</code>, where <code>-c</code> is the command flag and <code>${custom_config}</code> is the path to the custom config.
+<li>Use at minimum 3 samples when running a pipeline (even for minimal
+testing purposes). Some pipelines will not be able to complete
+successfully when running only a single sample.</li>
+<li>Although not a requirement, we advise to not use the iGenomes option
+suggested in a number of pipelines due to the lack of information on
+versioning linked to each assembly which may compromise reproducibility
+to a small degree. Instead pass on a reference (genome, and annotation
+file(s)) from a source and version that is suitable to your needs.</li>
+<li>Some tips that we have found require the use of a custom config.
+Custom configs allow for modifying the values the pipeline uses,
+including passing in new command flags to the underlying software the
+pipeline uses. Custom configs are passed in via the command line using
+<code>-c ${custom_config}</code>, where <code>-c</code> is the command
+flag and <code>${custom_config}</code> is the path to the custom config.
 <ul>
-<li>Importantly, a custom config should only reflect arguments or modifications linked to the process if not available through the pipeline parameters. This is linked to an issue in Nextflow which is being tracked at <a href="https://github.com/nextflow-io/nextflow/issues/2662" class="uri">https://github.com/nextflow-io/nextflow/issues/2662</a>. Thus, standard pipeline parameters should be provided through the command line during the execution of the pipeline or in a yaml file with the usage of the <code>-params-file</code> option (e.g.: <code>-params-file params.yml</code> where the yaml file contains all custom parameters). Discussion linked to a <code>params.yml</code> file can be found at <a href="https://github.com/nf-core/viralrecon/issues/283" class="uri">https://github.com/nf-core/viralrecon/issues/283</a> and <a href="https://github.com/nf-core/rnaseq/issues/754" class="uri">https://github.com/nf-core/rnaseq/issues/754</a>.</li>
+<li>Importantly, a custom config should only reflect arguments or
+modifications linked to the process if not available through the
+pipeline parameters. This is linked to an issue in Nextflow which is
+being tracked at <a
+href="https://github.com/nextflow-io/nextflow/issues/2662"
+class="uri">https://github.com/nextflow-io/nextflow/issues/2662</a>.
+Thus, standard pipeline parameters should be provided through the
+command line during the execution of the pipeline or in a yaml file with
+the usage of the <code>-params-file</code> option (e.g.:
+<code>-params-file params.yml</code> where the yaml file contains all
+custom parameters). Discussion linked to a <code>params.yml</code> file
+can be found at <a
+href="https://github.com/nf-core/viralrecon/issues/283"
+class="uri">https://github.com/nf-core/viralrecon/issues/283</a> and <a
+href="https://github.com/nf-core/rnaseq/issues/754"
+class="uri">https://github.com/nf-core/rnaseq/issues/754</a>.</li>
 </ul></li>
 </ul>
 </div>
 <div id="executor-mode-for-cheaha-profile" class="section level1">
 <h1>Executor mode for Cheaha profile</h1>
 <ul>
-<li>U-BDS has created a public Cheaha profile which has been merged to the main nf-core configs (<a href="https://github.com/nf-core/configs/pull/322" class="uri">https://github.com/nf-core/configs/pull/322</a>). Thus, the profile can be used in any nf-core pipeline with the parameter <code>-profile cheaha</code>. Full documentation of the profile can be found in the nf-core config GitHub: <a href="https://github.com/nf-core/configs/blob/master/docs/cheaha.md" class="uri">https://github.com/nf-core/configs/blob/master/docs/cheaha.md</a></li>
+<li>U-BDS has created a public Cheaha profile which has been merged to
+the main nf-core configs (<a
+href="https://github.com/nf-core/configs/pull/322"
+class="uri">https://github.com/nf-core/configs/pull/322</a>). Thus, the
+profile can be used in any nf-core pipeline with the parameter
+<code>-profile cheaha</code>. Full documentation of the profile can be
+found in the nf-core config GitHub: <a
+href="https://github.com/nf-core/configs/blob/master/docs/cheaha.md"
+class="uri">https://github.com/nf-core/configs/blob/master/docs/cheaha.md</a></li>
 </ul>
-<p>We recommend to use this profile when processing multiple samples in the pipeline as it will aid in parallel processing. If your run only contains a small amount of samples, standard <code>local</code> mode (to a compute node) is usually sufficient. Feel free to let us know if additional customization would benefit the community.</p>
+<p>We recommend to use this profile when processing multiple samples in
+the pipeline as it will aid in parallel processing. If your run only
+contains a small amount of samples, standard <code>local</code> mode (to
+a compute node) is usually sufficient. Feel free to let us know if
+additional customization would benefit the community.</p>
 </div>
 <div id="pipeline-specific-notes" class="section level1">
 <h1>Pipeline-specific Notes</h1>
 <div id="nf-corernaseq" class="section level2">
 <h2>nf-core/rnaseq</h2>
-<p>Although a user choice, we generally recommend to enable Salmon’s flags <code>--seqBias --gcBias</code>. In version 3.6, enabling them can be done via a <code>custom.config</code>, by including the following (enabling the flags in the salmon run with star inputs, and with the salmon run where quasi-mapping was performed by salmon):</p>
+<p>Although a user choice, we generally recommend to enable Salmon’s
+flags <code>--seqBias --gcBias</code>. In version 3.6, enabling them can
+be done via a <code>custom.config</code>, by including the following
+(enabling the flags in the salmon run with star inputs, and with the
+salmon run where quasi-mapping was performed by salmon):</p>
 <pre><code>// tool params not linked to direct pipeline params. 
 process {
     withName: &#39;.*:QUANTIFY_STAR_SALMON:SALMON_QUANT&#39; {
@@ -418,34 +460,84 @@ process {
         ext.args = &quot;--seqBias --gcBias&quot;
     }
 }</code></pre>
-<p>Note that the syntax linked to custom parameters may differ from pipeline to pipeline or even versions. We recommend to following similar syntax to what is present in the <code>modules.config</code> of the pipeline of interest such as <a href="https://github.com/nf-core/rnaseq/blob/3.6/conf/modules.config">this one for v.3.6</a>. If you have questions about this, please feel free to ask a question linked to it during our data science office hours.</p>
+<p>Note that the syntax linked to custom parameters may differ from
+pipeline to pipeline or even versions. We recommend to following similar
+syntax to what is present in the <code>modules.config</code> of the
+pipeline of interest such as <a
+href="https://github.com/nf-core/rnaseq/blob/3.6/conf/modules.config">this
+one for v.3.6</a>. If you have questions about this, please feel free to
+ask a question linked to it during our data science office hours.</p>
 <div id="tips-linked-to-reference" class="section level3">
 <h3>Tips linked to reference</h3>
 <ul>
-<li>The <code>transcript_fasta</code> is not a required parameter by the pipeline. If this is not provided by the user, it will be generated by the process called <code>RSEM_PREPAREREFERENCE_TRANSCRIPTS</code> (which may be renamed in the near-future as this process is executed whenever the user does not provide a transcriptome, regardless of the choice of <code>--aligner</code>). For more information, reference <a href="https://nfcore.slack.com/archives/CE8SSJV3N/p1641824929069500">here</a></li>
-<li><strong>If the user provides a file to</strong> <code>transcript_fasta</code> which is used at the Salmon steps, it should be a transcriptome file generated from <code>gffread</code> as opposed to one downloaded from GENCODE or Ensembl. Issues linked to Ensembl transcriptomes are derieved from the fact that the transcriptome files (even after coding and non-coding RNA concatenation) have less transcripts than the GTF file. The issues linked to GENCODE files are linked to an issue in the pipeline which prevents it from correctly processing the off-the-shelf transcript fasta due to the sequence name format (despite enabling the <code>--gencode</code> parameter). For more information, reference <a href="https://nfcore.slack.com/archives/CE8SSJV3N/p1642697218225700">here</a> and <a href="https://nfcore.slack.com/archives/CE8SSJV3N/p1642699049230500">here</a>
+<li>The <code>transcript_fasta</code> is not a required parameter by the
+pipeline. If this is not provided by the user, it will be generated by
+the process called <code>RSEM_PREPAREREFERENCE_TRANSCRIPTS</code> (which
+may be renamed in the near-future as this process is executed whenever
+the user does not provide a transcriptome, regardless of the choice of
+<code>--aligner</code>). For more information, reference <a
+href="https://nfcore.slack.com/archives/CE8SSJV3N/p1641824929069500">here</a></li>
+<li><strong>If the user provides a file to</strong>
+<code>transcript_fasta</code> which is used at the Salmon steps, it
+should be a transcriptome file generated from <code>gffread</code> as
+opposed to one downloaded from GENCODE or Ensembl. Issues linked to
+Ensembl transcriptomes are derieved from the fact that the transcriptome
+files (even after coding and non-coding RNA concatenation) have less
+transcripts than the GTF file. The issues linked to GENCODE files are
+linked to an issue in the pipeline which prevents it from correctly
+processing the off-the-shelf transcript fasta due to the sequence name
+format (despite enabling the <code>--gencode</code> parameter). For more
+information, reference <a
+href="https://nfcore.slack.com/archives/CE8SSJV3N/p1642697218225700">here</a>
+and <a
+href="https://nfcore.slack.com/archives/CE8SSJV3N/p1642699049230500">here</a>
 <ul>
-<li>It should be noted the current recommended way to use reference files generally is to provide the <code>--fasta</code> and <code>--gtf</code> along with <code>--save_reference</code> the first time you run the pipeline and then let it generate all of the downstream artifacts like the transcriptome and indices to be recycled thereafter via including them in them as params in the yml. This is the way recommended by the authors per the nf-core/rnaseq slack channel. For more information, reference <a href="https://nfcore.slack.com/archives/CE8SSJV3N/p1642698848229000">here</a></li>
+<li>It should be noted the current recommended way to use reference
+files generally is to provide the <code>--fasta</code> and
+<code>--gtf</code> along with <code>--save_reference</code> the first
+time you run the pipeline and then let it generate all of the downstream
+artifacts like the transcriptome and indices to be recycled thereafter
+via including them in them as params in the yml. This is the way
+recommended by the authors per the nf-core/rnaseq slack channel. For
+more information, reference <a
+href="https://nfcore.slack.com/archives/CE8SSJV3N/p1642698848229000">here</a></li>
 </ul></li>
 </ul>
 <p><code>gffread</code> example:</p>
 <pre><code>samtools faidx Mus_musculus.GRCm38.dna.primary_assembly.fa
 
 gffread -w Mus_musculus.GRCm38_GTF_matched_transcripts.fa -g ./Mus_musculus.GRCm38.dna.primary_assembly.fa Mus_musculus.GRCm38.102.gtf</code></pre>
-<p>From the example above, the newly generated transcriptome <code>Mus_musculus.GRCm38_GTF_matched_transcripts.fa</code> would be passed on to the pipeline.</p>
-<p>We recommend to creata a conda environment with both dependencies and record the versions.</p>
-<p><code>gffread</code> documentation can be found from: <a href="http://ccb.jhu.edu/software/stringtie/gff.shtml#gffread" class="uri">http://ccb.jhu.edu/software/stringtie/gff.shtml#gffread</a></p>
+<p>From the example above, the newly generated transcriptome
+<code>Mus_musculus.GRCm38_GTF_matched_transcripts.fa</code> would be
+passed on to the pipeline.</p>
+<p>We recommend to creata a conda environment with both dependencies and
+record the versions.</p>
+<p><code>gffread</code> documentation can be found from: <a
+href="http://ccb.jhu.edu/software/stringtie/gff.shtml#gffread"
+class="uri">http://ccb.jhu.edu/software/stringtie/gff.shtml#gffread</a></p>
 <ul>
-<li>An issue has been opened with the nf-core team to add a warning regarding the points above linked to <code>transcript_fasta</code>: <a href="https://github.com/nf-core/rnaseq/issues/753" class="uri">https://github.com/nf-core/rnaseq/issues/753</a></li>
+<li>An issue has been opened with the nf-core team to add a warning
+regarding the points above linked to <code>transcript_fasta</code>: <a
+href="https://github.com/nf-core/rnaseq/issues/753"
+class="uri">https://github.com/nf-core/rnaseq/issues/753</a></li>
 </ul>
 </div>
 </div>
 <div id="nf-corenanoseq" class="section level2">
 <h2>nf-core/nanoseq</h2>
 <ul>
-<li>The version of nanoplot that is used by this pipeline (1.38) causes the pipeline to crash. Per the author, the issue is with a package that is used to convert html files into png files. However, nanoseq expects there to be png files which causes crash. In order to get around this issue, you can create a custom config and override the container that nanoseq would pull down for Nanoplot. Values specified in configs passed via the commandline take priority over the defaults that are specified in the pipeline proper.
+<li>The version of nanoplot that is used by this pipeline (1.38) causes
+the pipeline to crash. Per the author, the issue is with a package that
+is used to convert html files into png files. However, nanoseq expects
+there to be png files which causes crash. In order to get around this
+issue, you can create a custom config and override the container that
+nanoseq would pull down for Nanoplot. Values specified in configs passed
+via the commandline take priority over the defaults that are specified
+in the pipeline proper.
 <ul>
-<li>This problem is currently being tracked here: <a href="https://github.com/nf-core/nanoseq/issues/141" class="uri">https://github.com/nf-core/nanoseq/issues/141</a></li>
+<li>This problem is currently being tracked here: <a
+href="https://github.com/nf-core/nanoseq/issues/141"
+class="uri">https://github.com/nf-core/nanoseq/issues/141</a></li>
 </ul></li>
 </ul>
 <p>container override example:</p>
@@ -454,7 +546,50 @@ gffread -w Mus_musculus.GRCm38_GTF_matched_transcripts.fa -g ./Mus_musculus.GRCm
         container = &#39;https://depot.galaxyproject.org/singularity/nanoplot:1.32.1--py_0&#39;
     }
 }</code></pre>
-<p>Place the above lines in a file called <code>custom.config</code>. When the pipleine is run, specify a new command-line parameter <code>-c path/to/custom.config</code> to the nextflow command, where <code>path/to/custom.config</code> would be the path to the custom config file.</p>
+<p>Place the above lines in a file called <code>custom.config</code>.
+When the pipleine is run, specify a new command-line parameter
+<code>-c path/to/custom.config</code> to the nextflow command, where
+<code>path/to/custom.config</code> would be the path to the custom
+config file.</p>
+</div>
+<div id="nf-corefetchngs" class="section level2">
+<h2>nf-core/fetchngs</h2>
+<ul>
+<li>The input file passed in via the <code>--input</code> must end in
+<code>.txt</code></li>
+<li>It is possible that curl may exceed the default timeout that is set
+in the pipeline. In order to increase or turn this off you will need a
+to add the below code to a custom config. In order to turn off curl
+timelimit, the custom config will need to contain the following
+lines:</li>
+</ul>
+<pre><code>process {
+    withName: SRA_FASTQ_FTP {
+        ext.args = &#39;--retry 5  --continue-at -&#39;
+    }
+}</code></pre>
+<ul>
+<li>If curl does not work, you can set the pipeline to use sra-toolkit
+instead. In order to set the pipeline to use sra-toolkit to download
+data, you will need to place the following lines into a
+<code>params.yml</code> file, and pass that to the pipeline by adding
+<code>-params-file params.yml</code> to the nextflow run command.</li>
+</ul>
+<pre><code>enable_conda: true
+force_sra_downloads: true</code></pre>
+<ul>
+<li>Prefetch has a default filesize (20GB), however files you download
+may be larger than this default. In order to increase the limit, you
+will want to place the following lines into a <code>custom.conf</code>
+file and pass it to the pipeline by adding <code>-c custom.conf</code>
+to the nextflow run command. Note that this command sets the max size to
+50GB but just tweak this number to accommodate your downloads</li>
+</ul>
+<pre><code>process {
+    withName: SRATOOLS_PREFETCH {
+        ext.args = &#39;--max-size 50G&#39;
+    }
+}</code></pre>
 </div>
 </div>
 

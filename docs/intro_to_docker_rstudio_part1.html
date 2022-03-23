@@ -388,35 +388,89 @@ div.tocify {
 <div id="requirements" class="section level1">
 <h1>Requirements</h1>
 <ul>
-<li>Have Docker installed in your computer - see <a href="https://docs.docker.com/get-docker/" class="uri">https://docs.docker.com/get-docker/</a></li>
-<li>Recommended, but not required: “Get Started” material by Docker: <a href="https://docs.docker.com/get-started/" class="uri">https://docs.docker.com/get-started/</a></li>
+<li>Have Docker installed in your computer - see <a
+href="https://docs.docker.com/get-docker/"
+class="uri">https://docs.docker.com/get-docker/</a></li>
+<li>Recommended, but not required: “Get Started” material by Docker: <a
+href="https://docs.docker.com/get-started/"
+class="uri">https://docs.docker.com/get-started/</a></li>
 </ul>
 </div>
 <div id="overview" class="section level1">
 <h1>Overview</h1>
-<p>Reproducibility is a key component to scientific advancement, and in computational biology this should include the following components:</p>
+<p>Reproducibility is a key component to scientific advancement, and in
+computational biology this should include the following components:</p>
 <ul>
-<li><strong>Good documentation</strong> - no matter how good of a software/app/pipeline you develop, the lack of proper document hinders your science. Thus, document and update as necessary.</li>
-<li><strong>Version control of code</strong> - familiarity with the concept of version control using <code>git</code> and web-bases git services (e.g.: GitLab, GitHub, Bitbucket) is a crucial component to long term reproducibility. There are other types of distributed versions control systems, however, <code>git</code> is mostly used in data science and computational biology, thus it’s a good starting point. For more information on this topic please see <a href="https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control#:~:text=Version%20control%20is%20a%20system,of%20file%20on%20a%20computer.">this Git introduction</a> and the <a href="https://swcarpentry.github.io/git-novice/">Software Carpentry Git material</a></li>
-<li><strong>Environment reproducibility</strong> - this is a key step which is often times missed. Keep in mind that in many instances an analysis has dependencies on specific versions of software and programming languages, and unless that is well documented, your research is not fully reproducible. But beyond good documentation of what software (and versions) were used, the better solution is to deliver the environment to researchers. This is where Docker comes in - Docker provides researchers with a tool to deliver the environment in a scalable, enclosed and portable manner. In other words, you can run an R environment built in Linux that is a year old in your own OS (e.g. Mac or Windows) without having to change your main R version present in your OS. This concept is applicable to any environment types (e.g.: Python) but for our session, we will focus on R and <strong>RStudio</strong> as many analysis are performed interactively in RStudio.</li>
+<li><strong>Good documentation</strong> - no matter how good of a
+software/app/pipeline you develop, the lack of proper document hinders
+your science. Thus, document and update as necessary.</li>
+<li><strong>Version control of code</strong> - familiarity with the
+concept of version control using <code>git</code> and web-bases git
+services (e.g.: GitLab, GitHub, Bitbucket) is a crucial component to
+long term reproducibility. There are other types of distributed versions
+control systems, however, <code>git</code> is mostly used in data
+science and computational biology, thus it’s a good starting point. For
+more information on this topic please see <a
+href="https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control#:~:text=Version%20control%20is%20a%20system,of%20file%20on%20a%20computer.">this
+Git introduction</a> and the <a
+href="https://swcarpentry.github.io/git-novice/">Software Carpentry Git
+material</a></li>
+<li><strong>Environment reproducibility</strong> - this is a key step
+which is often times missed. Keep in mind that in many instances an
+analysis has dependencies on specific versions of software and
+programming languages, and unless that is well documented, your research
+is not fully reproducible. But beyond good documentation of what
+software (and versions) were used, the better solution is to deliver the
+environment to researchers. This is where Docker comes in - Docker
+provides researchers with a tool to deliver the environment in a
+scalable, enclosed and portable manner. In other words, you can run an R
+environment built in Linux that is a year old in your own OS (e.g. Mac
+or Windows) without having to change your main R version present in your
+OS. This concept is applicable to any environment types (e.g.: Python)
+but for our session, we will focus on R and <strong>RStudio</strong> as
+many analysis are performed interactively in RStudio.</li>
 </ul>
 <div id="session-goals" class="section level2">
 <h2>Session Goals</h2>
 <ul>
-<li>Become familiar with <a href="https://www.rocker-project.org/">Rocker</a> resources for running RStudio: <a href="https://hub.docker.com/u/rocker" class="uri">https://hub.docker.com/u/rocker</a></li>
+<li>Become familiar with <a
+href="https://www.rocker-project.org/">Rocker</a> resources for running
+RStudio: <a href="https://hub.docker.com/u/rocker"
+class="uri">https://hub.docker.com/u/rocker</a></li>
 <li>Build a custom Dockerfile with a commonly used CRAN package.</li>
-<li>Build a custom Dockerfile with a Bioconductor package. For this we will use the Bioconductor Docker container which is build upon rocker resources: <a href="http://bioconductor.org/help/docker/" class="uri">http://bioconductor.org/help/docker/</a></li>
-<li>Run a container in HPC with the conversion of Docker image to Singularity.</li>
+<li>Build a custom Dockerfile with a Bioconductor package. For this we
+will use the Bioconductor Docker container which is build upon rocker
+resources: <a href="http://bioconductor.org/help/docker/"
+class="uri">http://bioconductor.org/help/docker/</a></li>
+<li>Run a container in HPC with the conversion of Docker image to
+Singularity.</li>
 </ul>
 </div>
 </div>
-<div id="run-a-basic-rstudio-container-from-rocker" class="section level1">
+<div id="run-a-basic-rstudio-container-from-rocker"
+class="section level1">
 <h1>Run a basic RStudio container from Rocker</h1>
-<p>To <code>run</code> a container image from Rocker present in Docker Hub, the first concept you should pay attention to is “Tags”. For example, for the rstudio docker hub repository (<a href="https://hub.docker.com/r/rocker/rstudio" class="uri">https://hub.docker.com/r/rocker/rstudio</a>), you will should note the “Tags” tab which determines version of the Docker image present in the repository. In the case of <code>rocker/rstudio</code> repository, the tag is linked to the R version the container will ultimately run. Thus, for instance, <code>rocker/rstudio:3.6.3</code> will run a container with R version 3.6.3. For more information on Rocker version tags see: <a href="https://github.com/rocker-org/rocker-versioned" class="uri">https://github.com/rocker-org/rocker-versioned</a> and <a href="https://github.com/rocker-org/rocker-versioned/blob/master/VERSIONS.md" class="uri">https://github.com/rocker-org/rocker-versioned/blob/master/VERSIONS.md</a></p>
-<p>Thus as a first step, let’s run the latest version to the RStudio container from rocker:</p>
+<p>To <code>run</code> a container image from Rocker present in Docker
+Hub, the first concept you should pay attention to is “Tags”. For
+example, for the rstudio docker hub repository (<a
+href="https://hub.docker.com/r/rocker/rstudio"
+class="uri">https://hub.docker.com/r/rocker/rstudio</a>), you will
+should note the “Tags” tab which determines version of the Docker image
+present in the repository. In the case of <code>rocker/rstudio</code>
+repository, the tag is linked to the R version the container will
+ultimately run. Thus, for instance, <code>rocker/rstudio:3.6.3</code>
+will run a container with R version 3.6.3. For more information on
+Rocker version tags see: <a
+href="https://github.com/rocker-org/rocker-versioned"
+class="uri">https://github.com/rocker-org/rocker-versioned</a> and <a
+href="https://github.com/rocker-org/rocker-versioned/blob/master/VERSIONS.md"
+class="uri">https://github.com/rocker-org/rocker-versioned/blob/master/VERSIONS.md</a></p>
+<p>Thus as a first step, let’s run the latest version to the RStudio
+container from rocker:</p>
 <p>To run the latest version, run:</p>
 <pre class="bash"><code>docker run -d --rm -p 8787:8787 -e PASSWORD=NBI rocker/rstudio:latest</code></pre>
-<p>If it’s the first time you are pulling the image, you should see the outputs similar to the following:</p>
+<p>If it’s the first time you are pulling the image, you should see the
+outputs similar to the following:</p>
 <pre><code>Unable to find image &#39;rocker/rstudio:latest&#39; locally
 latest: Pulling from rocker/rstudio
 a4a2a29f9ba4: Pull complete
@@ -437,25 +491,60 @@ rocker/rstudio                     latest              f6cf30c3483b        8 day
 <pre class="bash"><code>docker container ls # or `docker ps`</code></pre>
 <pre><code>CONTAINER ID        IMAGE                   COMMAND             CREATED             STATUS              PORTS                    NAMES
 217e3dff2f26        rocker/rstudio:latest   &quot;/init&quot;             6 minutes ago       Up 6 minutes        0.0.0.0:8787-&gt;8787/tcp   optimistic_colden</code></pre>
-<p>Note the container ID <code>217e3dff2f26</code> matches the last line of the output from when we first ran the <code>run</code> command. This ID will change each time you run a new container.</p>
-<p>Further, here is brief explanation of the flags used with <code>run</code>:</p>
+<p>Note the container ID <code>217e3dff2f26</code> matches the last line
+of the output from when we first ran the <code>run</code> command. This
+ID will change each time you run a new container.</p>
+<p>Further, here is brief explanation of the flags used with
+<code>run</code>:</p>
 <ul>
 <li><code>-d</code>: runs the container in the background / detach</li>
-<li><code>--rm</code>: Automatically removes the container when it exits. I recommend doing this to keep the server/computer clean to save computational resources.</li>
-<li><code>-p</code>: exposes and binds local port to port in the container. In this case we chose 8787 since the RStudio server runs on port 8787 (if you were to run an application which runs on another port, such as R Shiny, choose the appropriate port number, which would be 3838 for R Shiny).</li>
-<li><code>-e PASSWORD=&lt;...&gt;</code>: password is required for RStudio. The username is <code>rstudio</code>.</li>
+<li><code>--rm</code>: Automatically removes the container when it
+exits. I recommend doing this to keep the server/computer clean to save
+computational resources.</li>
+<li><code>-p</code>: exposes and binds local port to port in the
+container. In this case we chose 8787 since the RStudio server runs on
+port 8787 (if you were to run an application which runs on another port,
+such as R Shiny, choose the appropriate port number, which would be 3838
+for R Shiny).</li>
+<li><code>-e PASSWORD=&lt;...&gt;</code>: password is required for
+RStudio. The username is <code>rstudio</code>.</li>
 </ul>
-<p>We can now access the Docker container by visiting <code>localhost:8787</code> in your browser and providing the username <code>rstudio</code> and password you set:</p>
+<p>We can now access the Docker container by visiting
+<code>localhost:8787</code> in your browser and providing the username
+<code>rstudio</code> and password you set:</p>
 <p><img src="figs/intro_to_docker_part1/rocker_rstudio_latest.png" align="center" width="850px" /></p>
-<p>Note under <code>sessionInfo()</code>, that we are running this RStudio session with R version 4.0.3 under Ubuntu 20.04 LTS as opposed to my local R version (3.6) in my MacBook Pro. Also note that the current working directory (<code>/home/rstudio</code>) is a directory that is only present in the Docker container, and not my Mac.</p>
-<p>This is a great way to test newer versions of packages without upgrading your own local versions. One downside to using the container as it is, is that as soon as the container is removed, the installed packages will be deleted too. There is a method to avoid this (by using <code>docker commit</code> to create a new image with changes made in the container - see more at: <a href="https://ropenscilabs.github.io/r-docker-tutorial/03-install-packages.html" class="uri">https://ropenscilabs.github.io/r-docker-tutorial/03-install-packages.html</a>), but we will focus on doing this by writing a Dockerfile.</p>
-<p>Finally, to stop a container simply run <code>docker stop &lt;container_id&gt;</code>. In our case, this will also remove the container since we used <code>--rm</code> with the <code>run</code> command, but the image will remain locally unless the user deletes it with <code>docker image rm &lt;image_id&gt;</code>.</p>
+<p>Note under <code>sessionInfo()</code>, that we are running this
+RStudio session with R version 4.0.3 under Ubuntu 20.04 LTS as opposed
+to my local R version (3.6) in my MacBook Pro. Also note that the
+current working directory (<code>/home/rstudio</code>) is a directory
+that is only present in the Docker container, and not my Mac.</p>
+<p>This is a great way to test newer versions of packages without
+upgrading your own local versions. One downside to using the container
+as it is, is that as soon as the container is removed, the installed
+packages will be deleted too. There is a method to avoid this (by using
+<code>docker commit</code> to create a new image with changes made in
+the container - see more at: <a
+href="https://ropenscilabs.github.io/r-docker-tutorial/03-install-packages.html"
+class="uri">https://ropenscilabs.github.io/r-docker-tutorial/03-install-packages.html</a>),
+but we will focus on doing this by writing a Dockerfile.</p>
+<p>Finally, to stop a container simply run
+<code>docker stop &lt;container_id&gt;</code>. In our case, this will
+also remove the container since we used <code>--rm</code> with the
+<code>run</code> command, but the image will remain locally unless the
+user deletes it with <code>docker image rm &lt;image_id&gt;</code>.</p>
 </div>
-<div id="build-and-customize-your-image-with-dockerfile" class="section level1">
+<div id="build-and-customize-your-image-with-dockerfile"
+class="section level1">
 <h1>Build and customize your image with Dockerfile</h1>
-<p>Developing your own image and container allows you to customize the R session to suit your needs, and thus ensuring that your research is reproducible and scalable.</p>
-<p>Let’s start with a simple example, where we want to run RStudio with R version 3.6.3 and plot data with <code>ggplot2</code>, which is a CRAN package (we will cover Bioconductor later).</p>
-<p>The following defines the Dockerfile containing the necessary R version and package dependency along with a small data set to be included in the container.</p>
+<p>Developing your own image and container allows you to customize the R
+session to suit your needs, and thus ensuring that your research is
+reproducible and scalable.</p>
+<p>Let’s start with a simple example, where we want to run RStudio with
+R version 3.6.3 and plot data with <code>ggplot2</code>, which is a CRAN
+package (we will cover Bioconductor later).</p>
+<p>The following defines the Dockerfile containing the necessary R
+version and package dependency along with a small data set to be
+included in the container.</p>
 <pre class="docker"><code>FROM rocker/rstudio:3.6.3
 
 RUN mkdir /home/rstudio/data_plots
@@ -469,10 +558,29 @@ COPY ./ggplot2_example.R /home/rstudio/data_plots
 COPY ./data_for_dockerfile /home/rstudio/data_plots
 
 RUN R -e &#39;install.packages(&quot;ggplot2&quot;)&#39;</code></pre>
-<p>Note that the example above only uses a subset of Docker directives. For a full reference of directives see <a href="https://docs.docker.com/engine/reference/builder/" class="uri">https://docs.docker.com/engine/reference/builder/</a>. Also note that the data and script added to the image could have also been added via mounting - shown later in this guide under <strong>“Mounting a directory to the container”</strong>. This is usually best practice in many cases to keep the image size smaller, but for this example we include the small dataset/script to demonstrate two directives.</p>
-<p>Now, that that the Dockerfile is ready, the image can be built and the container can be launched after the built is finished - make sure you are in the directory that contains the Dockerfile for this example. You may either copy and paste the above, or acquire it from <code>./src/intro_to_docker_part1</code> of the <a href="https://github.com/U-BDS/training_guides/tree/main/src">GitHub repository which contains this material</a>. Note the folder names as well as shown in the Dockerfile (also present in the GitHub). The data inside of them can be anything, but for this example, data from kaggle.com was used (same versions can be downloaded at <a href="https://uab.box.com/s/qq5vjdv9ao5skp6fl0yumek817um3lru">here</a>)</p>
+<p>Note that the example above only uses a subset of Docker directives.
+For a full reference of directives see <a
+href="https://docs.docker.com/engine/reference/builder/"
+class="uri">https://docs.docker.com/engine/reference/builder/</a>. Also
+note that the data and script added to the image could have also been
+added via mounting - shown later in this guide under <strong>“Mounting a
+directory to the container”</strong>. This is usually best practice in
+many cases to keep the image size smaller, but for this example we
+include the small dataset/script to demonstrate two directives.</p>
+<p>Now, that that the Dockerfile is ready, the image can be built and
+the container can be launched after the built is finished - make sure
+you are in the directory that contains the Dockerfile for this example.
+You may either copy and paste the above, or acquire it from
+<code>./src/intro_to_docker_part1</code> of the <a
+href="https://github.com/U-BDS/training_guides/tree/main/src">GitHub
+repository which contains this material</a>. Note the folder names as
+well as shown in the Dockerfile (also present in the GitHub). The data
+inside of them can be anything, but for this example, data from
+kaggle.com was used (same versions can be downloaded at <a
+href="https://uab.box.com/s/qq5vjdv9ao5skp6fl0yumek817um3lru">here</a>)</p>
 <pre class="bash"><code>docker build --rm --force-rm -t rstudio_ggplot2:3.6.3 .</code></pre>
-<p>(by not providing a tag to <code>-t rstudio_ggplot2</code>, it will default to <code>latest</code> tag)</p>
+<p>(by not providing a tag to <code>-t rstudio_ggplot2</code>, it will
+default to <code>latest</code> tag)</p>
 <pre><code>Sending build context to Docker daemon  3.613MB
 Step 1/6 : FROM rocker/rstudio:3.6.3
  ---&gt; 0e89f80390af
@@ -494,16 +602,29 @@ Step 6/6 : RUN R -e &#39;install.packages(&quot;ggplot2&quot;)&#39;
 ###--- R ggplot2 installation starts ---###</code></pre>
 <p>And now we <code>run</code>:</p>
 <pre class="bash"><code>docker run -d --rm -p 8787:8787 -e PASSWORD=NBI rstudio_ggplot2:3.6.3</code></pre>
-<p>Now, in our <code>localhost:8787</code>, you should the new RStudio session with the environment we specified in the Dockerfile (R version 3.6.3 and ggplot2 available), along with the R script and data file present in <code>/home/rstudio/data_plots</code></p>
+<p>Now, in our <code>localhost:8787</code>, you should the new RStudio
+session with the environment we specified in the Dockerfile (R version
+3.6.3 and ggplot2 available), along with the R script and data file
+present in <code>/home/rstudio/data_plots</code></p>
 <p><img src="figs/intro_to_docker_part1/rstudio_ggplot2_3_6_3.png" align="center" width="850px" /></p>
 <hr />
 </div>
 <div id="mounting-a-directory-to-the-container" class="section level1">
 <h1>Mounting a directory to the container</h1>
-<p>While adding data files and scripts to the image is a good solution to ship a container with all data for a specific project, a user may want to simply use the same environment for their own data or decide to mount to keep the image size small. This can be done without modifying the image by mounting a local directory to the container with flag <code>-v &lt;local_dir&gt;:&lt;remote_container_dir&gt;</code> to the <code>run</code> command:</p>
+<p>While adding data files and scripts to the image is a good solution
+to ship a container with all data for a specific project, a user may
+want to simply use the same environment for their own data or decide to
+mount to keep the image size small. This can be done without modifying
+the image by mounting a local directory to the container with flag
+<code>-v &lt;local_dir&gt;:&lt;remote_container_dir&gt;</code> to the
+<code>run</code> command:</p>
 <pre class="bash"><code>docker run -d --rm -p 8787:8787 -e PASSWORD=NBI -v `pwd`/dir_for_mounting:/home/rstudio/data_mount rstudio_ggplot2:3.6.3</code></pre>
-<p><strong>NOTE</strong>: creating a subdirectory to <code>/home/rstudio</code> for mounting is not needed and added here just as an example. The <code>/home/rstudio</code> can be used directly for mounting purposes (<code>-v `pwd`:/home/rstudio/</code>)</p>
-<p><strong>Continue tutorial to part 2 from the drop down menu at the navigation bar of this website.</strong></p>
+<p><strong>NOTE</strong>: creating a subdirectory to
+<code>/home/rstudio</code> for mounting is not needed and added here
+just as an example. The <code>/home/rstudio</code> can be used directly
+for mounting purposes (<code>-v `pwd`:/home/rstudio/</code>)</p>
+<p><strong>Continue tutorial to part 2 from the drop down menu at the
+navigation bar of this website.</strong></p>
 </div>
 
 <html>
