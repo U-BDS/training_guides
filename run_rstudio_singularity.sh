@@ -27,10 +27,10 @@ A helper script to execute RStudio Singularity containers
 
 options:
     -s (Required) The singularity image
-    -p (Required) the password for your RStudio container
+    -p (Required) The password for your RStudio container
     -u (Required) The server username. Typically the same as $USER
     -m (Optional) The Singularity module to load (Default: Singularity/3.5.2-GCC-5.4.0-2.26)
-    -w (Optional) Tmohe port number to RStudio container (Default: 8787)
+    -w (Optional) The port number to RStudio container (Default: 8787)
     -b (Optional) Additional paths (space-separated and quoted) to bind beyond default Singularity auto-binds
     --server-data-dir (Optional) Use --server-data-dir param of rserver; \
 typically available to rocker/rstudio tags > 4.0.0 (Default: false)
@@ -67,7 +67,7 @@ while [[ $# -gt 0 ]]; do
         -m) SINGULARITY_MODULE=$2; shift;;
         -w) PORT=$2; shift;;
         -b) BINDING_PATH=$2; shift;;
-        --server-data-dir) SERVER_DATA_DIR=$2; shift;;
+        --server-data-dir) SERVER_DATA_DIR="true";;
         *) err_exit "Unknown option $1 ${reset}"
     esac
 
@@ -101,7 +101,6 @@ elif [ "$SERVER_DATA_DIR" == "false" ]; then
 else
     err_exit "Argument $SERVER_DATA_DIR does not match expected input for --server-data-dir (true or false) ${reset}"
 fi
-
 
 #########################################
 ### SETUP OF ADDITIONAL BINDING PATHS ###
@@ -150,7 +149,7 @@ export SINGULARITYENV_USER=$SERVER_USER
 echo -e \
 "${yellow} \n---- Initiating singularity exec ---- \
 \n---- Go to http://localhost:${PORT} to visit your RStudio session ---- \
-\n---- To stop the container, exit this script ---- \n ${reset}"
+\n---- To stop the container, exit this script (e.g. ctrl+C)---- \n ${reset}"
 
 #NOTE: add_bind_params should be first in binding commands
 # in case user re-binds pwd/cwd, or path within pwd/cwd
