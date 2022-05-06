@@ -1,6 +1,6 @@
 ---
 title: "Intro to Docker for RStudio - Part 3"
-author: "Lara Ianov, Ph.D."
+author: "Austyn Trull and Lara Ianov, Ph.D."
 ---
 
 # Requirements
@@ -117,6 +117,12 @@ docker run -it --rm bioconductor/bioconductor_docker:RELEASE_3_10 R -e '(5 + 8) 
 Similarly, this can also be accomplished with Singularity in Cheaha. For an overview of using Singularity containers for this purpose, please see the following: https://docs.uabgrid.uab.edu/wiki/Singularity_containers
 
 # Troubleshooting tips
+
+<!-- #TODO: 1) address all open issues under this section which includes specific examples of the shell script we pushed --> 
+<!-- #TODO: 2) add emphasis that it's best to run containers in separate working directories --> 
+<!-- #TODO 3) Link https://uabrc.github.io/help/faq/#why-do-i-get-a-gray-screen-after-launching-my-ood-rstudio-server-session --> 
+<!-- & mention this can be similarly observed with issues connect to "Unable to connect to service". The solution is the same (to clean `.rstudio`). Although this issue should be minimized by not mounting $HOME from the script --> 
+
 
 ## Using images linked to R > 4.0.0 with RStudio
 

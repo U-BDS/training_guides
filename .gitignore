@@ -15,6 +15,7 @@ docs/src/*
 docs/data/*
 docs/results/*
 docs/Dockerfile
+docs/run_rstudio_singularity.sh
 #ignore any files created by scripts
 database.conf
 my_secure_cookie_key
