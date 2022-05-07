@@ -21,7 +21,7 @@ function usage () {
     cat >&2 <<EOF
 
 USAGE: ./$progname -s SINGULARITY_IMAGE -p PASSWORD -u SERVER_USER \
-[-m SINGULARITY_MODULE] [-w PORT] [-b "ADDITIONAL_BINDS"] [--server-data-dir false]
+[-m SINGULARITY_MODULE] [-w PORT] [-b "DIR_BINDS"] [--server-data-dir]
 
 A helper script to execute RStudio Singularity containers
 
@@ -31,7 +31,7 @@ options:
     -u (Required) The server username. Typically the same as $USER
     -m (Optional) The Singularity module to load (Default: Singularity/3.5.2-GCC-5.4.0-2.26)
     -w (Optional) The port number to RStudio container (Default: 8787)
-    -b (Optional) Additional paths (space-separated and quoted) to bind beyond default Singularity auto-binds
+    -b (Optional) Directories to bind (space-separated and quoted) 
     --server-data-dir (Optional) Use --server-data-dir param of rserver; \
 typically available to rocker/rstudio tags > 4.0.0 (Default: false)
 
@@ -90,21 +90,22 @@ elif [ -z "$SERVER_USER" ]; then
     err_exit "No argument supplied -u ; missing server username ${reset}"
 fi
 
+#########################################
+### SETUP OF ADDITIONAL BINDING PATHS ###
+#########################################
+
 ### --server-data-dir
 if [ "$SERVER_DATA_DIR" == "true" ]; then
     mkdir -p singularity_tmp_dir
     add_bind_params+="--bind ${cwd}/singularity_tmp_dir "
     server_data_dir="--server-data-dir ${cwd}/singularity_tmp_dir"
-elif [ "$SERVER_DATA_DIR" == "false" ]; then
-    echo -e "--server-data-dir set to false"
-    server_data_dir=""
 else
-    err_exit "Argument $SERVER_DATA_DIR does not match expected input for --server-data-dir (true or false) ${reset}"
+    echo -e "--server-data-dir set to $SERVER_DATA_DIR, thus not mounting tmp dir" #false
+    server_data_dir=""
 fi
 
-#########################################
-### SETUP OF ADDITIONAL BINDING PATHS ###
-#########################################
+
+### USER PROVIDED PATHS
 
 for dir in $BINDING_PATH; do
     add_bind_params+="--bind $dir "
@@ -114,7 +115,7 @@ if [ "$add_bind_params" != "" ] ;
 then
     echo -e "\nWill append the following binding commands: $add_bind_params"
 else
-    echo -e "\nNo additional binding paths provided. Only Singularity auto mounts will be available"
+    echo -e "\nNo additional binding paths or directories provided"
 fi
 
 #################
