@@ -31,7 +31,7 @@ options:
     -u (Required) The server username. Typically the same as $USER
     -m (Optional) The Singularity module to load (Default: Singularity/3.5.2-GCC-5.4.0-2.26)
     -w (Optional) The port number to RStudio container (Default: 8787)
-    -b (Optional) Directories to bind (space-separated and quoted) 
+    -b (Optional) Directory to bind. Can be specified multiple times to bind additional directories
     --server-data-dir (Optional) Use --server-data-dir param of rserver; \
 typically available to rocker/rstudio tags > 4.0.0 (Default: false)
 
@@ -66,7 +66,7 @@ while [[ $# -gt 0 ]]; do
         -u) SERVER_USER=$2; shift;;
         -m) SINGULARITY_MODULE=$2; shift;;
         -w) PORT=$2; shift;;
-        -b) BINDING_PATH=$2; shift;;
+        -b) BINDING_PATH+="$2 "; shift;;
         --server-data-dir) SERVER_DATA_DIR="true";;
         *) err_exit "Unknown option $1 ${reset}"
     esac

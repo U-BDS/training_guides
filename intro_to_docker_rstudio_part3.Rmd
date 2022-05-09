@@ -116,7 +116,7 @@ docker run -it --rm bioconductor/bioconductor_docker:RELEASE_3_10 R -e '(5 + 8) 
 
 Similarly, this can also be accomplished with Singularity in Cheaha. For an overview of using Singularity containers for this purpose, please see the following: https://docs.uabgrid.uab.edu/wiki/Singularity_containers
 
-# Troubleshooting tips
+# Singularity troubleshooting tips
 
 The tutorial above provides a synopsis of the introduction to Singularity, however, we note that using Singularity can sometimes lead to a number of errors which are linked to key differences between Singularity and Docker. In this section, we illustrate a number of these issues, and provide solutions to them. To aid in the implementation of the solution, we are providing [this helper script which is hosted in the GitHub repository of this training guide](https://github.com/U-BDS/training_guides/blob/main/run_rstudio_singularity.sh) 
 
@@ -139,7 +139,7 @@ options:
     -u (Required) The server username. Typically the same as $USER
     -m (Optional) The Singularity module to load (Default: Singularity/3.5.2-GCC-5.4.0-2.26)
     -w (Optional) The port number to RStudio container (Default: 8787)
-    -b (Optional) Directories to bind (space-separated and quoted)
+    -b (Optional) Directory to bind. Can be specified multiple times to bind additional directories
     --server-data-dir (Optional) Use --server-data-dir param of rserver; typically available to rocker/rstudio tags > 4.0.0 (Default: false)
 
 ```
@@ -170,13 +170,13 @@ __NOTE__: we pass in `--server-data-dir` which is only typically available to ro
 
 ### Binding directories
 
-In this helper script we have disabled a number of Singularity auto-mounts. Thus, you will need to pass in any directories to be mounted with `-b`
+In this helper script we have disabled a number of Singularity auto-mounts. Thus, you will need to pass in any directories to be mounted with `-b`, each directory having its own `-b` parameter
 
 ```bash
 # here we mount $USER_DATA and the current working directory (along with tmp dir with --server-data-dir)
-# Note they should be under a pair of quotes, and space separated
+# Note that since we are binding two directories, there are two '-b' parameters
 
-./run_rstudio_singularity.sh -s rstudio_4.0.4.sif -p "NBI" -u $USER -b "$USER_DATA `pwd`" --server-data-dir
+./run_rstudio_singularity.sh -s rstudio_4.0.4.sif -p "NBI" -u $USER -b $USER_DATA -b `pwd` --server-data-dir
 ```
 
 ```
@@ -191,7 +191,7 @@ __NOTE__: due to an issue we have encountered (see [issue #15](https://github.co
 
 ### Port number
 
-An optional flag (`w`) is available if port 8787 is busy.
+An optional flag (`-w`) is available if port 8787 is busy.
 
 ## Solutions from `run_rstudio_singularity.sh`
 
@@ -205,7 +205,7 @@ For clarity in the choice of parameters and other tasks within the helper script
 #######################
 # All files, directories etc. below are to avoid specific Singularity errors identified
 # For more details see troubleshooting tips at: 
-# https://u-bds.github.io/training_guides/intro_to_docker_rstudio_part3.html#Troubleshooting_tips
+# https://u-bds.github.io/training_guides/intro_to_docker_rstudio_part3.html#Singularity_troubleshooting_tips
 
 mkdir -p run var-lib-rstudio-server #Solution_1
 
