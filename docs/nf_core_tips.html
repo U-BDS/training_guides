@@ -14,7 +14,7 @@
 
 <title>nf-core tips</title>
 
-<script src="site_libs/header-attrs-2.13/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -420,6 +420,17 @@ class="uri">https://github.com/nf-core/viralrecon/issues/283</a> and <a
 href="https://github.com/nf-core/rnaseq/issues/754"
 class="uri">https://github.com/nf-core/rnaseq/issues/754</a>.</li>
 </ul></li>
+<li>Results from the <code>work</code> directory are copied over to the
+resulting directory (typically called <code>results</code>) - deleting
+the work directory may be desired to avoid duplication of files, however
+deleting this directory also removes the log files (the
+<code>.command.*</code> files) and prevents you from resuming a pipeline
+execution (with <code>-resume</code>). If you <strong>do not</strong>
+need to resume a pipeline run, and would like to remove large files from
+the <code>work</code> directory while keeping the logs, you may clean
+this directory with the command <code>nextflow clean -k -f</code> (and
+we recommend performing a dry-run prior to this with
+<code>nextflow clean -k -n</code>).</li>
 </ul>
 </div>
 <div id="executor-mode-for-cheaha-profile" class="section level1">
@@ -590,6 +601,68 @@ to the nextflow run command. Note that this command sets the max size to
         ext.args = &#39;--max-size 50G&#39;
     }
 }</code></pre>
+</div>
+<div id="nf-coreatacseq" class="section level2">
+<h2>nf-core/atacseq</h2>
+<ul>
+<li>Extra precaution should be taken when running versions 1.2.1 and
+below in a cluster environment. Macs2 uses the <code>/tmp</code> dir on
+the cluster, which is apt to run out of space while the process is
+running and cause the macs2 output files to be empty (<code>/tmp</code>
+is by design a small file system and it would be preferable to use user
+scratch or user data). Since this version of the pipeline is DSL1, there
+is not a way to modify the parameters of this process to store temporary
+files in a different directory to properly resolve the issue, without
+modifying the source code and executing it appropriately (this goes
+beyond the scope of this guide. If more information is needed, we
+recommend to stop by our data science office hours). <strong>As a result
+we recommend running this pipeline on a local/personal computer rather
+than on the cluster for the aforementioned versions.</strong>
+<ul>
+<li>For reference the pipeline will fail with the below error when this
+occurs. It should be noted that this error can have other causes,
+however, if you are running on a cluster it is worth trying to run it in
+a non-cluster environment as well to confirm the cause.</li>
+</ul>
+<pre><code>Error in read.table(PeakFiles[idx], sep = &quot;\t&quot;, header = FALSE) : 
+  no lines available in input
+Execution halted</code></pre></li>
+</ul>
+</div>
+<div id="nf-corescrnaseq" class="section level2">
+<h2>nf-core/scrnaseq</h2>
+<ul>
+<li>The DSL 1.0 versions of the pipeline (v1.1.0 and below) have issues
+that prevent STAR and Kalisto from being used successfully as aligners,
+making the only aligner that works being alevin. The issues with the
+other aligners are a result of bugs with the pipeline itself, and in
+combination with the pipeline being DSL 1.0, mean that these issues
+cannot be overcome without code changes to the pipeline itself and
+executing it appropriately (this goes beyond the scope of this guide. If
+more information is needed, we recommend to stop by our data science
+office hours).
+<ul>
+<li>Due to these issues, the developers of the pipeline currently
+recommend running the pipeline under the development branch. The
+development branch of the pipeline contains the DSL 2.0 implementation
+of the pipeline and corrects the issues that prevent the currently
+released version of the pipeline from being ran in its entirety. Running
+the pipeline in this way has not been tested by U-BDS, so caution should
+be taken, but any questions can be worked through during data science
+office hours. U-BDS will test the pipeline once the DSL 2.0 version is
+merged into the main branch for the next pipeline release.</li>
+</ul></li>
+<li>A more general note: this pipeline does not produce any QC results,
+such as fastqc results, mapping stats, single-cell stats, nor do the
+multiqc reports that are generated have a much useful information. Any
+qc information the user is wishing to see will need to be executed
+manually separately from the pipeline.
+<ul>
+<li>An exception to this note is <code>alevin_qc</code>, which is a
+collection of various stats and graphs about your dataset. These qc
+results are only produced when using alevin as an aligner.</li>
+</ul></li>
+</ul>
 </div>
 </div>
 

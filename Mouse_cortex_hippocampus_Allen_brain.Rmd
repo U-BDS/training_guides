@@ -60,8 +60,8 @@ library(dplyr)
 The files needed were downloaded and placed into the `./data` sub-directory from this project which follows the general standard practice for R projects (see more at: https://swcarpentry.github.io/r-novice-gapminder/02-project-intro/index.html).
 
 ```{r import data}
-trimmed_mean_expression <- read.csv("./data/trimmed_means.csv", check.names = FALSE, row.names = 1)
-metadata <- read.csv("./data/metadata.csv")
+trimmed_mean_expression <- read.csv("./data/Allen_Brain_Map_mouse_sc_data/trimmed_means.csv", check.names = FALSE, row.names = 1)
+metadata <- read.csv("./data/Allen_Brain_Map_mouse_sc_data/metadata.csv")
 ```
 
 ```{r}
@@ -196,7 +196,7 @@ To summarize this across a list of genes, you may do the following:
 1. Import a list of genes of interest, which in this case is saved to a file named `genes_of_interest.csv`
 
 ```{r}
-genes_of_interest <- read.csv(file =  "./data/genes_of_interest.csv", header = TRUE)
+genes_of_interest <- read.csv(file =  "./data/Allen_Brain_Map_mouse_sc_data/genes_of_interest.csv", header = TRUE)
 ```
 
 2. Summarize across all genes:

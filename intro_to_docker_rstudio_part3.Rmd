@@ -1,6 +1,6 @@
 ---
 title: "Intro to Docker for RStudio - Part 3"
-author: "Lara Ianov, Ph.D."
+author: "Austyn Trull and Lara Ianov, Ph.D."
 ---
 
 # Requirements
@@ -116,61 +116,160 @@ docker run -it --rm bioconductor/bioconductor_docker:RELEASE_3_10 R -e '(5 + 8) 
 
 Similarly, this can also be accomplished with Singularity in Cheaha. For an overview of using Singularity containers for this purpose, please see the following: https://docs.uabgrid.uab.edu/wiki/Singularity_containers
 
-# Troubleshooting tips
+# Singularity troubleshooting tips
 
-## Using images linked to R > 4.0.0 with RStudio
+The tutorial above provides a synopsis of the introduction to Singularity, however, we note that using Singularity can sometimes lead to a number of errors which are linked to key differences between Singularity and Docker. In this section, we illustrate a number of these issues, and provide solutions to them. To aid in the implementation of the solution, we are providing [this helper script which is hosted in the GitHub repository of this training guide](https://github.com/U-BDS/training_guides/blob/main/run_rstudio_singularity.sh) 
 
-1. If you are using an image such as `rocker/rstudio:4.0.4`, it's necessary to `--bind` the following (a process documented in rocker's website: https://www.rocker-project.org/use/singularity/)
+## `run_rstudio_singularity.sh`
 
-```
-singularity pull docker://rocker/rstudio:4.0.4
+1. Either git clone the main branch of this guide (<https://github.com/U-BDS/training_guides>), or download the helper script directly. Ensure it's executable (`chmod +x`)
 
-mkdir -p run var-lib-rstudio-server
+2. Ensure you have a Singularity image e.g.: run `singularity pull` from a docker repository as shown earlier.
 
-printf 'provider=sqlite\ndirectory=/var/lib/rstudio-server\n' > database.conf
-
-singularity exec --bind run:/run,var-lib-rstudio-server:/var/lib/rstudio-server,database.conf:/etc/rstudio/database.conf rstudio_4.0.4.sif rserver --www-address=127.0.0.1
-```
-
-Not doing so, will cause the following error:
+3. Start your singularity run by providing the following parameters in a compute node in a VNC session:
 
 ```
-ERROR database error 7 (sqlite3_statement_backend::loadOne: attempt to write a readonly database) [description: Could not delete expired revoked cookies from the database, description: Could not read revoked cookies from the database]; OCCURRED AT virtual rstudio::core::Error rstudio::core::database::Connection::execute(rstudio::core::database::Query&, bool*) src/cpp/core/Database.cpp:510; LOGGED FROM: int main(int, char* const*) src/cpp/server/ServerMain.cpp:763
-```
+USAGE: ./run_rstudio_singularity.sh -s SINGULARITY_IMAGE -p PASSWORD -u SERVER_USER [-m SINGULARITY_MODULE] [-w PORT] [-b "DIR_BINDS"] [--server-data-dir]
 
-2. Additionally, newer RStudio images may enforce the `--server-user arg (=rstudio-server)` argument, and users may encounter the following error:
+A helper script to execute RStudio Singularity containers
 
-```
-ERROR Attempt to run server as user 'rstudio-server' (uid 999) from account 'lianov' (uid 10993) without privilege, which is required to run as a different uid; LOGGED FROM: virtual rstudio::core::ProgramStatus rstudio::server::Options::read(int, char* const*, std::ostream&) src/cpp/server/ServerOptions.cpp:322
-```
-
-In the error above, the issue is that it's attempting to run the container with my user id when it's expecting `rstudio-server`. To solve this, add in your user id to the `--server-user` (e.g.: `rserver --server-user=lianov`) such as:
-
-```
-singularity exec --bind run:/run,var-lib-rstudio-server:/var/lib/rstudio-server,database.conf:/etc/rstudio/database.conf rstudio_4.0.4.sif rserver --server-user=lianov --www-address=127.0.0.1
-```
-
-## Additional tips
-
-1. If you come across the following error:
+options:
+    -s (Required) The singularity image
+    -p (Required) The password for your RStudio container
+    -u (Required) The server username. Typically the same as $USER
+    -m (Optional) The Singularity module to load (Default: Singularity/3.5.2-GCC-5.4.0-2.26)
+    -w (Optional) The port number to RStudio container (Default: 8787)
+    -b (Optional) Directory to bind. Can be specified multiple times to bind additional directories
+    --server-data-dir (Optional) Use --server-data-dir param of rserver; typically available to rocker/rstudio tags > 4.0.0 (Default: false)
 
 ```
-[rserver] ERROR system error 11 (Resource temporarily unavailable) [description: Could not acquire revocation list file lock]; OCCURRED AT rstudio::core::Error rstudio::server::auth::handler::initialize() src/cpp/server/auth/ServerAuthHandler.cpp:569; LOGGED FROM: int main(int, char* const*) src/cpp/server/ServerMain.cpp:674
-```
-
-It's due to another instance of rstudio creating a lock in the default tmp directory. The solution is to create your own temporary directory and pass it to `rserver` command with the flag `--server-data-dir` (and to  `--bind` in `singularity exec`).
 
 Example:
 
-```bash
-mkdir -p $USER_SCRATCH/singularity_rstudio_tmp
+For a Singularity image that is linked to R > 4.0.0 with RStudio, we can start the container with the following:
 
-PASSWORD='NBI' singularity exec --bind $USER_SCRATCH/HPC_path_mount --bind $USER_SCRATCH/singularity_rstudio_tmp rstudio_ggplot2_3.6.3.sif rserver --auth-none=0  --auth-pam-helper-path=pam-helper --www-address=127.0.0.1 --server-data-dir $USER_SCRATCH/singularity_rstudio_tmp
+```bash
+./run_rstudio_singularity.sh -s rstudio_4.0.4.sif -p "NBI" -u $USER --server-data-dir
 ```
 
-2. When running more than one RStudio Singularity container:
-    * Although not a requirement, I recommend to launch the container from a separate VNC/HPC Desktop job with its own dedicated computational resources.
-    * Create separate tmp directories per container.
+Expected output will be:
+
+```
+Will append the following binding commands: --bind /data/temporary-scratch/lianov/singularity_test/singularity_tmp_dir 
+ 
+---- Initiating singularity exec ---- 
+---- Go to http://localhost:8787 to visit your RStudio session ---- 
+---- To stop the container, exit this script (e.g. ctrl+C)---- 
+```
+
+__NOTE__: we pass in `--server-data-dir` which is only typically available to rocker/rstudio tags > 4.0.0; if you have an error that this parameter is not available, then your underlying `rserver` command in your container doesn't contain this flag. For example, for the image `rstudio_ggplot2_3.6.3.sif`, you would start the container by:
+
+```bash
+./run_rstudio_singularity.sh -s rstudio_ggplot2_3.6.3.sif -p "NBI" -u $USER
+```
+
+### Binding directories
+
+In this helper script we have disabled a number of Singularity auto-mounts. Thus, you will need to pass in any directories to be mounted with `-b`, each directory having its own `-b` parameter
+
+```bash
+# here we mount $USER_DATA and the current working directory (along with tmp dir with --server-data-dir)
+# Note that since we are binding two directories, there are two '-b' parameters
+
+./run_rstudio_singularity.sh -s rstudio_4.0.4.sif -p "NBI" -u $USER -b $USER_DATA -b `pwd` --server-data-dir
+```
+
+```
+Will append the following binding commands: --bind /data/temporary-scratch/lianov/singularity_test/singularity_tmp_dir --bind /data/user/lianov --bind /data/temporary-scratch/lianov/singularity_test 
+ 
+---- Initiating singularity exec ---- 
+---- Go to http://localhost:8787 to visit your RStudio session ---- 
+---- To stop the container, exit this script (e.g. ctrl+C)---- 
+```
+
+__NOTE__: due to an issue we have encountered (see [issue #15](https://github.com/U-BDS/training_guides/issues/15)), the home directory cannot be mounted through the helper script (this is linked to the use of `--containall`, see more at <https://sylabs.io/guides/3.1/user-guide/bind_paths_and_mounts.html#containall>). Thus, if you have any files in `$HOME`, which should be available in the container, simply move them to any other directory which is mounted such as the current working directory.
+
+### Port number
+
+An optional flag (`-w`) is available if port 8787 is busy.
+
+## Solutions from `run_rstudio_singularity.sh`
+
+For clarity in the choice of parameters and other tasks within the helper script, the following section highlights the sections of the script with metadata (__`Solution_#` as a comment__) to the error we have encountered in the table below:
+
+<details><summary>Click here to expand __subset of `run_rstudio_singularity.sh`__</summary>
+
+```bash
+#######################
+### PRE-REQUIREMENTS ##
+#######################
+# All files, directories etc. below are to avoid specific Singularity errors identified
+# For more details see troubleshooting tips at: 
+# https://u-bds.github.io/training_guides/intro_to_docker_rstudio_part3.html#Singularity_troubleshooting_tips
+
+mkdir -p run var-lib-rstudio-server #Solution_1
+
+printf 'provider=sqlite\ndirectory=/var/lib/rstudio-server\n' > database.conf #Solution_1
+
+uuid > my_secure_cookie_key #Solution_2 and https://github.com/U-BDS/training_guides/issues/13
+
+#######################
+### RUN SINGULARITY ###
+#######################
+
+# explicit export the $PASSWORD and $USER environment variable
+# see issue #15
+export SINGULARITYENV_PASSWORD=$PASSWORD #Solution_3 and https://github.com/U-BDS/training_guides/issues/15
+export SINGULARITYENV_USER=$SERVER_USER #Solution_3 and https://github.com/U-BDS/training_guides/issues/15
+
+# launch the container, bind all needed directories etc.
+echo -e \
+"${yellow} \n---- Initiating singularity exec ---- \
+\n---- Go to http://localhost:${PORT} to visit your RStudio session ---- \
+\n---- To stop the container, exit this script (e.g. ctrl+C)---- \n ${reset}"
+
+#NOTE: add_bind_params should be first in binding commands
+# in case user re-binds pwd/cwd, or path within pwd/cwd
+
+singularity exec \
+    --cleanenv \    #Solution_3
+    --containall \  #Solution_3
+    $add_bind_params \ 
+    --bind run:/run,var-lib-rstudio-server:/var/lib/rstudio-server,database.conf:/etc/rstudio/database.conf \  #Solution_1
+    --bind $cwd/my_secure_cookie_key \  #Solution_2 
+    $SINGULARITY_IMAGE \
+    rserver \
+    --auth-validate-users=0 \
+    --auth-none=0  \
+    --auth-pam-helper-path=pam-helper \
+    --www-address=127.0.0.1 \
+    --secure-cookie-key-file $cwd/my_secure_cookie_key \  #Solution_2 
+    --server-user=$SERVER_USER \  #Solution_4
+    --www-port $PORT \  #Solution_5
+    $server_data_dir    #Solution_6: enables --server-data-dir
+```
+
+</details>
+
+___
+
+```{r, echo = FALSE}
+metadata_singularity <- read.csv("./src/singularity_error_metadata.csv")
+
+DT::datatable(metadata_singularity,
+              options = list(
+                  scrollX = TRUE
+              ),
+              rownames = FALSE)
+```
+
+
+
+## Additional tips
+
+1. When running more than one RStudio Singularity container:
+    * __It's recommended to run the containers in separate working directories.__
+    * Although not a requirement, we recommend to launch the container from a separate VNC/HPC Desktop job with its own dedicated computational resources.
     * In HPC VNC, when running containers that need Firefox such as RStudio, they are linked to a default Firefox user. Thus, if more than one session is running the following may occur:
 
 ```
@@ -183,8 +282,7 @@ One solution is outlined in the Firefox user questions: https://support.mozilla.
 
 * That should resolve the issue, but importantly this makes your latest profile set as default. Thus, if you encounter the same error switch to the older existing profile. You can read more about setting default profile for Firefox at: https://support.mozilla.org/en-US/kb/profile-manager-create-remove-switch-firefox-profiles
 
-3. If you encounter `ERROR system error 98 (Address already in use)`, it means the default port number (8787) is busy, and you can resolve it by adding `--www-port <port #>` after `rserver`.
-
+2. If you encounter `ERROR system error 17 (File exists) [path: /home/$USER/.rstudio, target-dir: ]` followed by message which may state "Unable to connect to service", the cause is likely linked to the `.rstudio` directory located in `$HOME`. Using the helper script we provide above should minimize this since `$HOME` is not mounted, however, we add special emphasis to this error in this guide since it's also referenced in the [UAB RC docs here](https://uabrc.github.io/help/faq/#why-do-i-get-a-gray-screen-after-launching-my-ood-rstudio-server-session) if a user is using the OOD RStudio Server.
 
 # Additional learning resources
 
