@@ -544,12 +544,8 @@ see the following: <a
 href="https://docs.uabgrid.uab.edu/wiki/Singularity_containers"
 class="uri">https://docs.uabgrid.uab.edu/wiki/Singularity_containers</a></p>
 </div>
-<div id="troubleshooting-tips" class="section level1">
-<h1>Troubleshooting tips</h1>
-<!-- #TODO: 1) address all open issues under this section which includes specific examples of the shell script we pushed -->
-<!-- #TODO: 2) add emphasis that it's best to run containers in separate working directories -->
-<!-- #TODO 3) Link https://uabrc.github.io/help/faq/#why-do-i-get-a-gray-screen-after-launching-my-ood-rstudio-server-session -->
-<!-- & mention this can be similarly observed with issues connect to "Unable to connect to service". The solution is the same (to clean `.rstudio`). Although this issue should be minimized by not mounting $HOME from the script -->
+<div id="singularity-troubleshooting-tips" class="section level1">
+<h1>Singularity troubleshooting tips</h1>
 <p>The tutorial above provides a synopsis of the introduction to
 Singularity, however, we note that using Singularity can sometimes lead
 to a number of errors which are linked to key differences between
@@ -583,7 +579,7 @@ options:
     -u (Required) The server username. Typically the same as $USER
     -m (Optional) The Singularity module to load (Default: Singularity/3.5.2-GCC-5.4.0-2.26)
     -w (Optional) The port number to RStudio container (Default: 8787)
-    -b (Optional) Directories to bind (space-separated and quoted)
+    -b (Optional) Directory to bind. Can be specified multiple times to bind additional directories
     --server-data-dir (Optional) Use --server-data-dir param of rserver; typically available to rocker/rstudio tags &gt; 4.0.0 (Default: false)
 </code></pre>
 <p>Example:</p>
@@ -608,11 +604,12 @@ by:</p>
 <h3>Binding directories</h3>
 <p>In this helper script we have disabled a number of Singularity
 auto-mounts. Thus, you will need to pass in any directories to be
-mounted with <code>-b</code></p>
+mounted with <code>-b</code>, each directory having its own
+<code>-b</code> parameter</p>
 <pre class="bash"><code># here we mount $USER_DATA and the current working directory (along with tmp dir with --server-data-dir)
-# Note they should be under a pair of quotes, and space separated
+# Note that since we are binding two directories, there are two &#39;-b&#39; parameters
 
-./run_rstudio_singularity.sh -s rstudio_4.0.4.sif -p &quot;NBI&quot; -u $USER -b &quot;$USER_DATA `pwd`&quot; --server-data-dir</code></pre>
+./run_rstudio_singularity.sh -s rstudio_4.0.4.sif -p &quot;NBI&quot; -u $USER -b $USER_DATA -b `pwd` --server-data-dir</code></pre>
 <pre><code>Will append the following binding commands: --bind /data/temporary-scratch/lianov/singularity_test/singularity_tmp_dir --bind /data/user/lianov --bind /data/temporary-scratch/lianov/singularity_test 
  
 ---- Initiating singularity exec ---- 
@@ -630,7 +627,7 @@ which is mounted such as the current working directory.</p>
 </div>
 <div id="port-number" class="section level3">
 <h3>Port number</h3>
-<p>An optional flag (<code>w</code>) is available if port 8787 is
+<p>An optional flag (<code>-w</code>) is available if port 8787 is
 busy.</p>
 </div>
 </div>
@@ -644,15 +641,15 @@ comment</strong>) to the error we have encountered in the table
 below:</p>
 <details>
 <summary>
-Click here to expand <strong>subset</strong> of
-<code>run_rstudio_singularity.sh</code>
+Click here to expand <strong>subset of
+<code>run_rstudio_singularity.sh</code></strong>
 </summary>
 <pre class="bash"><code>#######################
 ### PRE-REQUIREMENTS ##
 #######################
 # All files, directories etc. below are to avoid specific Singularity errors identified
 # For more details see troubleshooting tips at: 
-# https://u-bds.github.io/training_guides/intro_to_docker_rstudio_part3.html#Troubleshooting_tips
+# https://u-bds.github.io/training_guides/intro_to_docker_rstudio_part3.html#Singularity_troubleshooting_tips
 
 mkdir -p run var-lib-rstudio-server #Solution_1
 
@@ -696,8 +693,8 @@ singularity exec \
     $server_data_dir    #Solution_6: enables --server-data-dir</code></pre>
 </details>
 <hr />
-<div id="htmlwidget-e6f2eca393aee987b611" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-e6f2eca393aee987b611">{"x":{"filter":"none","vertical":false,"data":[["Solution_1","Solution_2","Solution_3","Solution_4","Solution_5","Solution_6"],["ERROR database error 7 (sqlite3_statement_backend::loadOne: attempt to write a readonly database) [description: Could not delete expired revoked cookies from the database, description: Could not read revoked cookies from the database]; OCCURRED AT virtual rstudio::core::Error rstudio::core::database::Connection::execute(rstudio::core::database::Query&amp;, bool*) src/cpp/core/Database.cpp:510; LOGGED FROM: int main(int, char* const*) src/cpp/server/ServerMain.cpp:763","[rserver] ERROR system error 2 (No such file or directory) [path: /tmp/rstudio-server/secure-cookie-key]; OCCURRED AT rstudio::core::Error rstudio::core::FilePath::openForRead(std::shared_ptr&lt;std::basic_istream&lt;char&gt; &gt;&amp;) const src/cpp/shared_core/FilePath.cpp:1167; LOGGED FROM: int main(int, char* const*) src/cpp/server/ServerMain.cpp:625","library(Seurat) Error: package or namespace load failed for \\u2018Seurat\\u2019 in dyn.load(file, DLLpath = DLLpath, ...): unable to load shared object '/home/${USER}/R/x86_64-pc-linux-gnu-library/4.1/Matrix/libs/Matrix.so': libgfortran.so.3: cannot open shared object file: No such file or directory","ERROR Attempt to run server as user 'rstudio-server' (uid 999) from account 'lianov' (uid 10993) without privilege, which is required to run as a different uid; LOGGED FROM: virtual rstudio::core::ProgramStatus rstudio::server::Options::read(int, char* const*, std::ostream&amp;) src/cpp/server/ServerOptions.cpp:322","ERROR system error 98 (Address already in use)","[rserver] ERROR system error 11 (Resource temporarily unavailable) [description: Could not acquire revocation list file lock]; OCCURRED AT rstudio::core::Error rstudio::server::auth::handler::initialize() src/cpp/server/auth/ServerAuthHandler.cpp:569; LOGGED FROM: int main(int, char* const*) src/cpp/server/ServerMain.cpp:674"],["usually linked to images of R &gt; 4.0.0 with RStudio","https://github.com/U-BDS/training_guides/issues/13","https://github.com/U-BDS/training_guides/issues/15","usually linked to images of R &gt; 4.0.0 with RStudio","either you or another user in same compute node are using default port number","aka: another instance of rstudio creating a lock in the default tmp directory"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>metadata_solution<\/th>\n      <th>error<\/th>\n      <th>other_info<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"columnDefs":[],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-969d001c79afe15b83e1" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-969d001c79afe15b83e1">{"x":{"filter":"none","vertical":false,"data":[["Solution_1","Solution_2","Solution_3","Solution_4","Solution_5","Solution_6"],["ERROR database error 7 (sqlite3_statement_backend::loadOne: attempt to write a readonly database) [description: Could not delete expired revoked cookies from the database, description: Could not read revoked cookies from the database]; OCCURRED AT virtual rstudio::core::Error rstudio::core::database::Connection::execute(rstudio::core::database::Query&amp;, bool*) src/cpp/core/Database.cpp:510; LOGGED FROM: int main(int, char* const*) src/cpp/server/ServerMain.cpp:763","[rserver] ERROR system error 2 (No such file or directory) [path: /tmp/rstudio-server/secure-cookie-key]; OCCURRED AT rstudio::core::Error rstudio::core::FilePath::openForRead(std::shared_ptr&lt;std::basic_istream&lt;char&gt; &gt;&amp;) const src/cpp/shared_core/FilePath.cpp:1167; LOGGED FROM: int main(int, char* const*) src/cpp/server/ServerMain.cpp:625","library(Seurat) Error: package or namespace load failed for \\u2018Seurat\\u2019 in dyn.load(file, DLLpath = DLLpath, ...): unable to load shared object '/home/${USER}/R/x86_64-pc-linux-gnu-library/4.1/Matrix/libs/Matrix.so': libgfortran.so.3: cannot open shared object file: No such file or directory","ERROR Attempt to run server as user 'rstudio-server' (uid 999) from account 'lianov' (uid 10993) without privilege, which is required to run as a different uid; LOGGED FROM: virtual rstudio::core::ProgramStatus rstudio::server::Options::read(int, char* const*, std::ostream&amp;) src/cpp/server/ServerOptions.cpp:322","ERROR system error 98 (Address already in use)","[rserver] ERROR system error 11 (Resource temporarily unavailable) [description: Could not acquire revocation list file lock]; OCCURRED AT rstudio::core::Error rstudio::server::auth::handler::initialize() src/cpp/server/auth/ServerAuthHandler.cpp:569; LOGGED FROM: int main(int, char* const*) src/cpp/server/ServerMain.cpp:674"],["usually linked to images of R &gt; 4.0.0 with RStudio","https://github.com/U-BDS/training_guides/issues/13","https://github.com/U-BDS/training_guides/issues/15","usually linked to images of R &gt; 4.0.0 with RStudio","either you or another user in same compute node are using default port number","aka: another instance of rstudio creating a lock in the default tmp directory"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>metadata_solution<\/th>\n      <th>error<\/th>\n      <th>other_info<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"columnDefs":[],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="additional-tips" class="section level2">
 <h2>Additional tips</h2>

@@ -197,7 +197,7 @@ An optional flag (`-w`) is available if port 8787 is busy.
 
 For clarity in the choice of parameters and other tasks within the helper script, the following section highlights the sections of the script with metadata (__`Solution_#` as a comment__) to the error we have encountered in the table below:
 
-<details><summary>Click here to expand __subset__ of `run_rstudio_singularity.sh`</summary>
+<details><summary>Click here to expand __subset of `run_rstudio_singularity.sh`__</summary>
 
 ```bash
 #######################
