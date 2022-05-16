@@ -549,12 +549,12 @@ which is of high interest to the main goal.</p>
 <pre class="r"><code>head(unique(metadata$cluster_label)) # same as metadata$cell_type_alias_label</code></pre>
 <pre><code>## [1] &quot;116_Pvalb&quot; &quot;364_DG&quot;    &quot;18_Lamp5&quot;  &quot;15_Lamp5&quot;  &quot;12_Lamp5&quot;  &quot;11_Lamp5&quot;</code></pre>
 <pre class="r"><code>unique(metadata$subclass_label)</code></pre>
-<pre><code>##  [1] &quot;Pvalb&quot;           &quot;DG&quot;              &quot;Lamp5&quot;           &quot;Sncg&quot;            &quot;Vip&quot;             &quot;L2 IT ENTl&quot;      &quot;Sst&quot;            
-##  [8] &quot;L4/5 IT CTX&quot;     &quot;L2/3 IT ENTl&quot;    &quot;Meis2&quot;           &quot;L5/6 NP CTX&quot;     &quot;L5 PT CTX&quot;       &quot;L5/6 IT TPE-ENT&quot; &quot;Sst Chodl&quot;      
-## [15] &quot;CA3&quot;             &quot;L2/3 IT CTX&quot;     &quot;L5 IT CTX&quot;       &quot;L6 IT CTX&quot;       &quot;L2/3 IT RHP&quot;     &quot;L4 RSP-ACA&quot;      &quot;L2/3 IT PPP&quot;    
-## [22] &quot;NP SUB&quot;          &quot;CT SUB&quot;          &quot;L6 CT CTX&quot;       &quot;L3 IT ENT&quot;       &quot;L6b/CT ENT&quot;      &quot;NP PPP&quot;          &quot;L5 PPP&quot;         
-## [29] &quot;L2 IT ENTm&quot;      &quot;L6 IT ENTl&quot;      &quot;CA1-ProS&quot;        &quot;SUB-ProS&quot;        &quot;Car3&quot;            &quot;L6b CTX&quot;         &quot;Oligo&quot;          
-## [36] &quot;CA2-IG-FC&quot;       &quot;CR&quot;              &quot;Astro&quot;           &quot;SMC-Peri&quot;        &quot;Micro-PVM&quot;       &quot;Endo&quot;            &quot;VLMC&quot;</code></pre>
+<pre><code>##  [1] &quot;Pvalb&quot;           &quot;DG&quot;              &quot;Lamp5&quot;           &quot;Sncg&quot;            &quot;Vip&quot;             &quot;L2 IT ENTl&quot;      &quot;Sst&quot;             &quot;L4/5 IT CTX&quot;    
+##  [9] &quot;L2/3 IT ENTl&quot;    &quot;Meis2&quot;           &quot;L5/6 NP CTX&quot;     &quot;L5 PT CTX&quot;       &quot;L5/6 IT TPE-ENT&quot; &quot;Sst Chodl&quot;       &quot;CA3&quot;             &quot;L2/3 IT CTX&quot;    
+## [17] &quot;L5 IT CTX&quot;       &quot;L6 IT CTX&quot;       &quot;L2/3 IT RHP&quot;     &quot;L4 RSP-ACA&quot;      &quot;L2/3 IT PPP&quot;     &quot;NP SUB&quot;          &quot;CT SUB&quot;          &quot;L6 CT CTX&quot;      
+## [25] &quot;L3 IT ENT&quot;       &quot;L6b/CT ENT&quot;      &quot;NP PPP&quot;          &quot;L5 PPP&quot;          &quot;L2 IT ENTm&quot;      &quot;L6 IT ENTl&quot;      &quot;CA1-ProS&quot;        &quot;SUB-ProS&quot;       
+## [33] &quot;Car3&quot;            &quot;L6b CTX&quot;         &quot;Oligo&quot;           &quot;CA2-IG-FC&quot;       &quot;CR&quot;              &quot;Astro&quot;           &quot;SMC-Peri&quot;        &quot;Micro-PVM&quot;      
+## [41] &quot;Endo&quot;            &quot;VLMC&quot;</code></pre>
 <p>Thus, the column names from the trimmed means files matches values in
 <code>metadata$cluster_label</code>:</p>
 <pre class="r"><code>identical(sort(unique(metadata$cluster_label)),
@@ -687,8 +687,8 @@ summary_data &lt;- as.data.frame(apply(trimmed_mean_with_metadata_filtered_by_ge
 #save
 
 write.csv(summary_data, file = paste0(&quot;./results/summary_by_gene_of_interest_&quot;, feature_to_filter_for, &quot;.csv&quot;))</code></pre>
-<div id="htmlwidget-3e3128d3939d1e56a20c" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-3e3128d3939d1e56a20c">{"x":{"filter":"none","vertical":false,"data":[["Gad1","Syn1","Gad2","Tlr4","Sst","Foxp2","Drd1","Gab1","Slc32a1","Slc17a1","Esr1","Gabra1","Gabra2","Gabra3","Fos","Nsg2","Syn2"],[7.756,3.5822222,8.192095,0,0,0,0,0,0.8488889,0,0,0,0,0,0,4.4555554,7.9062157],[9.0168955,7.905671125,9.46612575,0,0,0,0,0,7.735111825,0,0,4.56100115,2.0227278,0.72626455,0,8.866695,8.808655],[9.603235,8.1730345,9.9040365,0,0.060081589,0,0,0,8.034642,0,0,8.5581785,3.8446002,2.94234805,0.0111077,9.224402,9.1825405],[9.57330360245902,7.91877247131148,9.90548362704918,0,4.56391521714754,0,0.0923175636491803,0,7.43232477540984,0,0.115003491614754,7.30245981426229,4.46282522377049,3.1938536347582,0.459984845540984,9.16318865163935,9.18464016147541],[10.178462625,8.31904075,10.2717615,0,11.317027625,0,0,0,8.2579185,0,0,9.67238925,7.79531025,4.541270875,0.6520043,9.484589,9.53225175],[11.104347,8.554,11.572996,0,12.828,0,2.7603798,0,8.666262,0,4.0923076,10.603816,9.615054,7.6321054,2.5761435,10.944285,10.406511]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Min.<\/th>\n      <th>1st Qu.<\/th>\n      <th>Median<\/th>\n      <th>Mean<\/th>\n      <th>3rd Qu.<\/th>\n      <th>Max.<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-f52989a160cc25d8e9ce" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-f52989a160cc25d8e9ce">{"x":{"filter":"none","vertical":false,"data":[["Gad1","Syn1","Gad2","Tlr4","Sst","Foxp2","Drd1","Gab1","Slc32a1","Slc17a1","Esr1","Gabra1","Gabra2","Gabra3","Fos","Nsg2","Syn2"],[7.756,3.5822222,8.192095,0,0,0,0,0,0.8488889,0,0,0,0,0,0,4.4555554,7.9062157],[9.0168955,7.905671125,9.46612575,0,0,0,0,0,7.735111825,0,0,4.56100115,2.0227278,0.72626455,0,8.866695,8.808655],[9.603235,8.1730345,9.9040365,0,0.060081589,0,0,0,8.034642,0,0,8.5581785,3.8446002,2.94234805,0.0111077,9.224402,9.1825405],[9.57330360245902,7.91877247131148,9.90548362704918,0,4.56391521714754,0,0.0923175636491803,0,7.43232477540984,0,0.115003491614754,7.30245981426229,4.46282522377049,3.1938536347582,0.459984845540984,9.16318865163935,9.18464016147541],[10.178462625,8.31904075,10.2717615,0,11.317027625,0,0,0,8.2579185,0,0,9.67238925,7.79531025,4.541270875,0.6520043,9.484589,9.53225175],[11.104347,8.554,11.572996,0,12.828,0,2.7603798,0,8.666262,0,4.0923076,10.603816,9.615054,7.6321054,2.5761435,10.944285,10.406511]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Min.<\/th>\n      <th>1st Qu.<\/th>\n      <th>Median<\/th>\n      <th>Mean<\/th>\n      <th>3rd Qu.<\/th>\n      <th>Max.<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div id="sessioninfo" class="section level1">
@@ -703,9 +703,9 @@ write.csv(summary_data, file = paste0(&quot;./results/summary_by_gene_of_interes
 ## LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/liblapack.so.3
 ## 
 ## locale:
-##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C               LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
-##  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8    LC_PAPER=en_US.UTF-8       LC_NAME=C                 
-##  [9] LC_ADDRESS=C               LC_TELEPHONE=C             LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C               LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8     LC_MONETARY=en_US.UTF-8   
+##  [6] LC_MESSAGES=en_US.UTF-8    LC_PAPER=en_US.UTF-8       LC_NAME=C                  LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
 ## 
 ## attached base packages:
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
@@ -714,13 +714,12 @@ write.csv(summary_data, file = paste0(&quot;./results/summary_by_gene_of_interes
 ## [1] dplyr_1.0.8   ggplot2_3.3.5
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] highr_0.9         bslib_0.3.1       compiler_4.2.0    pillar_1.7.0      jquerylib_0.1.4   tools_4.2.0       digest_0.6.29    
-##  [8] jsonlite_1.8.0    evaluate_0.15     lifecycle_1.0.1   tibble_3.1.6      gtable_0.3.0      pkgconfig_2.0.3   rlang_1.0.2      
-## [15] DBI_1.1.2         cli_3.3.0         crosstalk_1.2.0   yaml_2.3.5        xfun_0.30         fastmap_1.1.0     withr_2.5.0      
-## [22] stringr_1.4.0     knitr_1.39        generics_0.1.2    htmlwidgets_1.5.4 sass_0.4.1        vctrs_0.4.1       tidyselect_1.1.2 
-## [29] grid_4.2.0        DT_0.22           glue_1.6.2        R6_2.5.1          fansi_1.0.3       rmarkdown_2.14    farver_2.1.0     
-## [36] purrr_0.3.4       magrittr_2.0.3    scales_1.2.0      htmltools_0.5.2   ellipsis_0.3.2    assertthat_0.2.1  colorspace_2.0-3 
-## [43] labeling_0.4.2    utf8_1.2.2        stringi_1.7.6     munsell_0.5.0     crayon_1.5.1</code></pre>
+##  [1] highr_0.9         bslib_0.3.1       compiler_4.2.0    pillar_1.7.0      jquerylib_0.1.4   tools_4.2.0       digest_0.6.29     jsonlite_1.8.0   
+##  [9] evaluate_0.15     lifecycle_1.0.1   tibble_3.1.6      gtable_0.3.0      pkgconfig_2.0.3   rlang_1.0.2       DBI_1.1.2         cli_3.3.0        
+## [17] crosstalk_1.2.0   yaml_2.3.5        xfun_0.30         fastmap_1.1.0     withr_2.5.0       stringr_1.4.0     knitr_1.39        generics_0.1.2   
+## [25] htmlwidgets_1.5.4 sass_0.4.1        vctrs_0.4.1       tidyselect_1.1.2  grid_4.2.0        DT_0.22           glue_1.6.2        R6_2.5.1         
+## [33] fansi_1.0.3       rmarkdown_2.14    farver_2.1.0      purrr_0.3.4       magrittr_2.0.3    scales_1.2.0      htmltools_0.5.2   ellipsis_0.3.2   
+## [41] assertthat_0.2.1  colorspace_2.0-3  labeling_0.4.2    utf8_1.2.2        stringi_1.7.6     munsell_0.5.0     crayon_1.5.1</code></pre>
 </div>
 
 <html>
