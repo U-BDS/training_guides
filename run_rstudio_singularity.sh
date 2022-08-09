@@ -100,7 +100,7 @@ if [ "$SERVER_DATA_DIR" == "true" ]; then
     add_bind_params+="--bind ${cwd}/singularity_tmp_dir "
     server_data_dir="--server-data-dir ${cwd}/singularity_tmp_dir"
 else
-    echo -e "--server-data-dir set to $SERVER_DATA_DIR, thus not mounting tmp dir" #false
+    echo -e "--server-data-dir set to $SERVER_DATA_DIR, thus not mounting custom data directory for R server" #false
     server_data_dir=""
 fi
 
@@ -131,7 +131,7 @@ module load $SINGULARITY_MODULE
 # For more details see troubleshooting tips at: 
 # https://u-bds.github.io/training_guides/intro_to_docker_rstudio_part3.html#Troubleshooting_tips
 
-mkdir -p run var-lib-rstudio-server
+mkdir -p run var-lib-rstudio-server rstudio_tmp
 
 printf 'provider=sqlite\ndirectory=/var/lib/rstudio-server\n' > database.conf
 
@@ -159,7 +159,7 @@ singularity exec \
     --cleanenv \
     --containall \
     $add_bind_params \
-    --bind run:/run,var-lib-rstudio-server:/var/lib/rstudio-server,database.conf:/etc/rstudio/database.conf \
+    --bind run:/run,var-lib-rstudio-server:/var/lib/rstudio-server,database.conf:/etc/rstudio/database.conf,rstudio_tmp:/tmp \
     --bind $cwd/my_secure_cookie_key \
     $SINGULARITY_IMAGE \
     rserver \

@@ -173,7 +173,7 @@ __NOTE__: we pass in `--server-data-dir` which is only typically available to ro
 In this helper script we have disabled a number of Singularity auto-mounts. Thus, you will need to pass in any directories to be mounted with `-b`, each directory having its own `-b` parameter
 
 ```bash
-# here we mount $USER_DATA and the current working directory (along with tmp dir with --server-data-dir)
+# here we mount $USER_DATA and the current working directory (along rstudio --server-data-dir)
 # Note that since we are binding two directories, there are two '-b' parameters
 
 ./run_rstudio_singularity.sh -s rstudio_4.0.4.sif -p "NBI" -u $USER -b $USER_DATA -b `pwd` --server-data-dir
@@ -207,7 +207,7 @@ For clarity in the choice of parameters and other tasks within the helper script
 # For more details see troubleshooting tips at: 
 # https://u-bds.github.io/training_guides/intro_to_docker_rstudio_part3.html#Singularity_troubleshooting_tips
 
-mkdir -p run var-lib-rstudio-server #Solution_1
+mkdir -p run var-lib-rstudio-server rstudio_tmp #Solution_1 and 7 (#7 for rstudio_tmp)
 
 printf 'provider=sqlite\ndirectory=/var/lib/rstudio-server\n' > database.conf #Solution_1
 
@@ -235,7 +235,7 @@ singularity exec \
     --cleanenv \    #Solution_3
     --containall \  #Solution_3
     $add_bind_params \ 
-    --bind run:/run,var-lib-rstudio-server:/var/lib/rstudio-server,database.conf:/etc/rstudio/database.conf \  #Solution_1
+    --bind run:/run,var-lib-rstudio-server:/var/lib/rstudio-server,database.conf:/etc/rstudio/database.conf,rstudio_tmp:/tmp \  #Solution_1 / 7
     --bind $cwd/my_secure_cookie_key \  #Solution_2 
     $SINGULARITY_IMAGE \
     rserver \
