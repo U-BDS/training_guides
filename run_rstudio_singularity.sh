@@ -16,6 +16,7 @@ red=`tput setaf 9`
 yellow=`tput setaf 11`
 reset=`tput sgr0`
 add_bind_params=""
+max_path_length=75
 
 function usage () {
     cat >&2 <<EOF
@@ -88,6 +89,20 @@ elif [ -z "$PASSWORD" ]; then
     err_exit "No argument supplied -p ; missing password ${reset}"
 elif [ -z "$SERVER_USER" ]; then
     err_exit "No argument supplied -u ; missing server username ${reset}"
+fi
+
+### CHECK cwd LENGTH
+if [[ "$SERVER_DATA_DIR" == "true" ]]; then
+    
+    # Get the length of the path
+    path_length=$(echo $cwd | awk '{print length}')
+    
+    if [[ $path_length -gt $max_path_length ]]; then
+        err_exit "The length of the current path is too long; Please run this "`
+                 `"in an upstream directory or a path with a shorter total "`
+                 `"length (\$USER_SCRATCH for example) ${reset}"
+    fi
+
 fi
 
 #########################################
