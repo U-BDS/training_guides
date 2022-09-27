@@ -18,8 +18,9 @@ __This page is specifically dedicated to training resources we share__. Our long
 * Co-Director: Brittany Lasseigne, Ph.D.
 * Managing Director: Lara Ianov, Ph.D.
 * U-BDS staff:
-  * Austyn Trull
+  * Austyn Trull, B.Sc.
   * Bharat Mishra, Ph.D.
+  * Xuan Liu, Ph.D.
   
 This resource is actively maintained by Lara Ianov and the U-BDS staff.
 
