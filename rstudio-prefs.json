@@ -1,0 +1,48 @@
+{
+    "highlight_selected_line": true,
+    "panes": {
+        "quadrants": [
+            "Source",
+            "TabSet1",
+            "Console",
+            "TabSet2"
+        ],
+        "tabSet1": [
+            "Environment",
+            "History",
+            "Connections",
+            "Build",
+            "VCS",
+            "Presentation"
+        ],
+        "tabSet2": [
+            "Files",
+            "Plots",
+            "Packages",
+            "Help",
+            "Viewer",
+            "Presentations"
+        ],
+        "console_left_on_top": false,
+        "console_right_on_top": true
+    },
+    "show_margin": false,
+    "show_indent_guides": true,
+    "show_diagnostics_other": true,
+    "syntax_color_console": true,
+    "highlight_r_function_calls": true,
+    "save_files_before_build": true,
+    "editor_theme": "Pastel On Dark",
+    "default_project_location": "~",
+    "wrap_tab_navigation": false,
+    "reuse_sessions_for_project_links": true,
+    "initial_working_directory": "~",
+    "rainbow_parentheses": true,
+    "posix_terminal_shell": "bash",
+    "document_author": "Lara Ianov, Ph.D.",
+    "rmd_chunk_output_inline": false,
+    "source_with_echo": true,
+    "jobs_tab_visibility": "shown",
+    "insert_native_pipe_operator": true,
+    "shiny_viewer_type": "browser"
+}
