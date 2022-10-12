@@ -22,7 +22,8 @@ function usage () {
     cat >&2 <<EOF
 
 USAGE: ./$progname -s SINGULARITY_IMAGE -p PASSWORD -u SERVER_USER \
-[-m SINGULARITY_MODULE] [-w PORT] [-b "DIR_BINDS"] [--server-data-dir]
+[-m SINGULARITY_MODULE] [-w PORT] [-b "DIR_BINDS"] [--server-data-dir] \
+[-c RSTUDIO_USER_PREFERANCES]
 
 A helper script to execute RStudio Singularity containers
 
@@ -35,6 +36,7 @@ options:
     -b (Optional) Directory to bind. Can be specified multiple times to bind additional directories
     --server-data-dir (Optional) Use --server-data-dir param of rserver; \
 typically available to rocker/rstudio tags > 4.0.0 (Default: false)
+    -c (Optional) The rstudio user config absolute path (e.g.: rstudio-prefs.json)
 
 EOF
 }
@@ -57,6 +59,7 @@ SINGULARITY_MODULE="Singularity/3.5.2-GCC-5.4.0-2.26"
 PORT="8787"
 BINDING_PATH=""
 SERVER_DATA_DIR="false"
+USER_CONFIG_PATH=""
 
 while [[ $# -gt 0 ]]; do
     flag=$1
@@ -69,6 +72,7 @@ while [[ $# -gt 0 ]]; do
         -w) PORT=$2; shift;;
         -b) BINDING_PATH+="$2 "; shift;;
         --server-data-dir) SERVER_DATA_DIR="true";;
+        -c) USER_CONFIG_PATH=$2; shift;;
         *) err_exit "Unknown option $1 ${reset}"
     esac
 
@@ -119,6 +123,12 @@ else
     server_data_dir=""
 fi
 
+### rstudio-prefs.json (-c)
+if [ "$USER_CONFIG_PATH" != "" ]; then
+    add_bind_params+="--bind ${USER_CONFIG_PATH}:/home/${SERVER_USER}/.config/rstudio/rstudio-prefs.json "
+else
+    echo -e "\nNo custom RStudio preferances provided. Defaulting to standard profile"
+fi
 
 ### USER PROVIDED PATHS
 
