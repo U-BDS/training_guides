@@ -267,7 +267,6 @@ DT::datatable(metadata_singularity,
 
 ## Additional tips
 
-1. When running more than one RStudio Singularity container:
     * __It's recommended to run the containers in separate working directories.__
     * Although not a requirement, we recommend to launch the container from a separate VNC/HPC Desktop job with its own dedicated computational resources.
     * In HPC VNC, when running containers that need Firefox such as RStudio, they are linked to a default Firefox user. Thus, if more than one session is running the following may occur:
@@ -285,20 +284,5 @@ One solution is outlined in the Firefox user questions: https://support.mozilla.
 2. If you encounter `ERROR system error 17 (File exists) [path: /home/$USER/.rstudio, target-dir: ]` followed by message which may state "Unable to connect to service", the cause is likely linked to the `.rstudio` directory located in `$HOME`. Using the helper script we provide above should minimize this since `$HOME` is not mounted, however, we add special emphasis to this error in this guide since it's also referenced in the [UAB RC docs here](https://uabrc.github.io/help/faq/#why-do-i-get-a-gray-screen-after-launching-my-ood-rstudio-server-session) if a user is using the OOD RStudio Server.
 
 # Additional learning resources
-
-* By default, Docker uses only a subset of your computational resources available. See the following for more information on how to change the settings such as assigning more memory: https://stackoverflow.com/questions/44533319/how-to-assign-more-memory-to-docker-container
-
-* The following tutorial covers some of the basics we also covered, but it also briefly discussing how to use Docker in AWS: https://mdneuzerling.com/post/user-getting-started-with-r-and-docker/
-
-* You may also consider using package installation methods that also specify a package version if needed (just check `sessionInfo()` once you load the packages during initial build):
-
-```docker
-RUN R -e "install.packages('remotes'); \
-  remotes::install_version('<package_name>', '<package_version>')"
-```
-
-This is usually only needed for sources like CRAN, since Bioconductor follows a release schedule with packages being linked to specific releases.
-
-* Ten simple rules for writing Dockerfiles for reproducible data science: https://doi.org/10.1371/journal.pcbi.1008316
 
 * If you have issues with R Studio filling up your home directory in HPC, check out the solutions presented by Ming Tang under "Fix home directory filled up issue": https://divingintogeneticsandgenomics.rbind.io/post/run-rstudio-server-with-singularity-on-hpc/

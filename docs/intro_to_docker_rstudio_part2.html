@@ -516,6 +516,59 @@ It allows you to inspect the history of the image, including the
 specific commands called from the Dockerfile.
 <code>docker history --no-trunc &lt;image:tag&gt;</code> expands the
 outputs for further details.</p>
+</div>
+<div id="additional-notes" class="section level1">
+<h1>Additional Notes</h1>
+<ul>
+<li>rocker/rstudio does not currently work with arm Macs/Macs with the
+M1 chip. This is a known issue and will be resolved in an rstudio update
+next year. We are actively watching this issue and will update this
+guide once the fix becomes available. If you are experiencing this
+issue, there are some alternative approaches that can be taken, but go
+beyond the scope of this tutorial and we would be happy to discuss the
+approach that fits your needs best in Data Science Office Hours (Data
+Science Office Hours are listed on the home page).
+<ul>
+<li>Linked below are a couple github issues that are worth noting and
+watching because they currently track this issue:
+<ol style="list-style-type: decimal">
+<li><a href="https://github.com/rocker-org/rocker-versioned2/issues/259"
+class="uri">https://github.com/rocker-org/rocker-versioned2/issues/259</a></li>
+<li><a href="https://github.com/rocker-org/rocker-versioned2/issues/144"
+class="uri">https://github.com/rocker-org/rocker-versioned2/issues/144</a></li>
+<li><a href="https://github.com/rocker-org/rocker/issues/429"
+class="uri">https://github.com/rocker-org/rocker/issues/429</a></li>
+</ol></li>
+</ul></li>
+</ul>
+</div>
+<div id="additional-docker-learning-resources" class="section level1">
+<h1>Additional Docker Learning Resources</h1>
+<ul>
+<li><p>By default, Docker uses only a subset of your computational
+resources available. See the following for more information on how to
+change the settings such as assigning more memory: <a
+href="https://stackoverflow.com/questions/44533319/how-to-assign-more-memory-to-docker-container"
+class="uri">https://stackoverflow.com/questions/44533319/how-to-assign-more-memory-to-docker-container</a></p></li>
+<li><p>The following tutorial covers some of the basics we also covered,
+but it also briefly discussing how to use Docker in AWS: <a
+href="https://mdneuzerling.com/post/user-getting-started-with-r-and-docker/"
+class="uri">https://mdneuzerling.com/post/user-getting-started-with-r-and-docker/</a></p></li>
+<li><p>You may also consider using package installation methods that
+also specify a package version if needed (just check
+<code>sessionInfo()</code> once you load the packages during initial
+build):</p></li>
+</ul>
+<pre class="docker"><code>RUN R -e &quot;install.packages(&#39;remotes&#39;); \
+  remotes::install_version(&#39;&lt;package_name&gt;&#39;, &#39;&lt;package_version&gt;&#39;)&quot;</code></pre>
+<p>This is usually only needed for sources like CRAN, since Bioconductor
+follows a release schedule with packages being linked to specific
+releases.</p>
+<ul>
+<li>Ten simple rules for writing Dockerfiles for reproducible data
+science: <a href="https://doi.org/10.1371/journal.pcbi.1008316"
+class="uri">https://doi.org/10.1371/journal.pcbi.1008316</a></li>
+</ul>
 <p><strong>Continue tutorial to part 3 from the drop down menu at the
 navigation bar of this website. This section will cover running RStudio
 containers in the UAB HPC with Singularity</strong></p>

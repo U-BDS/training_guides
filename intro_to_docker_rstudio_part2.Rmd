@@ -95,4 +95,30 @@ The same container we created in this session is available at: https://hub.docke
 
 A very useful command to your own images and others publicly available is `docker history` (https://docs.docker.com/engine/reference/commandline/history/). It allows you to inspect the history of the image, including the specific commands called from the Dockerfile. `docker history --no-trunc <image:tag>` expands the outputs for further details.
 
+# Additional Notes
+
+* rocker/rstudio does not currently work with arm Macs/Macs with the M1 chip. This is a known issue and will be resolved in an rstudio update next year. We are actively watching this issue and will update this guide once the fix becomes available. If you are experiencing this issue, there are some alternative approaches that can be taken, but go beyond the scope of this tutorial and we would be happy to discuss the approach that fits your needs best in Data Science Office Hours (Data Science Office Hours are listed on the home page).
+  * Linked below are a couple github issues that are worth noting and watching because they currently track this issue:
+    1. https://github.com/rocker-org/rocker-versioned2/issues/259
+    2. https://github.com/rocker-org/rocker-versioned2/issues/144
+    3. https://github.com/rocker-org/rocker/issues/429
+
+# Additional Docker Learning Resources
+
+* By default, Docker uses only a subset of your computational resources available. See the following for more information on how to change the settings such as assigning more memory: https://stackoverflow.com/questions/44533319/how-to-assign-more-memory-to-docker-container
+
+* The following tutorial covers some of the basics we also covered, but it also briefly discussing how to use Docker in AWS: https://mdneuzerling.com/post/user-getting-started-with-r-and-docker/
+
+
+* You may also consider using package installation methods that also specify a package version if needed (just check `sessionInfo()` once you load the packages during initial build):
+
+```docker
+RUN R -e "install.packages('remotes'); \
+  remotes::install_version('<package_name>', '<package_version>')"
+```
+
+This is usually only needed for sources like CRAN, since Bioconductor follows a release schedule with packages being linked to specific releases.
+
+* Ten simple rules for writing Dockerfiles for reproducible data science: https://doi.org/10.1371/journal.pcbi.1008316
+
 __Continue tutorial to part 3 from the drop down menu at the navigation bar of this website. This section will cover running RStudio containers in the UAB HPC with Singularity__
