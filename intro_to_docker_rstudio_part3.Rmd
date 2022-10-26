@@ -129,7 +129,7 @@ The tutorial above provides a synopsis of the introduction to Singularity, howev
 3. Start your singularity run by providing the following parameters in a compute node in a VNC session:
 
 ```
-USAGE: ./run_rstudio_singularity.sh -s SINGULARITY_IMAGE -p PASSWORD -u SERVER_USER [-m SINGULARITY_MODULE] [-w PORT] [-b "DIR_BINDS"] [--server-data-dir]
+USAGE: ./run_rstudio_singularity.sh -s SINGULARITY_IMAGE -p PASSWORD -u SERVER_USER [-m SINGULARITY_MODULE] [-w PORT] [-b "DIR_BINDS"] [--server-data-dir] [-c RSTUDIO_USER_PREFERANCES]
 
 A helper script to execute RStudio Singularity containers
 
@@ -141,6 +141,7 @@ options:
     -w (Optional) The port number to RStudio container (Default: 8787)
     -b (Optional) Directory to bind. Can be specified multiple times to bind additional directories
     --server-data-dir (Optional) Use --server-data-dir param of rserver; typically available to rocker/rstudio tags > 4.0.0 (Default: false)
+    -c (Optional) The rstudio user config absolute path (e.g.: rstudio-prefs.json)
 
 ```
 
@@ -192,6 +193,10 @@ __NOTE__: due to an issue we have encountered (see [issue #15](https://github.co
 ### Port number
 
 An optional flag (`-w`) is available if port 8787 is busy.
+
+### Using a custom RStudio preference file (RStudio >=1.3)
+
+In part 2 of this tutorial, we demonstrated the use of a custom rstudio profile in Docker. This can also be accomplished in Singularity, with the notable difference being that the target binding in the container should be linked to `$USER` user name rather than `rstudio`. Our `run_rstudio_singularity.sh` script has wrapped this binding in the optional `-c` flag, and thus a custom profile can be passed on to the script in the following with `-c rstudio-prefs.json` (assuming the json is in the current working directory, otherwise, include absolute path).
 
 ## Solutions from `run_rstudio_singularity.sh`
 

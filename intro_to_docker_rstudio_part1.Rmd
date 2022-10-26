@@ -1,6 +1,6 @@
 ---
 title: "Intro to Docker for RStudio - Part 1"
-author: "Lara Ianov, Ph.D."
+author: "Austyn Trull and Lara Ianov, Ph.D."
 ---
 
 # Requirements
