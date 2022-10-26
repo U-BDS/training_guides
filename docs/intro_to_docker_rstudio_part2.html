@@ -9,7 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Lara Ianov, Ph.D." />
+<meta name="author" content="Austyn Trull and Lara Ianov, Ph.D." />
 
 
 <title>Intro to Docker for RStudio - Part 2</title>
@@ -380,7 +380,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Intro to Docker for RStudio - Part 2</h1>
-<h4 class="author">Lara Ianov, Ph.D.</h4>
+<h4 class="author">Austyn Trull and Lara Ianov, Ph.D.</h4>
 
 </div>
 
@@ -516,6 +516,87 @@ It allows you to inspect the history of the image, including the
 specific commands called from the Dockerfile.
 <code>docker history --no-trunc &lt;image:tag&gt;</code> expands the
 outputs for further details.</p>
+</div>
+<div id="using-a-custom-rstudio-preference-file-rstudio-1.3"
+class="section level1">
+<h1>Using a custom RStudio preference file (RStudio &gt;=1.3)</h1>
+<p>By default, RStudio containers are launched with the default RStudio
+defaults as seen in the figures discussed in the above sections.</p>
+<p><strong>As of RStudio v1.3</strong>, for a more customized experience
+(where you may want to set a different RStudio behavior for rmarkdown
+documents, syntax highlight preferences, custom panel locations, themes
+etc.), you can bind a custom RStudio preference JSON file
+(<code>rstudio-prefs.json</code>) to automatically apply preferences
+specified in the JSON file. An example json file can be found in the <a
+href="https://github.com/U-BDS/training_guides/blob/main/rstudio-prefs.json">GitHub
+of this training guide</a>, however, if you already have set preferences
+in your personal computer, you may likely find one in RStudio’s default
+location in your computer (e.g.:
+<code>$HOME/.config/rstudio/rstudio-prefs.json</code>)</p>
+<p>The following is an example run where the
+<code>rstudio-prefs.json</code> is used to automatically apply personal
+preferences with a sample screenshot shown below the command. In this
+case, some noticeable changes are: theme, syntax highlights, and panel
+locations. However, additional functionality set by the json file is
+also present in this session (note we do <strong>not</strong> use the
+sample container built above <code>rstudio_deseq2:3.10</code>, as the
+RStudio version of that container is &lt; 1.3 ; this functionality
+requires image with RStudio &gt;=1.3):</p>
+<pre class="bash"><code>docker run -d --rm -p 8787:8787 -e PASSWORD=NBI -v $HOME/.config/rstudio/rstudio-prefs.json:/home/rstudio/.config/rstudio/rstudio-prefs.json rocker/rstudio:latest</code></pre>
+<p><img src="figs/intro_to_docker_part2/rstudio_pref_example_part2.png" align="center" width="850px" /></p>
+</div>
+<div id="additional-notes" class="section level1">
+<h1>Additional Notes</h1>
+<ul>
+<li>rocker/rstudio does not currently work with arm Macs/Macs with the
+M1 chip. This is a known issue and will be resolved in an rstudio update
+in 2023. We are actively watching this issue and will update this guide
+once the fix becomes available. If you are experiencing this issue,
+there are some alternative approaches that can be taken, but go beyond
+the scope of this tutorial and we would be happy to discuss the approach
+that fits your needs best in Data Science Office Hours (Data Science
+Office Hours are listed on the home page).
+<ul>
+<li>Linked below are a couple github issues that are worth noting and
+watching because they currently track this issue:
+<ol style="list-style-type: decimal">
+<li><a href="https://github.com/rocker-org/rocker-versioned2/issues/259"
+class="uri">https://github.com/rocker-org/rocker-versioned2/issues/259</a></li>
+<li><a href="https://github.com/rocker-org/rocker-versioned2/issues/144"
+class="uri">https://github.com/rocker-org/rocker-versioned2/issues/144</a></li>
+<li><a href="https://github.com/rocker-org/rocker/issues/429"
+class="uri">https://github.com/rocker-org/rocker/issues/429</a></li>
+</ol></li>
+</ul></li>
+</ul>
+</div>
+<div id="additional-docker-learning-resources" class="section level1">
+<h1>Additional Docker Learning Resources</h1>
+<ul>
+<li><p>By default, Docker uses only a subset of your computational
+resources available. See the following for more information on how to
+change the settings such as assigning more memory: <a
+href="https://stackoverflow.com/questions/44533319/how-to-assign-more-memory-to-docker-container"
+class="uri">https://stackoverflow.com/questions/44533319/how-to-assign-more-memory-to-docker-container</a></p></li>
+<li><p>The following tutorial covers some of the basics we also covered,
+but it also briefly discussing how to use Docker in AWS: <a
+href="https://mdneuzerling.com/post/user-getting-started-with-r-and-docker/"
+class="uri">https://mdneuzerling.com/post/user-getting-started-with-r-and-docker/</a></p></li>
+<li><p>You may also consider using package installation methods that
+also specify a package version if needed (just check
+<code>sessionInfo()</code> once you load the packages during initial
+build):</p></li>
+</ul>
+<pre class="docker"><code>RUN R -e &quot;install.packages(&#39;remotes&#39;); \
+  remotes::install_version(&#39;&lt;package_name&gt;&#39;, &#39;&lt;package_version&gt;&#39;)&quot;</code></pre>
+<p>This is usually only needed for sources like CRAN, since Bioconductor
+follows a release schedule with packages being linked to specific
+releases.</p>
+<ul>
+<li>Ten simple rules for writing Dockerfiles for reproducible data
+science: <a href="https://doi.org/10.1371/journal.pcbi.1008316"
+class="uri">https://doi.org/10.1371/journal.pcbi.1008316</a></li>
+</ul>
 <p><strong>Continue tutorial to part 3 from the drop down menu at the
 navigation bar of this website. This section will cover running RStudio
 containers in the UAB HPC with Singularity</strong></p>
