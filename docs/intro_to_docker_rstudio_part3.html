@@ -588,7 +588,7 @@ options:
 we can start the container with the following:</p>
 <pre class="bash"><code>./run_rstudio_singularity.sh -s rstudio_4.0.4.sif -p &quot;NBI&quot; -u $USER --server-data-dir</code></pre>
 <p>Expected output will be:</p>
-<pre><code>Will append the following binding commands: --bind /data/temporary-scratch/lianov/singularity_test/singularity_tmp_dir 
+<pre><code>Will append the following binding commands: --bind /scratch/lianov/singularity_test/singularity_tmp_dir 
  
 ---- Initiating singularity exec ---- 
 ---- Go to http://localhost:8787 to visit your RStudio session ---- 
@@ -607,11 +607,14 @@ by:</p>
 auto-mounts. Thus, you will need to pass in any directories to be
 mounted with <code>-b</code>, each directory having its own
 <code>-b</code> parameter</p>
-<pre class="bash"><code># here we mount $USER_DATA and the current working directory (along rstudio --server-data-dir)
+<pre class="bash"><code># here we mount $USER_SCRATCH/HPC_path_mount (a directory created within scratch space)
+# and the current working directory (along rstudio --server-data-dir)
 # Note that since we are binding two directories, there are two &#39;-b&#39; parameters
 
-./run_rstudio_singularity.sh -s rstudio_4.0.4.sif -p &quot;NBI&quot; -u $USER -b $USER_DATA -b `pwd` --server-data-dir</code></pre>
-<pre><code>Will append the following binding commands: --bind /data/temporary-scratch/lianov/singularity_test/singularity_tmp_dir --bind /data/user/lianov --bind /data/temporary-scratch/lianov/singularity_test 
+./run_rstudio_singularity.sh -s rstudio_4.0.4.sif -p &quot;NBI&quot; -u $USER -b $USER_SCRATCH/HPC_path_mount -b `pwd` --server-data-dir</code></pre>
+<pre><code>No custom RStudio preferances provided. Defaulting to standard profile
+
+Will append the following binding commands: --bind /scratch/lianov/singularity_test/singularity_tmp_dir --bind /scratch/lianov/HPC_path_mount --bind /scratch/lianov/singularity_test 
  
 ---- Initiating singularity exec ---- 
 ---- Go to http://localhost:8787 to visit your RStudio session ---- 
@@ -625,6 +628,19 @@ class="uri">https://sylabs.io/guides/3.1/user-guide/bind_paths_and_mounts.html#c
 Thus, if you have any files in <code>$HOME</code>, which should be
 available in the container, simply move them to any other directory
 which is mounted such as the current working directory.</p>
+<div id="binding-user_data" class="section level4">
+<h4>Binding <code>$USER_DATA</code></h4>
+<p>Note that we recommend against binding <code>$USER_DATA</code> for
+most users who may also make use of OnDemand’s RStudio, or use R in
+other methods in HPC. In some cases (outside of a container), R may
+install packages in <code>$USER_DATA</code> (e.g.: if a user sets
+library paths to <code>$USER_DATA</code> which is common). In this case,
+if a user binds <code>$USER_DATA</code>, packages in this path may
+conflict with the container’s. It’s OK to bind an isolated sub-directory
+within <code>$USER_DATA</code> (e.g.: a hypothetical directory named
+<code>my_project</code>, thus <code>$USER_DATA/my_project</code>), as
+long as no R packages are not present in this directory.</p>
+</div>
 </div>
 <div id="port-number" class="section level3">
 <h3>Port number</h3>
@@ -707,8 +723,8 @@ singularity exec \
     $server_data_dir    #Solution_6: enables --server-data-dir</code></pre>
 </details>
 <hr />
-<div id="htmlwidget-18323866d6c429384f46" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-18323866d6c429384f46">{"x":{"filter":"none","vertical":false,"data":[["Solution_1","Solution_2","Solution_3","Solution_4","Solution_5","Solution_6","Solution_7"],["ERROR database error 7 (sqlite3_statement_backend::loadOne: attempt to write a readonly database) [description: Could not delete expired revoked cookies from the database, description: Could not read revoked cookies from the database]; OCCURRED AT virtual rstudio::core::Error rstudio::core::database::Connection::execute(rstudio::core::database::Query&amp;, bool*) src/cpp/core/Database.cpp:510; LOGGED FROM: int main(int, char* const*) src/cpp/server/ServerMain.cpp:763","[rserver] ERROR system error 2 (No such file or directory) [path: /tmp/rstudio-server/secure-cookie-key]; OCCURRED AT rstudio::core::Error rstudio::core::FilePath::openForRead(std::shared_ptr&lt;std::basic_istream&lt;char&gt; &gt;&amp;) const src/cpp/shared_core/FilePath.cpp:1167; LOGGED FROM: int main(int, char* const*) src/cpp/server/ServerMain.cpp:625","library(Seurat) Error: package or namespace load failed for \\u2018Seurat\\u2019 in dyn.load(file, DLLpath = DLLpath, ...): unable to load shared object '/home/${USER}/R/x86_64-pc-linux-gnu-library/4.1/Matrix/libs/Matrix.so': libgfortran.so.3: cannot open shared object file: No such file or directory","ERROR Attempt to run server as user 'rstudio-server' (uid 999) from account 'lianov' (uid 10993) without privilege, which is required to run as a different uid; LOGGED FROM: virtual rstudio::core::ProgramStatus rstudio::server::Options::read(int, char* const*, std::ostream&amp;) src/cpp/server/ServerOptions.cpp:322","ERROR system error 98 (Address already in use)","[rserver] ERROR system error 11 (Resource temporarily unavailable) [description: Could not acquire revocation list file lock]; OCCURRED AT rstudio::core::Error rstudio::server::auth::handler::initialize() src/cpp/server/auth/ServerAuthHandler.cpp:569; LOGGED FROM: int main(int, char* const*) src/cpp/server/ServerMain.cpp:674","no space left on device (linked to tmp directories)"],["usually linked to images of R &gt; 4.0.0 with RStudio","https://github.com/U-BDS/training_guides/issues/13","https://github.com/U-BDS/training_guides/issues/15","usually linked to images of R &gt; 4.0.0 with RStudio","either you or another user in same compute node are using default port number","aka: another instance of rstudio creating a lock in the default tmp directory","explicit binding of a known tmp directory to the container's /tmp solves this issue (we note that exporting $TMPDIR fails to resolve this issue for RStudio)"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>metadata_solution<\/th>\n      <th>error<\/th>\n      <th>other_info<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"columnDefs":[],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-ef28a6f86915ea635e0f" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ef28a6f86915ea635e0f">{"x":{"filter":"none","vertical":false,"data":[["Solution_1","Solution_2","Solution_3","Solution_4","Solution_5","Solution_6","Solution_7"],["ERROR database error 7 (sqlite3_statement_backend::loadOne: attempt to write a readonly database) [description: Could not delete expired revoked cookies from the database, description: Could not read revoked cookies from the database]; OCCURRED AT virtual rstudio::core::Error rstudio::core::database::Connection::execute(rstudio::core::database::Query&amp;, bool*) src/cpp/core/Database.cpp:510; LOGGED FROM: int main(int, char* const*) src/cpp/server/ServerMain.cpp:763","[rserver] ERROR system error 2 (No such file or directory) [path: /tmp/rstudio-server/secure-cookie-key]; OCCURRED AT rstudio::core::Error rstudio::core::FilePath::openForRead(std::shared_ptr&lt;std::basic_istream&lt;char&gt; &gt;&amp;) const src/cpp/shared_core/FilePath.cpp:1167; LOGGED FROM: int main(int, char* const*) src/cpp/server/ServerMain.cpp:625","library(Seurat) Error: package or namespace load failed for \\u2018Seurat\\u2019 in dyn.load(file, DLLpath = DLLpath, ...): unable to load shared object '/home/${USER}/R/x86_64-pc-linux-gnu-library/4.1/Matrix/libs/Matrix.so': libgfortran.so.3: cannot open shared object file: No such file or directory","ERROR Attempt to run server as user 'rstudio-server' (uid 999) from account 'lianov' (uid 10993) without privilege, which is required to run as a different uid; LOGGED FROM: virtual rstudio::core::ProgramStatus rstudio::server::Options::read(int, char* const*, std::ostream&amp;) src/cpp/server/ServerOptions.cpp:322","ERROR system error 98 (Address already in use)","[rserver] ERROR system error 11 (Resource temporarily unavailable) [description: Could not acquire revocation list file lock]; OCCURRED AT rstudio::core::Error rstudio::server::auth::handler::initialize() src/cpp/server/auth/ServerAuthHandler.cpp:569; LOGGED FROM: int main(int, char* const*) src/cpp/server/ServerMain.cpp:674","no space left on device (linked to tmp directories)"],["usually linked to images of R &gt; 4.0.0 with RStudio","https://github.com/U-BDS/training_guides/issues/13","https://github.com/U-BDS/training_guides/issues/15","usually linked to images of R &gt; 4.0.0 with RStudio","either you or another user in same compute node are using default port number","aka: another instance of rstudio creating a lock in the default tmp directory","explicit binding of a known tmp directory to the container's /tmp solves this issue (we note that exporting $TMPDIR fails to resolve this issue for RStudio)"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>metadata_solution<\/th>\n      <th>error<\/th>\n      <th>other_info<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"columnDefs":[],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="additional-tips" class="section level2">
 <h2>Additional tips</h2>

@@ -568,6 +568,14 @@ class="uri">https://github.com/rocker-org/rocker-versioned2/issues/144</a></li>
 class="uri">https://github.com/rocker-org/rocker/issues/429</a></li>
 </ol></li>
 </ul></li>
+<li>Be aware of disk space for Docker images. When pulling images, they
+can easily add up to a substantial number if left unchecked. Users can
+limit available disk space for Docker through the advanced settings.
+Furthermore, be aware of Docker’s cache space. When needed, users can
+free up disk space from cache using the
+<code>docker builder prune</code> command (e.g.:
+<code>docker builder prune -af</code> would remove everything, thus push
+your images to Docker Hub first!)</li>
 </ul>
 </div>
 <div id="additional-docker-learning-resources" class="section level1">
