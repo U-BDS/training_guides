@@ -116,6 +116,8 @@ docker run -d --rm -p 8787:8787 -e PASSWORD=NBI -v $HOME/.config/rstudio/rstudio
     1. https://github.com/rocker-org/rocker-versioned2/issues/259
     2. https://github.com/rocker-org/rocker-versioned2/issues/144
     3. https://github.com/rocker-org/rocker/issues/429
+    
+* Be aware of disk space for Docker images. When pulling images, they can easily add up to a substantial number if left unchecked. Users can limit available disk space for Docker through the advanced settings. Furthermore, be aware of Docker's cache space. When needed, users can free up disk space from cache using the `docker builder prune` command (e.g.: `docker builder prune -af` would remove everything, thus push your images to Docker Hub first!)
 
 # Additional Docker Learning Resources
 
