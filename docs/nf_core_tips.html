@@ -457,10 +457,14 @@ additional customization would benefit the community.</p>
 <div id="nf-corernaseq" class="section level2">
 <h2>nf-core/rnaseq</h2>
 <p>Although a user choice, we generally recommend to enable Salmon’s
-flags <code>--seqBias --gcBias</code>. In version 3.6, enabling them can
-be done via a <code>custom.config</code>, by including the following
-(enabling the flags in the salmon run with star inputs, and with the
-salmon run where quasi-mapping was performed by salmon):</p>
+flags <code>--seqBias --gcBias</code>. For versions &gt;= 3.10, users
+can enable these flags by using the following pipeline parameter:
+<code>extra_salmon_quant_args: "--seqBias --gcBias"</code></p>
+<p><strong>Note for versions &lt; 3.10:</strong> a custom
+<code>custom.config</code> is required to enable these flags. An example
+is provided below for version 3.6 (this configuration provides the flags
+in the salmon run with star inputs, and with the salmon run where
+quasi-mapping was performed by salmon):</p>
 <pre><code>// tool params not linked to direct pipeline params. 
 process {
     withName: &#39;.*:QUANTIFY_STAR_SALMON:SALMON_QUANT&#39; {
@@ -471,10 +475,10 @@ process {
         ext.args = &quot;--seqBias --gcBias&quot;
     }
 }</code></pre>
-<p>Note that the syntax linked to custom parameters may differ from
-pipeline to pipeline or even versions. We recommend to following similar
-syntax to what is present in the <code>modules.config</code> of the
-pipeline of interest such as <a
+<p>Note that the syntax linked to custom parameters in the
+<code>custom.config</code> may differ from pipeline to pipeline or even
+versions. We recommend to following similar syntax to what is present in
+the <code>modules.config</code> of the pipeline of interest such as <a
 href="https://github.com/nf-core/rnaseq/blob/3.6/conf/modules.config">this
 one for v.3.6</a>. If you have questions about this, please feel free to
 ask a question linked to it during our data science office hours.</p>

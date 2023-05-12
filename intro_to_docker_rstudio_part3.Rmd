@@ -156,7 +156,7 @@ For a Singularity image that is linked to R > 4.0.0 with RStudio, we can start t
 Expected output will be:
 
 ```
-Will append the following binding commands: --bind /data/temporary-scratch/lianov/singularity_test/singularity_tmp_dir 
+Will append the following binding commands: --bind /scratch/lianov/singularity_test/singularity_tmp_dir 
  
 ---- Initiating singularity exec ---- 
 ---- Go to http://localhost:8787 to visit your RStudio session ---- 
@@ -174,14 +174,17 @@ __NOTE__: we pass in `--server-data-dir` which is only typically available to ro
 In this helper script we have disabled a number of Singularity auto-mounts. Thus, you will need to pass in any directories to be mounted with `-b`, each directory having its own `-b` parameter
 
 ```bash
-# here we mount $USER_DATA and the current working directory (along rstudio --server-data-dir)
+# here we mount $USER_SCRATCH/HPC_path_mount (a directory created within scratch space)
+# and the current working directory (along rstudio --server-data-dir)
 # Note that since we are binding two directories, there are two '-b' parameters
 
-./run_rstudio_singularity.sh -s rstudio_4.0.4.sif -p "NBI" -u $USER -b $USER_DATA -b `pwd` --server-data-dir
+./run_rstudio_singularity.sh -s rstudio_4.0.4.sif -p "NBI" -u $USER -b $USER_SCRATCH/HPC_path_mount -b `pwd` --server-data-dir
 ```
 
 ```
-Will append the following binding commands: --bind /data/temporary-scratch/lianov/singularity_test/singularity_tmp_dir --bind /data/user/lianov --bind /data/temporary-scratch/lianov/singularity_test 
+No custom RStudio preferances provided. Defaulting to standard profile
+
+Will append the following binding commands: --bind /scratch/lianov/singularity_test/singularity_tmp_dir --bind /scratch/lianov/HPC_path_mount --bind /scratch/lianov/singularity_test 
  
 ---- Initiating singularity exec ---- 
 ---- Go to http://localhost:8787 to visit your RStudio session ---- 
@@ -189,6 +192,10 @@ Will append the following binding commands: --bind /data/temporary-scratch/liano
 ```
 
 __NOTE__: due to an issue we have encountered (see [issue #15](https://github.com/U-BDS/training_guides/issues/15)), the home directory cannot be mounted through the helper script (this is linked to the use of `--containall`, see more at <https://sylabs.io/guides/3.1/user-guide/bind_paths_and_mounts.html#containall>). Thus, if you have any files in `$HOME`, which should be available in the container, simply move them to any other directory which is mounted such as the current working directory.
+
+#### Binding `$USER_DATA`
+
+Note that we recommend against binding `$USER_DATA` for most users who may also make use of OnDemand's RStudio, or use R in other methods in HPC. In some cases (outside of a container), R may install packages in `$USER_DATA` (e.g.: if a user sets library paths to `$USER_DATA` which is common). In this case, if a user binds `$USER_DATA`, packages in this path may conflict with the container's. It's OK to bind an isolated sub-directory within `$USER_DATA` (e.g.: a hypothetical directory named `my_project`, thus `$USER_DATA/my_project`), as long as no R packages are not present in this directory.
 
 ### Port number
 
