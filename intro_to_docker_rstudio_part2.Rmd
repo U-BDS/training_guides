@@ -111,8 +111,11 @@ docker run -d --rm -p 8787:8787 -e PASSWORD=NBI -v $HOME/.config/rstudio/rstudio
 
 # Additional Notes
 
-* rocker/rstudio does not currently work with arm Macs/Macs with the M1 chip. This is a known issue and will be resolved in an rstudio update in 2023. We are actively watching this issue and will update this guide once the fix becomes available. If you are experiencing this issue, there are some alternative approaches that can be taken, but go beyond the scope of this tutorial and we would be happy to discuss the approach that fits your needs best in Data Science Office Hours (Data Science Office Hours are listed on the home page).
-  * Linked below are a couple github issues that are worth noting and watching because they currently track this issue:
+* Be aware that M1 chip Mac computers had an issue linked to rocker images which is now resolved (please see the list of issues below for more details). Our general recommendation for M1 chip users is to pull images which are equal or greater than the following versions: rocker/rstudio:4, rocker/rstudio:4.3,rocker/rstudio:4.3.1 (they all have the same sha256: `eb26ffeeb423e96e47ed0ad8d176612e90a0b5188251c5d7c8f8df0741fd58e9`). Any future images of this type are also expected to work in M1 chips for rstudio (please let us know if you encounter any issues).
+
+**Important**: if you plan on using your Docker image as a Singularity image after conversion for HPC use, you should add the following to your build command: `--platform=linux/amd64`
+
+  * Linked below are a some github issues that are worth noting related to the original M1 chip issue:
     1. https://github.com/rocker-org/rocker-versioned2/issues/259
     2. https://github.com/rocker-org/rocker-versioned2/issues/144
     3. https://github.com/rocker-org/rocker/issues/429
