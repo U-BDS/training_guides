@@ -99,7 +99,9 @@ Developing your own image and container allows you to customize the R session to
 
 Let's start with a simple example, where we want to run RStudio with R version 3.6.3 and plot data with `ggplot2`, which is a CRAN package (we will cover Bioconductor later).
 
-The following defines the Dockerfile containing the necessary R version and package dependency along with a small data set to be included in the container.
+The following defines the Dockerfile containing the necessary R version and package dependency along with a small data set to be included in the container. 
+
+**Note** To illustrate the use of one of Docker's directives (`COPY`), we will copy a local script named `ggplot2_example.R` into the container. For the purposes of running the following example, all you need is simply a file with this name (`ggplot2_example.R`). The exact content of the script does not affect the building process of the container, but if you would like the exact same version of the script you will see in this guide, [you can copy it from the GitHub of this training guide from this location](https://github.com/U-BDS/training_guides/blob/main/src/intro_to_docker_part1/ggplot2_example.R).
 
 ```docker
 FROM rocker/rstudio:3.6.3
@@ -109,6 +111,7 @@ RUN mkdir /home/rstudio/data_plots
 # location for mounting (optional)
 RUN mkdir /home/rstudio/data_mount
 
+# NOTE - this script is expected to be present in your computer (see note above)
 COPY ./ggplot2_example.R /home/rstudio/data_plots
 
 # here we add data in when we write the image as opposed to mounting

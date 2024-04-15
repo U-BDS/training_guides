@@ -1,0 +1,28 @@
+---
+title: "Additional Training opportunities"
+author: "Lara Ianov, Ph.D."
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Workshops
+
+U-BDS offers bi to tri-annual workshops which cover the fundamentals of programming (R, Python, Unix, git). This material is taught by our very own Software Carpentry certified instructors (across the U-BDS team and the [Center for Computational Genomics and Data Science](https://sites.uab.edu/cgds/) team), with the aid of other members across both groups. To learn more about the Software Carpentry please visit: <https://software-carpentry.org/>
+
+## Future workshops
+
+While we will continue to offer programming workshops, we are also in the planning phases of data analysis workshops. If interested, please join the UAB Labs `#datascience` channel for upcoming workshop announcements.
+
+# Overview of 10X Genomics Data Analysis
+
+A summary of resources available to the UAB community (both open source solutions and service-based) have been compiled and presented at the UAB 2023 10X Genomics User Day by Dr. Lara Ianov. The slides are publicly available at [here](https://docs.google.com/presentation/d/1C8sgPWRz81AYTSgY6M3kk3YWaLsDYcZPtVmIp55ub4E/edit?usp=sharing). We note that Seurat 5 has now been released in CRAN and is recommended for spatial analysis.
+
+# Research Computing Resources
+
+UAB's Research Computing (RC) provides a wealth of resources, available to all in the UAB community (e.g.: data transferring tools, High Performance Computing, their own office hours etc.). To learn more please visit: <https://docs.rc.uab.edu/>.
+
+# Informatics Club
+
+Students who are seeking community involvement with other trainees are encouraged to reach out to the UAB Informatics Club: <https://informaticsclub.github.io/>. The Informatics club provides opportunities for students to practice their talks, troubleshoot their code and watch seminars which the club organizes, along with many other activities.

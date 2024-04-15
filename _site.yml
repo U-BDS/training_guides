@@ -17,10 +17,10 @@ navbar:
         href: intro_to_docker_rstudio_part2.html
       - text: "Part 3"
         href: intro_to_docker_rstudio_part3.html
-  - text: "Data wrangling examples"
-    menu:
-      - text: "Allen Brain Map - Mouse single-cell dataset"
-        href: Mouse_cortex_hippocampus_Allen_brain.html
+  - text: "Additional Training opportunities"
+    icon: fa-laptop
+    href: Additional_training_opportunity.html
+
 output:
   html_document:
     css: "style.css"
