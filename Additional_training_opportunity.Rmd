@@ -19,9 +19,13 @@ While we will continue to offer programming workshops, we are also in the planni
 
 A summary of resources available to the UAB community (both open source solutions and service-based) have been compiled and presented at the UAB 2023 10X Genomics User Day by Dr. Lara Ianov. The slides are publicly available at [here](https://docs.google.com/presentation/d/1C8sgPWRz81AYTSgY6M3kk3YWaLsDYcZPtVmIp55ub4E/edit?usp=sharing). We note that Seurat 5 has now been released in CRAN and is recommended for spatial analysis.
 
+# nf-core hosted training
+
+The nf-core community offers annual trainings covering various topics which are relevant to the community (from Nextflow, to nf-core pipelines, among others.). To learn more, please visit: <https://nf-co.re/events/training>. In addition to their formal training, they also host short talks named "Bytesize Talks" which cover a series of topics (from pipeline specific talks, to pipeline development areas etc.) - see more at <https://nf-co.re/events/bytesize>
+
 # Research Computing Resources
 
-UAB's Research Computing (RC) provides a wealth of resources, available to all in the UAB community (e.g.: data transferring tools, High Performance Computing, their own office hours etc.). To learn more please visit: <https://docs.rc.uab.edu/>.
+UAB's Research Computing (RC) provides a wealth of resources, available to all in the UAB community (e.g.: data transferring tools, High Performance Computing, their own office hours etc.). To learn more, please visit: <https://docs.rc.uab.edu/>.
 
 # Informatics Club
 
