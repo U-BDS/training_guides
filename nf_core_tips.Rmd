@@ -15,6 +15,12 @@ knitr::opts_chunk$set(echo = TRUE)
   * Importantly, a custom config should only reflect arguments or modifications linked to the process if not available through the pipeline parameters. This is linked to an issue in Nextflow which is being tracked at https://github.com/nextflow-io/nextflow/issues/2662. Thus, standard pipeline parameters should be provided through the command line during the execution of the pipeline or in a yaml file with the usage of the `-params-file` option (e.g.: `-params-file params.yml` where the yaml file contains all custom parameters). Discussion linked to a `params.yml` file can be found at https://github.com/nf-core/viralrecon/issues/283 and https://github.com/nf-core/rnaseq/issues/754.
 * Results from the `work` directory are copied over to the resulting directory (typically called `results`) - deleting the work directory may be desired to avoid duplication of files, however deleting this directory also removes the log files (the `.command.*` files) and prevents you from resuming a pipeline execution (with `-resume`). If you __do not__ need to resume a pipeline run, and would like to remove large files from the `work` directory while keeping the logs, you may clean this directory with the command `nextflow clean -k -f` (and we recommend performing a dry-run prior to this with `nextflow clean -k -n`).
 
+## nf-core - asking for help
+
+We recommend users to join the nf-core Slack group to search for questions across pipelines specific channels (each pipeline has their own channel [e.g.: `#rnaseq`, `atacseq`]). You may find the link to join their Slack at <https://nf-co.re/join>.
+
+In addition, nf-core has other beginner friendly channels such as the `#nostupidquestions` which may be useful for more general questions across multiple pipelines. Please follow their guidelines when asking a question along with the following best practices nicely summarized in stack overflow: <https://stackoverflow.com/help/how-to-ask> (e.g.: use Slack's search function to search for your problem; provide a synopsis of the issue along with a reproducible example etc. Please refrain from DM pipeline developers).
+
 # Executor mode for Cheaha profile
 
 * U-BDS has created a public Cheaha profile which has been merged to the main nf-core configs (https://github.com/nf-core/configs/pull/322). Thus, the profile can be used in any nf-core pipeline with the parameter `-profile cheaha`. Full documentation of the profile can be found in the nf-core config GitHub: https://github.com/nf-core/configs/blob/master/docs/cheaha.md
@@ -22,6 +28,8 @@ knitr::opts_chunk$set(echo = TRUE)
 We recommend to use this profile when processing multiple samples in the pipeline as it will aid in parallel processing. If your run only contains a small amount of samples, standard `local` mode (to a compute node) is usually sufficient. Feel free to let us know if additional customization would benefit the community.
 
 # Pipeline-specific Notes
+nf-core contains a library of pipelines which can be found at <https://nf-co.re/pipelines>. However, below are notes and tips for pipelines which U-BDS have tested in-depth:
+
 ## nf-core/rnaseq
 
 Although a user choice, we generally recommend to enable Salmon's flags `--seqBias --gcBias`. For versions >= 3.10, users can enable these flags by using the following pipeline parameter: `extra_salmon_quant_args: "--seqBias --gcBias"`
@@ -118,3 +126,7 @@ Execution halted
 * We recommend only running versions post-v2.0.0 of this pipeline. v2.0.0 is when the pipeline converted to DSL2.0 and resolved a number of issues we had noted occurring in previous versions of the pipeline. 
 * A more general note: this pipeline does not produce any QC results, such as fastqc results, mapping stats, single-cell stats, nor do the multiqc reports that are generated have a much useful information. Any qc information the user is wishing to see will need to be executed manually separately from the pipeline.
     * An exception to this note is `alevin_qc`, which is a collection of various stats and graphs about your dataset. These qc results are only produced when using alevin as an aligner.
+* Sequencing platform: Illumina
+    
+## nf-core/scnanoseq
+* [scnanoseq](https://nf-co.re/scnanoseq) is an nf-core pipeline for single-cell/nuclei analysis for data derived from Oxford Nanopore (long-read sequencing). This pipeline is currently in development nearing a first release. We note that the original authors and maintainers of this pipeline are the same authors of this guide (Austyn Trull and Lara Ianov). Given we are part of the UAB community, we are happy to discuss the pipeline during office hours or through a formal meeting. However, for consistency with other nf-core pipelines, please send questions about scnanoseq in the nf-core pipeline channel dedicated to it, which can be found [here](https://nfcore.slack.com/archives/C03TUE2K6NS). Keeping all questions in a central location will ensure that there is minimal redundancy of effort in our part in aiding the community. We appreciate your understanding and feedback.

@@ -279,9 +279,9 @@ DT::datatable(metadata_singularity,
 
 ## Additional tips
 
-    * __It's recommended to run the containers in separate working directories.__
-    * Although not a requirement, we recommend to launch the container from a separate VNC/HPC Desktop job with its own dedicated computational resources.
-    * In HPC VNC, when running containers that need Firefox such as RStudio, they are linked to a default Firefox user. Thus, if more than one session is running the following may occur:
+* __It's recommended to run the containers in separate working directories.__
+* Although not a requirement, we recommend to launch the container from a separate VNC/HPC Desktop job with its own dedicated computational resources.
+* In HPC VNC, when running containers that need Firefox such as RStudio, they are linked to a default Firefox user. Thus, if more than one session is running the following may occur:
 
 ```
 Firefox is already running, but is not responding. To open a new window, you must first close the existing Firefox process, or restart your system

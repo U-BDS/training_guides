@@ -355,17 +355,12 @@ div.tocify {
     </li>
   </ul>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Data wrangling examples
+<li>
+  <a href="additional_training_opportunity.html">
+    <span class="fa fa-laptop"></span>
      
-    <span class="caret"></span>
+    Additional Training opportunities
   </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="Mouse_cortex_hippocampus_Allen_brain.html">Allen Brain Map - Mouse single-cell dataset</a>
-    </li>
-  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -432,6 +427,24 @@ this directory with the command <code>nextflow clean -k -f</code> (and
 we recommend performing a dry-run prior to this with
 <code>nextflow clean -k -n</code>).</li>
 </ul>
+<div id="nf-core---asking-for-help" class="section level2">
+<h2>nf-core - asking for help</h2>
+<p>We recommend users to join the nf-core Slack group to search for
+questions across pipelines specific channels (each pipeline has their
+own channel [e.g.: <code>#rnaseq</code>, <code>atacseq</code>]). You may
+find the link to join their Slack at <a href="https://nf-co.re/join"
+class="uri">https://nf-co.re/join</a>.</p>
+<p>In addition, nf-core has other beginner friendly channels such as the
+<code>#nostupidquestions</code> which may be useful for more general
+questions across multiple pipelines. Please follow their guidelines when
+asking a question along with the following best practices nicely
+summarized in stack overflow: <a
+href="https://stackoverflow.com/help/how-to-ask"
+class="uri">https://stackoverflow.com/help/how-to-ask</a> (e.g.: use
+Slack’s search function to search for your problem; provide a synopsis
+of the issue along with a reproducible example etc. Please refrain from
+DM pipeline developers).</p>
+</div>
 </div>
 <div id="executor-mode-for-cheaha-profile" class="section level1">
 <h1>Executor mode for Cheaha profile</h1>
@@ -454,6 +467,10 @@ additional customization would benefit the community.</p>
 </div>
 <div id="pipeline-specific-notes" class="section level1">
 <h1>Pipeline-specific Notes</h1>
+<p>nf-core contains a library of pipelines which can be found at <a
+href="https://nf-co.re/pipelines"
+class="uri">https://nf-co.re/pipelines</a>. However, below are notes and
+tips for pipelines which U-BDS have tested in-depth:</p>
 <div id="nf-corernaseq" class="section level2">
 <h2>nf-core/rnaseq</h2>
 <p>Although a user choice, we generally recommend to enable Salmon’s
@@ -649,6 +666,26 @@ manually separately from the pipeline.
 collection of various stats and graphs about your dataset. These qc
 results are only produced when using alevin as an aligner.</li>
 </ul></li>
+<li>Sequencing platform: Illumina</li>
+</ul>
+</div>
+<div id="nf-corescnanoseq" class="section level2">
+<h2>nf-core/scnanoseq</h2>
+<ul>
+<li><a href="https://nf-co.re/scnanoseq">scnanoseq</a> is an nf-core
+pipeline for single-cell/nuclei analysis for data derived from Oxford
+Nanopore (long-read sequencing). This pipeline is currently in
+development nearing a first release. We note that the original authors
+and maintainers of this pipeline are the same authors of this guide
+(Austyn Trull and Lara Ianov). Given we are part of the UAB community,
+we are happy to discuss the pipeline during office hours or through a
+formal meeting. However, for consistency with other nf-core pipelines,
+please send questions about scnanoseq in the nf-core pipeline channel
+dedicated to it, which can be found <a
+href="https://nfcore.slack.com/archives/C03TUE2K6NS">here</a>. Keeping
+all questions in a central location will ensure that there is minimal
+redundancy of effort in our part in aiding the community. We appreciate
+your understanding and feedback.</li>
 </ul>
 </div>
 </div>

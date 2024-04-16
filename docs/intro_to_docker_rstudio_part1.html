@@ -355,17 +355,12 @@ div.tocify {
     </li>
   </ul>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Data wrangling examples
+<li>
+  <a href="additional_training_opportunity.html">
+    <span class="fa fa-laptop"></span>
      
-    <span class="caret"></span>
+    Additional Training opportunities
   </a>
-  <ul class="dropdown-menu" role="menu">
-    <li>
-      <a href="Mouse_cortex_hippocampus_Allen_brain.html">Allen Brain Map - Mouse single-cell dataset</a>
-    </li>
-  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -545,6 +540,20 @@ package (we will cover Bioconductor later).</p>
 <p>The following defines the Dockerfile containing the necessary R
 version and package dependency along with a small data set to be
 included in the container.</p>
+<p><strong>Note</strong> To illustrate the use of one of Docker’s
+directives (<code>COPY</code>), we will copy a local script named
+<code>ggplot2_example.R</code> into the container. For the purposes of
+running the following example, all you need is simply a file with this
+name (<code>ggplot2_example.R</code>). The exact content of the script
+does not affect the building process of the container, but if you would
+like the exact same version of the script you will see in this guide, <a
+href="https://github.com/U-BDS/training_guides/blob/main/src/intro_to_docker_part1/ggplot2_example.R">you
+can copy it from the GitHub of this training guide from this
+location</a>.</p>
+<p>Similarly, we will also copy the input data into the container. The
+data folder including its content can be <a
+href="https://uab.box.com/s/qq5vjdv9ao5skp6fl0yumek817um3lru">downloaded
+from here</a>.</p>
 <pre class="docker"><code>FROM rocker/rstudio:3.6.3
 
 RUN mkdir /home/rstudio/data_plots
@@ -552,6 +561,7 @@ RUN mkdir /home/rstudio/data_plots
 # location for mounting (optional)
 RUN mkdir /home/rstudio/data_mount
 
+# NOTE - this script is expected to be present in your computer (see note above)
 COPY ./ggplot2_example.R /home/rstudio/data_plots
 
 # here we add data in when we write the image as opposed to mounting
