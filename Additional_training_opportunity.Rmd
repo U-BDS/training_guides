@@ -21,7 +21,7 @@ A summary of resources available to the UAB community (both open source solution
 
 # nf-core hosted training
 
-The nf-core community offers annual trainings covering various topics which are relevant to the community (from Nextflow, to nf-core pipelines, among others.). To learn more, please visit: <https://nf-co.re/events/training>. In addition to their formal training, they also host short talks named "Bytesize Talks" which cover a series of topics (from pipeline specific talks, to pipeline development areas etc.) - see more at <https://nf-co.re/events/bytesize>
+The nf-core community offers annual training covering various topics which are relevant to the community (from Nextflow, to nf-core pipelines, among others.). To learn more, please visit: <https://nf-co.re/events/training>. In addition to their formal training, they also host short talks named "Bytesize Talks" which cover a series of topics (e.g.: pipeline specific talks, to pipeline development areas etc.) - see more at <https://nf-co.re/events/bytesize>
 
 # Research Computing Resources
 

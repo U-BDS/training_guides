@@ -19,7 +19,7 @@ navbar:
         href: intro_to_docker_rstudio_part3.html
   - text: "Additional Training opportunities"
     icon: fa-laptop
-    href: Additional_training_opportunity.html
+    href: additional_training_opportunity.html
 
 output:
   html_document:
