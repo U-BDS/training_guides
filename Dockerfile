@@ -1,4 +1,4 @@
-FROM rocker/tidyverse:4.2.0
+FROM rocker/tidyverse:4.5.1
 
 LABEL maintainer="Lara Ianov <lianov@uab.edu>"
 LABEL description="Environment with all dependencies to render U-BDS training website"
@@ -21,7 +21,6 @@ RUN apt-get update && apt-get install -y \
     git \
     libfftw3-dev \
     libgsl-dev \
-    llvm-10 \
     libbz2-dev \
     liblzma-dev \
     g++ \
@@ -30,4 +29,4 @@ RUN apt-get update && apt-get install -y \
     software-properties-common && add-apt-repository -y ppa:git-core/ppa
 
 # additional dependencies beyond parent image packages
-RUN R --no-restore --no-save -e "install.packages('DT')"
+RUN R --no-restore --no-save -e "install.packages(c('DT', 'fontawesome'))"
