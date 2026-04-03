@@ -18,7 +18,6 @@ __This page is specifically dedicated to training resources we share__. Our long
 * Co-Director: Lara Ianov, Ph.D.
 * U-BDS staff:
   * Austyn Trull, B.Sc.
-  * Nilesh Kumar, Ph.D.
   * Luke Potter, Ph.D.
 * Administrative staff:
   * Kate Daughtry
