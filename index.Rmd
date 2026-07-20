@@ -19,6 +19,7 @@ __This page is specifically dedicated to training resources we share__. Our long
 * U-BDS staff:
   * Austyn Trull, B.Sc.
   * Luke Potter, Ph.D.
+  * Mohammed Sayed, Ph.D.
 * Administrative staff:
   * Kate Daughtry
   
@@ -32,4 +33,4 @@ For additional learning opportunities, please see the tab named `Additional Trai
 
 # Twitter / X
 
-Follow us at <https://twitter.com/UAB_BDS> - `@UAB_BDS`
+Follow us at <https://x.com/UAB_BDS> - `@UAB_BDS`
